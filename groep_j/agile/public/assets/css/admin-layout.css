@@ -1,0 +1,100 @@
+.admin {
+    main > .container {
+        height: 100%;
+        position: relative;
+        .filter-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            .button {
+                &.right {
+                    margin: 0;
+                }
+            }
+        }
+        &.has-sliders {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            gap: 50px;
+            .sliders {
+                align-self: flex-end;
+            }
+        }
+    }
+
+    a {
+        &:after {
+            content: none;
+        }
+    }
+    #sidebar {
+        background-color: #111217;
+        a:hover {
+            color: inherit;
+        }
+    }
+
+    .availability {
+        align-items: center;
+        white-space: nowrap;
+        .percentage-meter {
+            margin-left: 5px;
+            padding: 5px;
+            color: var(--default-black);
+            border-radius: 5px;
+            &.low {
+                background-color: greenyellow;
+            }
+            &.medium {
+                background-color: orange;
+            }
+            &.high {
+                background-color: red;
+            }
+        }
+    }
+    .container {
+        .wrapper {
+            text-align: center;
+            h2 {
+                font-weight: 700;
+                font-size: revert;
+            }
+            .button-wrapper {
+                .button {
+                    margin: 15px auto;
+                }
+                form {
+                    .button {
+                        margin-bottom: 5px;
+                    }
+                    p {
+                        font-size: 14px;
+                        &.hint {
+                            font-style: italic;
+                        }
+                    }
+                }
+            }
+            .alert {
+                padding: 15px;
+                border-radius: 5px;
+                font-size: 16px;
+                font-weight: bold;
+                margin: 10px 0;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                &.alert-success {
+                    background-color: #d4edda;
+                    color: #155724;
+                    border: 1px solid #c3e6cb;
+                }
+            }
+
+        }
+    }
+}

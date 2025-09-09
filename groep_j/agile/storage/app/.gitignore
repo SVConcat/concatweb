@@ -1,0 +1,10 @@
+*
+!private/
+!public/
+!.gitignore
+!/google-calendar/
+# Ignore the normal credentials file
+service-account-credentials.json
+
+# Do not ignore the example file
+!service-account-credentials.example.json

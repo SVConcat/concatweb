@@ -1,0 +1,28 @@
+version: "3.1"
+
+services:
+    dbhost:
+        image: mysql:5.7
+        restart: on-failure
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_DATABASE: agile
+            MYSQL_USER: agile
+            MYSQL_PASSWORD: agile
+            MYSQL_ROOT_PASSWORD: agile
+        volumes:
+            - ./initdb.d:/docker-entrypoint-initdb.d:ro
+    # Redis Server for Cache
+    redis-cache:
+        image: redis:latest
+        restart: always
+        ports:
+            - "6379:6379"
+        command: redis-server --save 20 1 --loglevel warning
+        volumes:
+            - cache:/data
+
+volumes:
+    cache:
+        driver: local

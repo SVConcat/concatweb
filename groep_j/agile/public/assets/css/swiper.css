@@ -1,0 +1,117 @@
+.swiper-container {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--default-white);
+    margin-top: 40px;
+    margin-bottom: 40px;
+    border-radius: 25px;
+    .swiper-button-prev, .swiper-button-next {
+        top: calc(50% + 20px);
+        transform: translateY(-50%);
+        width: 40px;
+        height: 40px;
+        background-color: var(--default-black);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px;
+        transition: background-color 0.3s ease;
+        &:after {
+            font-size: 20px;
+            color: var(--default-white);
+        }
+
+        &:hover {
+            background-color: #333;
+        }
+    }
+
+    .swiper-pagination {
+        .swiper-pagination-bullet{
+            outline: 2px solid white;
+            opacity: 1;
+        }
+    }
+
+    .swiper-button-prev {
+        left: 10px;
+    }
+
+    .swiper-button-next {
+        right: 10px;
+    }
+
+
+
+
+    .swiper-slide {
+        display: flex;
+        margin: auto;
+        align-content: center;
+        align-items: center;
+        text-align: center;
+        flex-direction: column;
+        img {
+            max-height: 300px;
+            margin: auto;
+        }
+
+        h3{
+            margin-top: 0.5rem;
+            color: var(--default-black);
+        }
+    }
+}
+
+.sideslider {
+    .swiper-container {
+        max-height:400px;
+        height: 100%;
+    }
+}
+
+.home {
+    .sideslider {
+        padding: 0;
+        width: calc(100% - 25%);
+
+        .swiper-container {
+            margin: 0;
+            max-height: 500px;
+            .swiper-button-prev, .swiper-button-next{
+                visibility:hidden;
+            }
+            .swiper-slide{
+                img{
+                    width:100%;
+                    height:auto;
+                    object-fit:contain;
+                    max-height: 100%;
+                }
+            }
+        }
+    }
+
+}
+
+.about-us-swiper  {
+
+    .swiper-container
+    {
+        margin: 0;
+        width: 100%;
+
+        display: block;
+    }
+
+}
+
+@media(max-width: 768px)
+{
+    .swiper-container{
+        .swiper-button-prev, .swiper-button-next{
+            visibility:hidden;
+        }
+    }
+}
