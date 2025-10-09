@@ -24,6 +24,7 @@ class TestDataSeeder extends Seeder
             EventSeeder::class,
             OldBoardSeeder::class,
             SponsorSeeder::class,
+            GallerySeeder::class
         ]);
     }
 }

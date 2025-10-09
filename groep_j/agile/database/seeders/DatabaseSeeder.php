@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use phpseclib3\Crypt\Hash;
 use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
@@ -13,8 +14,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
         Role::create(['name' => 'user']);
         Role::create(['name' => 'admin']);
 
@@ -23,8 +22,12 @@ class DatabaseSeeder extends Seeder
         $user->major = 'SO';
         $user->email = 'admin@agile.nl';
         $user->phone = '0612345678';
-        $user->password = '$2y$12$RRFILOFFad.VuxS44qX7I.mUJxb1cqlO8exnjs9oqXRGpZi0XIqJW';
+        $user->password = hash('sha256', "password");
         $user->save();
         $user->assignRole('admin');
+
+        if (app()->environment('local')) {
+            $this->call(TestDataSeeder::class);
+        }
     }
 }
