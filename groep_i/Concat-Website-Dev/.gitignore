@@ -159,4 +159,3 @@ resources/js/app.js~
 *.php~
 *.css~
 package-lock.json
-.env.example
