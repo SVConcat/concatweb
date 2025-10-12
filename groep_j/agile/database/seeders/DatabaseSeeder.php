@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
@@ -23,7 +24,8 @@ class DatabaseSeeder extends Seeder
         $user->major = 'SO';
         $user->email = 'admin@agile.nl';
         $user->phone = '0612345678';
-        $user->password = '$2y$12$RRFILOFFad.VuxS44qX7I.mUJxb1cqlO8exnjs9oqXRGpZi0XIqJW';
+        $user->email_verified_at = now();
+        $user->password = Hash::make('password');
         $user->save();
         $user->assignRole('admin');
     }
