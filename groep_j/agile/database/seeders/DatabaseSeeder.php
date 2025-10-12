@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use phpseclib3\Crypt\Hash;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         $user->major = 'SO';
         $user->email = 'admin@agile.nl';
         $user->phone = '0612345678';
-        $user->password = hash('sha256', "password");
+        $user->password = Hash::make('password');
         $user->save();
         $user->assignRole('admin');
 
