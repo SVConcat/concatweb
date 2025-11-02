@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BoardMemberUpdateRequest;
 use App\Models\BoardMember;
 use App\Models\PreviousBoard;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class AboutUsController extends Controller
 {
@@ -18,66 +22,49 @@ class AboutUsController extends Controller
         $currentBoard = BoardMember::all();
 
         $previousBoards = PreviousBoard::all()->map(function ($board) {
-             return [
-            'id' => $board->id,
-            'from' => \Carbon\Carbon::parse($board->FromYear)->format('Y'),
-            'to' => \Carbon\Carbon::parse($board->ToYear)->format('Y'),
-            'members' => $board->members,
-            'photo' => $board->photo,
+            return [
+                'id' => $board->id,
+                'from' => Carbon::parse($board->FromYear)->format('Y'),
+                'to' => Carbon::parse($board->ToYear)->format('Y'),
+                'members' => $board->members,
+                'photo' => $board->photo,
             ];
-            });
+        });
 
 
         return view('about-us.index', compact('currentBoard', 'previousBoards'));
     }
 
 
-
-    public function edit_board_member($id)
+    public function edit_board_member(BoardMember $boardMember)
     {
-        $boardMember = BoardMember::findOrFail($id);
         $this->authorize('editBoardMember', $boardMember);
         return view('about-us.board_member_edit', compact('boardMember'));
     }
 
 
-
-    public function update_board_member(Request $request,  $id)
+    public function update_board_member(BoardMemberUpdateRequest $request, BoardMember $boardMember)
     {
-        $boardMember = BoardMember::findOrFail($id);
         $this->authorize('updateBoardMember', $boardMember);
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'role' => 'required|string|max:255',
-            'bio' => 'required|string|min:10',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
-        ],
-        [
-        'name.required' => 'Naam is verplicht.',
-        'role.required' => 'Rol is verplicht.',
-        'bio.required' => 'Bio is verplicht en moet minimaal 10 tekens bevatten.',
-        'photo.image' => 'De afbeelding moet een geldig afbeeldingsbestand zijn.',
-        ]);
 
-        $boardMember->name = $validated['name'];
-        $boardMember->role = $validated['role'];
-        $boardMember->bio = $validated['bio'];
+        $boardMember->name = $request->validated('name');
+        $boardMember->role = $request->validated('role');
+        $boardMember->bio = $request->validated('bio');
 
-    if ($request->hasFile('photo')) {
-        if ($boardMember->photo) {
-            Storage::disk('public')->delete($boardMember->photo);
-        }
+        if ($request->hasFile('photo')) {
+            if ($boardMember->photo) {
+                Storage::disk('public')->delete($boardMember->photo);
+            }
 
-        $photoPath = $request->file('photo')->store('board-members', 'public');
-        $boardMember->photo = $photoPath;
+            $photoPath = $request->file('photo')->store('board-members', 'public');
+            $boardMember->photo = $photoPath;
         }
         $boardMember->save();
 
-         return redirect()
-            ->route('board-members.edit', $boardMember->id)
+        return redirect()
+            ->back()
             ->with('success', 'Bestuurslid succesvol bijgewerkt!');
     }
-
 
     public function edit_previous_board($id)
     {
@@ -122,10 +109,9 @@ class AboutUsController extends Controller
         $previousBoard->save();
 
         return redirect()
-        ->route('previous-boards.edit', $previousBoard->id)
-        ->with('success', 'Vorig bestuur succesvol bijgewerkt!');
+            ->route('previous-boards.edit', $previousBoard->id)
+            ->with('success', 'Vorig bestuur succesvol bijgewerkt!');
     }
 
-    
 
 }

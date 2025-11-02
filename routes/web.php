@@ -48,13 +48,13 @@ Route::get('/community-nights/{id}/edit', [CommunityNightController::class, 'edi
 Route::put('/community-nights/{communityNight}/update', [CommunityNightController::class, 'update'])->name('community-nights.update');
 
 
-// Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show'); // hier moet het verified gedeelte 
+// Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show'); // hier moet het verified gedeelte
 
 Route::get('/events/{event}', [EventController::class, 'show'])
      ->middleware(['auth', 'verified'])
      ->name('events.show');
 
-     
+
 //galerij
 Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
 Route::middleware(['auth'])->group(function () {
@@ -123,12 +123,12 @@ Route::resource('/assignments', AssignmentController::class);
 Route::get('/about-us', [AboutUsController::class, 'index'])->name('about-us.index');
 
 // Board Members
-Route::get('/board-members/{id}/edit', [AboutUsController::class, 'edit_board_member'])->name('board-members.edit');
-Route::put('/board-members/{id}', [AboutUsController::class, 'update_board_member'])->name('board-members.update');
+Route::get('/board-members/{boardMember}/edit', [AboutUsController::class, 'edit_board_member'])->name('board-members.edit');
+Route::put('/board-members/{boardMember}', [AboutUsController::class, 'update_board_member'])->name('board-members.update');
 
 // PreviousBoard
-Route::get('/previous-boards/{id}/edit', [AboutUsController::class, 'edit_previous_board'])->name('previous-boards.edit');
-Route::put('/previous-boards/{id}', [AboutUsController::class, 'update_previous_board'])->name('previous-boards.update');
+Route::get('/previous-boards/{boardMember}/edit', [AboutUsController::class, 'edit_previous_board'])->name('previous-boards.edit');
+Route::put('/previous-boards/{boardMember}', [AboutUsController::class, 'update_previous_board'])->name('previous-boards.update');
 
 //PROBLEMEN MET AUTHENTICATIE KIJK ERNAAR!!!
 Route::middleware('auth')->group(function () {
