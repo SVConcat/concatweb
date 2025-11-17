@@ -2,25 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AnnouncementRequest;
 use App\Listeners\Discord\Announcements\NewAnnouncementAdded;
 use App\Models\Announcement;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 
 class AnnouncementController extends Controller
 {
     public function index()
     {
-        // Zichtbare announcements voor iedereen
+        // Visible announcements for all users
         $visibleAnnouncements = Announcement::where('isVisible', true)
             ->orderByDesc('published_at')
             ->get();
-
         $groupedVisible = $this->groupAnnouncements($visibleAnnouncements);
 
-        // Niet-zichtbare alleen voor admins
+        // Not visible announcements for admin users only
         $groupedNonVisible = [];
-        if(auth()->user() && auth()->user()->isAdmin()) {
+        if (auth()->user() && auth()->user()->isAdmin()) {
             $nonVisibleAnnouncements = Announcement::where('isVisible', false)
                 ->orderByDesc('published_at')
                 ->get();
@@ -33,11 +32,11 @@ class AnnouncementController extends Controller
             'showAdminControls' => auth()->user() && auth()->user()->isAdmin()
         ]);
     }
+
     private function groupAnnouncements($announcements)
     {
         $grouped = [];
-        foreach($announcements as $announcement) {
-            // Use published_at if available, otherwise fallback to created_at
+        foreach ($announcements as $announcement) {
             $date = $announcement->published_at ?? $announcement->created_at;
             $group = $this->getDateGroup($date);
             $grouped[$group][] = $announcement;
@@ -47,16 +46,15 @@ class AnnouncementController extends Controller
 
     private function getDateGroup($date)
     {
-        $now = now();
         $date = $date->copy()->startOfDay();
-        $diffInDays = $date->diffInDays($now);
+        $diffInDays = $date->diffInDays(now());
 
-        if($date->isToday()) return 'Vandaag';
-        if($date->isYesterday()) return 'Gisteren';
-        if($diffInDays <= 7) return 'Deze Week';
-        if($diffInDays <= 14) return 'Vorige Week';
-        if($date->month == $now->month && $date->year == $now->year) return 'Deze Maand';
-        if($date->month == $now->subMonth()->month && $date->year == $now->year) return 'Vorige Maand';
+        if ($date->isToday()) return 'Vandaag';
+        elseif ($date->isYesterday()) return 'Gisteren';
+        elseif ($diffInDays <= 7) return 'Deze Week';
+        elseif ($diffInDays <= 14) return 'Vorige Week';
+        elseif ($date->month == now()->month && $date->year == now()->year) return 'Deze Maand';
+        elseif ($date->month == now()->subMonth()->month && $date->year == now()->year) return 'Vorige Maand';
 
         return $date->translatedFormat('F Y');
     }
@@ -66,26 +64,16 @@ class AnnouncementController extends Controller
         return view('announcements.create');
     }
 
-    public function store(Request $request)
+    public function store(AnnouncementRequest $request)
     {
-        $validated = $request->validate([
-            'titel' => 'required|string|max:255',
-            'inhoud' => 'required|string',
-        ], [
-            'titel.required' => 'Titel is verplicht.',
-            'inhoud.required' => 'Inhoud is verplicht.',
-        ]);
-
-        // Check which button was clicked
+        // Check which button was clicked in the form
         $isVisible = $request->input('action') === 'publish';
+        $announcement = Announcement::create(array_merge($request->validated(),
+            ['isVisible' => $isVisible]
+        ));
 
-        // Create the announcement with isVisible determined by the button clicked
-        $announcement = Announcement::create(array_merge($validated, [
-            'isVisible' => $isVisible,
-        ]));
-
-        // Automatically set published_at if it's published
         if ($isVisible) {
+            // Fire the event to notify Discord
             event(new NewAnnouncementAdded(
                 $announcement->titel,
                 $announcement->inhoud,
@@ -98,35 +86,30 @@ class AnnouncementController extends Controller
         return redirect()->route('announcements.index');
     }
 
-    public function update(Request $request, Announcement $announcement)
+    public function edit(Announcement $announcement)
     {
-        $validated = $request->validate([
-            'titel' => 'required|string|max:255',
-            'inhoud' => 'required|string',
-        ]);
+        return view('announcements.edit', compact('announcement'));
+    }
 
-        // Check which button was clicked
+    public function update(AnnouncementRequest $request, Announcement $announcement)
+    {
+        // Check which button was clicked in the form
         $action = $request->input('action');
 
-        // Handle "Bijwerken" action (announcement is already published)
         if ($action === 'update') {
-            $announcement->update($validated);
+            $announcement->update($request->validated());
 
-            return redirect()->route('announcements.index')->with('success', 'Announcement bijgewerkt.');
+            return redirect()->route('announcements.index')
+                ->with('success', 'Announcement bijgewerkt.');
         }
 
-        // Determine visibility for "save" (draft) or "publish" actions
         $isVisible = $action === 'publish';
-
-        // Check if the announcement was previously a draft and is now published
         $wasDraft = !$announcement->isVisible && $isVisible;
 
-        // Update announcement (visibility and other details)
-        $announcement->update(array_merge($validated, [
+        $announcement->update(array_merge($request->validated(), [
             'isVisible' => $isVisible,
         ]));
 
-        // If it was a draft and is now being published, set `published_at` and fire the event
         if ($wasDraft) {
             $announcement->update(['published_at' => now()]);
 
@@ -138,18 +121,17 @@ class AnnouncementController extends Controller
             ));
         }
 
-        return redirect()->route('announcements.index')->with('success', 'Announcement bijgewerkt.');
-    }
-
-    public function edit(Announcement $announcement)
-    {
-        return view('announcements.edit', compact('announcement'));
+        return redirect()
+            ->route('announcements.index')
+            ->with('success', 'Announcement bijgewerkt.');
     }
 
     public function destroy(Announcement $announcement)
     {
         $announcement->delete();
 
-        return redirect()->route('announcements.index')->with('success', 'Announcement verwijderd.');
+        return redirect()
+            ->route('announcements.index')
+            ->with('success', 'Announcement verwijderd.');
     }
 }

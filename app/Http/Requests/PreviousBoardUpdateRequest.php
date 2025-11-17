@@ -16,7 +16,7 @@ class PreviousBoardUpdateRequest extends FormRequest
         return [
             'FromYear' => 'required|date',
             'ToYear' => 'required|date|after_or_equal:FromYear',
-            'members' => 'required|string|min:5|max:200',
+            'members' => 'required|string|min:5|max:1500',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ];
     }
