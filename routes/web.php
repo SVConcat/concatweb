@@ -127,8 +127,8 @@ Route::get('/board-members/{boardMember}/edit', [AboutUsController::class, 'edit
 Route::put('/board-members/{boardMember}', [AboutUsController::class, 'update_board_member'])->name('board-members.update');
 
 // PreviousBoard
-Route::get('/previous-boards/{boardMember}/edit', [AboutUsController::class, 'edit_previous_board'])->name('previous-boards.edit');
-Route::put('/previous-boards/{boardMember}', [AboutUsController::class, 'update_previous_board'])->name('previous-boards.update');
+Route::get('/previous-boards/{previousBoard}/edit', [AboutUsController::class, 'edit_previous_board'])->name('previous-boards.edit');
+Route::put('/previous-boards/{previousBoard}', [AboutUsController::class, 'update_previous_board'])->name('previous-boards.update');
 
 //PROBLEMEN MET AUTHENTICATIE KIJK ERNAAR!!!
 Route::middleware('auth')->group(function () {

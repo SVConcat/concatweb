@@ -5,12 +5,6 @@
             Bestuurslid bewerken
         </h1>
 
-        <pre>
-            Errors: {{ print_r($errors->all(), true) }}
-            Success: {{ session('success') }}
-        </pre>
-
-
         @if(session('success'))
             <div aria-label="Succesmelding" aria-live="polite" class="w-full flex justify-center">
                 <div class="max-w-md p-4 mb-4 bg-green-100 border-l-4 border-green-500 text-green-700 rounded-lg">
@@ -51,7 +45,7 @@
                        class="w-full p-2 {{ $errors->has('photo') ? 'bg-red-100 text-red-700 border-red-300' : 'bg-purple-100 text-purple-700 border-purple-300' }} rounded-lg border outline-none focus:ring-2 focus:ring-purple-500"
                        aria-label="Upload een profielfoto voor dit bestuurslid">
                 @if ($boardMember->photo)
-                    <img src="{{ asset($boardMember->photo) }}" alt="Huidige profielfoto van {{ $boardMember->name }}"
+                    <img src="{{ Storage::url($boardMember['photo']) }}" alt="Huidige profielfoto van {{ $boardMember->name }}"
                          class="mt-2 w-32 h-32 object-cover rounded">
                 @endif
                 @error('photo')

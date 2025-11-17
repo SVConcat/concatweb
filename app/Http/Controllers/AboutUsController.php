@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BoardMemberUpdateRequest;
+use App\Http\Requests\PreviousBoardUpdateRequest;
 use App\Models\BoardMember;
 use App\Models\PreviousBoard;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\ValidationException;
 
 class AboutUsController extends Controller
 {
@@ -66,36 +64,20 @@ class AboutUsController extends Controller
             ->with('success', 'Bestuurslid succesvol bijgewerkt!');
     }
 
-    public function edit_previous_board($id)
+    public function edit_previous_board(PreviousBoard $previousBoard)
     {
-        $previousBoard = PreviousBoard::findOrFail($id);
         $this->authorize('editPreviousBoard', $previousBoard);
         return view('about-us.previous_board_edit', compact('previousBoard'));
     }
 
 
-    public function update_previous_board(Request $request, $id)
+    public function update_previous_board(PreviousBoardUpdateRequest $request, PreviousBoard $previousBoard)
     {
-        $previousBoard = PreviousBoard::findOrFail($id);
         $this->authorize('updatePreviousBoard', $previousBoard);
-        $validated = $request->validate([
-            'FromYear' => 'required|date',
-            'ToYear' => 'required|date|after_or_equal:FromYear',
-            'members' => 'required|string|min:5',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
-        ], [
-            'FromYear.required' => 'Begin datum is verplicht.',
-            'FromYear.date' => 'Begin datum moet een geldige datum zijn.',
-            'ToYear.required' => 'Eind datum is verplicht.',
-            'ToYear.date' => 'Eind datum moet een geldige datum zijn.',
-            'ToYear.after_or_equal' => 'Einddatum moet op of na de begindatum zijn.',
-            'members.required' => 'Ledenbeschrijving is verplicht.',
-            'photo.image' => 'De afbeelding moet een geldig afbeeldingsbestand zijn.',
-        ]);
 
-        $previousBoard->FromYear = $validated['FromYear'];
-        $previousBoard->ToYear = $validated['ToYear'];
-        $previousBoard->members = $validated['members'];
+        $previousBoard->FromYear = $request->validated('FromYear');
+        $previousBoard->ToYear = $request->validated('ToYear');
+        $previousBoard->members = $request->validated('members');
 
         if ($request->hasFile('photo')) {
             if ($previousBoard->photo) {
@@ -109,9 +91,7 @@ class AboutUsController extends Controller
         $previousBoard->save();
 
         return redirect()
-            ->route('previous-boards.edit', $previousBoard->id)
+            ->back()
             ->with('success', 'Vorig bestuur succesvol bijgewerkt!');
     }
-
-
 }

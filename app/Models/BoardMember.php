@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class BoardMember extends Model
 {
-        protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'role',
+        'bio',
+        'photo'
+    ];
 
+    public $timestamps = true;
 }

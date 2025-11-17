@@ -3,8 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
 
 class BoardMemberUpdateRequest extends FormRequest
 {
@@ -18,7 +16,7 @@ class BoardMemberUpdateRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'role' => 'required|string|max:255',
-            'bio' => 'required|string|min:10',
+            'bio' => 'required|string|min:10|max:1500',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
         ];
     }
@@ -37,6 +35,7 @@ class BoardMemberUpdateRequest extends FormRequest
             'bio.required' => 'Bio is verplicht.',
             'bio.string' => 'Bio moet een tekst zijn.',
             'bio.min' => 'Bio moet minimaal 10 tekens bevatten.',
+            'bio.max' => 'Bio mag niet langer zijn dan 1500 tekens.',
 
             'photo.nullable' => 'Afbeelding is optioneel.',
             'photo.image' => 'De afbeelding moet een geldig afbeeldingsbestand zijn.',
@@ -44,17 +43,4 @@ class BoardMemberUpdateRequest extends FormRequest
             'photo.max' => 'De afbeelding mag niet groter zijn dan 2 MB.'
         ];
     }
-
-    protected function failedValidation(Validator|\Illuminate\Contracts\Validation\Validator $validator): void
-    {
-        $this->session()->put('errors',$validator->errors()->toArray());
-
-        Log::warning('Validatiefouten in BoardMemberUpdateRequest', [
-            'errors' => $validator->errors()->toArray(),
-        ]);
-
-        parent::failedValidation($validator); // laat Laravel de standaard redirect doen
-    }
-
-
 }
