@@ -129,7 +129,7 @@ public function index()
 }
 public function adminIndex()
 {
-    if (auth()->user()->role !== 'admin') {
+    if (!auth()->user()->isAdmin()) {
         abort(403, 'Access denied');
     }
 

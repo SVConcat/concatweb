@@ -134,7 +134,7 @@ Route::put('/previous-boards/{previousBoard}', [AboutUsController::class, 'updat
 Route::middleware('auth')->group(function () {
     Route::group([
         'middleware' => function ($request, $next) {
-            if (auth()->user()->role !== 'admin') {
+            if (!auth()->user()->isAdmin()) {
                 abort(403, 'Access denied');
             }
             return $next($request);
