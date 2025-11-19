@@ -39,6 +39,7 @@ class AssignmentRequest extends FormRequest
             'company_name.max' => 'De bedrijfsnaam mag niet langer zijn dan 255 tekens.',
 
             'email.email' => 'Het e-mailadres moet een geldig e-mailadres zijn.',
+            'email.string' => 'Het e-mailadres moet een tekst zijn.',
             'email.max' => 'Het e-mailadres mag niet langer zijn dan 255 tekens.',
 
             'phone_number.string' => 'Het telefoonnummer moet een tekst zijn.',
