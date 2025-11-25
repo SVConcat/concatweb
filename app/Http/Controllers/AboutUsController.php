@@ -16,7 +16,6 @@ class AboutUsController extends Controller
 
     public function index()
     {
-
         $currentBoard = BoardMember::all();
 
         $previousBoards = PreviousBoard::all()->map(function ($board) {
@@ -29,17 +28,14 @@ class AboutUsController extends Controller
             ];
         });
 
-
         return view('about-us.index', compact('currentBoard', 'previousBoards'));
     }
-
 
     public function edit_board_member(BoardMember $boardMember)
     {
         $this->authorize('editBoardMember', $boardMember);
         return view('about-us.board_member_edit', compact('boardMember'));
     }
-
 
     public function update_board_member(BoardMemberUpdateRequest $request, BoardMember $boardMember)
     {
@@ -69,7 +65,6 @@ class AboutUsController extends Controller
         $this->authorize('editPreviousBoard', $previousBoard);
         return view('about-us.previous_board_edit', compact('previousBoard'));
     }
-
 
     public function update_previous_board(PreviousBoardUpdateRequest $request, PreviousBoard $previousBoard)
     {

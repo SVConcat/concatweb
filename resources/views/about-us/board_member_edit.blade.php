@@ -63,9 +63,11 @@
                 @enderror
             </div>
 
-            <input type="submit" value="Opslaan"
-                   class="w-full bg-red-500 text-white p-2 rounded-lg hover:bg-red-600 transition font-semibold cursor-pointer mt-4"
-                   aria-label="Klik om de wijzigingen op te slaan">
+            <button type="submit"
+                    class="w-full bg-red-500 text-white p-2 rounded-lg hover:bg-red-600 transition font-semibold cursor-pointer mt-4"
+                    aria-label="Klik om de wijzigingen op te slaan">
+                Opslaan
+            </button>
         </form>
     </div>
 </x-layout>

@@ -10,64 +10,49 @@ use Illuminate\Support\Facades\Storage;
 
 class CommunityNight extends Model
 {
-    protected $guarded = [];
-
     use HasFactory;
 
-    // TODO: Fix this function
-//    public function image(): Attribute
-//    {
-//        return Attribute::make(
-//            get: fn() => Storage::disk('community-nights')->url($this->attributes['image']),
-//        );
-//    }
+    protected $fillable = [
+        'title',
+        'image',
+        'description',
+        'start_time',
+        'end_time',
+        'location',
+        'link',
+        'capacity',
+    ];
 
-    public function startTime(): Attribute
+    public $timestamps = true;
+
+    public function getFormattedStartTimeAttribute(): ?string
     {
-        return Attribute::make(
-            get: static fn($value) => Carbon::parse($value)->format('H:i'),
-        );
+        return Carbon::parse($this->start_time)->format('Y-m-d\TH:i');
     }
 
-    public function endTime(): Attribute
+    public function getFormattedEndTimeAttribute(): ?string
     {
-        return Attribute::make(
-            get: static fn($value) => Carbon::parse($value)->format('H:i'),
-        );
+        return Carbon::parse($this->end_time)->format('Y-m-d\TH:i');
     }
 
-    public function date(): Attribute
+    public function getFormattedUpdatedAtAttribute(): ?string
     {
-        return Attribute::make(
-            get: fn() => Carbon::parse($this->attributes['start_time'])->format('d-m-Y'),
-        );
+        return Carbon::parse($this->updated_at)->format('Y-m-d H:i');
     }
 
-    public function formattedDescription(): Attribute
+
+    public function getDiscordStartDateAttribute(): ?string
     {
-        return Attribute::make(
-            get: fn() => nl2br(e($this->attributes['description'] ?? '')),
-        );
+        return Carbon::parse($this->start_time)->format('d-m-Y');
     }
 
-    public function updatedAt(): Attribute
+    public function getDiscordStartTimeAttribute(): ?string
     {
-        return Attribute::make(
-            get: fn() => Carbon::parse($this->attributes['updated_at'])->format('d-m-Y'),
-        );
+        return Carbon::parse($this->start_time)->format('H:i');
     }
 
-    public function formattedCapacity(): Attribute
+    public function getDiscordEndTimeAttribute(): ?string
     {
-        return Attribute::make(
-            get: fn() => $this->attributes['capacity'] === null ? 'Onbeperkt' : (string)$this->attributes['capacity'],
-        );
-    }
-
-    public function fullStartTime(): Attribute
-    {
-        return Attribute::make(
-            get: fn() => Carbon::parse($this->attributes['start_time']),
-        );
+        return Carbon::parse($this->end_time)->format('H:i');
     }
 }
