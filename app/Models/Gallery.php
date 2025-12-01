@@ -18,6 +18,6 @@ class Gallery extends Model
 
     public function evenementen()
     {
-        return $this->belongsToMany(Events::class, 'evenementen_gallery', 'gallery_id', 'event_id');
+        return $this->belongsToMany(Event::class, 'evenementen_gallery', 'gallery_id', 'event_id');
     }
 }

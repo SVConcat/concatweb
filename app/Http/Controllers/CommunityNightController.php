@@ -42,14 +42,14 @@ class CommunityNightController extends Controller
         }
 
         $communityNight = CommunityNight::create([
-            'title' => $request->input('title'),
+            'title' => $request->validated('title'),
             'image' => $imagePath,
-            'description' => $request->input('description'),
+            'description' => $request->validated('description'),
             'start_time' => $request->validated('start_time'),
             'end_time' => $request->validated('end_time'),
-            'location' => $request->input('location'),
-            'link' => $request->input('link'),
-            'capacity' => $request->input('capacity')
+            'location' => $request->validated('location'),
+            'link' => $request->validated('link'),
+            'capacity' => $request->validated('capacity')
         ]);
 
         $imageUrl = null;
@@ -70,7 +70,9 @@ class CommunityNightController extends Controller
             $imageUrl
         ));
 
-        return redirect()->route('community-nights.index');
+        return redirect()
+            ->route('community-nights.index')
+            ->with('success', 'Community avond succesvol aangemaakt!');
     }
 
     public function edit(CommunityNight $communityNight)

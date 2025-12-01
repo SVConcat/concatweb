@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Events;
+use App\Models\Event;
 use Illuminate\Http\Request;
 use App\Models\Gallery;
 
@@ -23,7 +23,7 @@ class GalleryController extends Controller
 
     public function create()
     {
-        $evenementen = Events::orderBy('datum', 'desc')->get();
+        $evenementen = Event::orderBy('datum', 'desc')->get();
         return view('gallery.create', compact('evenementen'));
     }
 
@@ -67,7 +67,7 @@ class GalleryController extends Controller
 
     public function edit(Gallery $gallery)
     {
-        $evenementen = Events::orderBy('datum', 'desc')->get();
+        $evenementen = Event::orderBy('datum', 'desc')->get();
         return view('gallery.edit', compact('gallery', 'evenementen'));
     }
 

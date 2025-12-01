@@ -21,7 +21,7 @@ class CommunityNightRequest extends FormRequest
             'end_time' => 'required|date|after_or_equal:start_time',
             'location' => 'required|string|max:255',
             'link' => 'nullable|url|max:1500',
-            'capacity' => 'nullable|integer|min:0|max:999',
+            'capacity' => 'nullable|integer|max:999',
         ];
     }
 

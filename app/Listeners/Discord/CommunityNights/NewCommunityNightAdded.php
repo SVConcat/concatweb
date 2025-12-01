@@ -16,6 +16,7 @@ class NewCommunityNightAdded
     public string $spotsAvailable;
     public string $url;
     public ?string $imageUrl;
+    public string $type;
 
     public function __construct(string $title, string $description, ?string $startDate, ?string $startTime, ?string $location, ?int $spotsAvailable, ?string $url, ?string $imageUrl = null)
     {
@@ -27,5 +28,6 @@ class NewCommunityNightAdded
         $this->spotsAvailable = $spotsAvailable === null ? 'Onbeperkt' : (string)$spotsAvailable;
         $this->url = $url ?? 'Geen link beschikbaar';
         $this->imageUrl = $imageUrl ?? 'Geen afbeelding beschikbaar';
+        $this->type = 'event';
     }
 }

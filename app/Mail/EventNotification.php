@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\Events;
+use App\Models\Event;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -19,7 +19,7 @@ class EventNotification extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(Events $event)
+    public function __construct(Event $event)
     {
         $this->event = $event;
     }
