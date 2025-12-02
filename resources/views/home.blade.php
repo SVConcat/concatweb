@@ -3,28 +3,35 @@
         <div class="flex flex-col gap-6 justify-start w-full lg:w-3/4">
 
             <!-- Carrousel -->
-            <div class="lg:col-span-2">
-                <div class="swiper-container relative h-96 rounded-xl overflow-hidden shadow-lg">
-                    <div class="swiper-wrapper">
-                        @foreach($photos as $photo)
-                            <div class="swiper-slide relative">
-                                <img src="{{ $photo['src'] }}" alt="{{ $photo['title'] }}"
-                                     class="w-full h-full object-cover">
-                                <div
-                                    class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6">
-                                    <h3 class="text-xl font-bold text-white">{{ $photo['title'] }}</h3>
-                                    <p class="text-gray-200 text-sm">{{ $photo['date'] }}</p>
-                                </div>
+            {{-- @if (!Agent::isMobile()) --}}
+            <div id="home-slider" class="keen-slider">
+                <div class="keen-slider__slide concat-banner-wrapper">
+                    <div class="concat-banner">
+                        <div class="concat-title">
+                            <div>
+                                <h2>Welkom bij</h2>
+                                <h1>Studievereniging<br/>Concat</h1>
                             </div>
-                        @endforeach
+                            <img src="/assets/images/logo-white.svg" alt="Concat Logo">
+                            <div class="real-pseudo-element"></div>
+                        </div>
                     </div>
-                    <!-- Navigation buttons -->
-                    <div class="swiper-button-next text-white"></div>
-                    <div class="swiper-button-prev text-white"></div>
-                    <!-- Pagination -->
-                    <div class="swiper-pagination"></div>
                 </div>
+                @foreach($photos as $photo)
+                <div class="keen-slider__slide relative rounded-xl overflow-hidden shadow-lg">
+                    <div class="swiper-slide relative">
+                        <img src="{{ $photo['src'] }}" alt="{{ $photo['title'] }}"
+                                class="w-full h-full object-cover">
+                        <div
+                            class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6">
+                            <h3 class="text-xl font-bold text-white">{{ $photo['title'] }}</h3>
+                            <p class="text-gray-200 text-sm">{{ $photo['date'] }}</p>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
             </div>
+            {{-- @endif --}}
             <div class="flex flex-col gap-6 lg:flex-row">
                 {{-- Events Section Wrapper --}}
                 <div class="w-full lg:max-w-6/12 flex flex-col h-full">
