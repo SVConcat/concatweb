@@ -55,4 +55,9 @@ class CommunityNight extends Model
     {
         return Carbon::parse($this->end_time)->format('H:i');
     }
+
+    public static function latestCommunityNight(): ?self
+    {
+        return self::orderBy('created_at', 'desc')->first();
+    }
 }

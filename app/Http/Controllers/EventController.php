@@ -8,40 +8,29 @@ use App\Models\Event;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Spatie\IcalendarGenerator\Components\Calendar;
+use Spatie\IcalendarGenerator\Components\Event as IcsEvent;
 
 class EventController extends Controller
 {
     public function index(Request $request)
     {
-        $validSortOrders = ['asc', 'desc'];
-        $sortOrder = $request->query('sort', 'asc');
+        //TODO: FYI, the sort order param currently does not get along the request. It's just defaulting to asc.
+        $sortOrder = $request->query('sort');
+        $sortOrder = in_array($sortOrder, ['asc', 'desc']) ? $sortOrder : 'asc';
+
         $categorieFilter = $request->query('categorie', 'all');
-
         $isAfgelopen = $request->query('afgelopen') === 'true';
-
-
         $onlyMyEvents = $request->query('myevents', false);
 
-        if (!in_array($sortOrder, $validSortOrders)) {
-            $sortOrder = 'asc';
-        }
-
-        $query = Event::whereNotNull('titel')->where('titel', '!=', '')
-            ->whereNotNull('datum')
-            ->whereNotNull('einddatum')
-            ->whereNotNull('starttijd')
-            ->whereNotNull('eindtijd')
-            ->whereNotNull('beschrijving')->where('beschrijving', '!=', '')
-            ->whereNotNull('locatie')->where('locatie', '!=', '');
+        $query = Event::query();
 
         if (in_array($categorieFilter, ['blokborrel', 'education'])) {
             $query->where('categorie', $categorieFilter);
         }
 
-
         if ($isAfgelopen) {
             $query->whereDate('einddatum', '<', Carbon::today());
-
         } else {
             $query->whereDate('einddatum', '>=', Carbon::today());
         }
@@ -51,11 +40,13 @@ class EventController extends Controller
                 $q->where('user_id', auth()->id());
             });
         }
-        $events = $query->orderBy('datum', $sortOrder)
+
+        $events = $query
+            ->orderBy('datum', $sortOrder)
             ->orderBy('starttijd', $sortOrder)
             ->paginate(6);
 
-        return view('events/index', compact('events', 'sortOrder', 'categorieFilter', 'onlyMyEvents'));
+        return view('events.index', compact('events', 'sortOrder', 'categorieFilter', 'onlyMyEvents'));
     }
 
     public function show(Event $event)
@@ -161,98 +152,51 @@ class EventController extends Controller
             ->with('success', 'Event bijgewerkt!');
     }
 
-    public function latest()
-    {
-        $event = Event::orderBy('created_at', 'desc')->first();
-
-        if (!$event) {
-            return [
-                'event' => null,
-                'registeredCount' => 0,
-                'availableSpots' => 0
-            ];
-        }
-
-        $registeredCount = $event->registrations()->count();
-        $availableSpots = $event->aantal_beschikbare_plekken ?? 0;
-
-        return [
-            'event' => $event,
-            'registeredCount' => $registeredCount,
-            'availableSpots' => $availableSpots
-        ];
-    }
-
     public function downloadIcs(Event $event)
     {
+        $domain = parse_url(config('app.url'), PHP_URL_HOST);
 
-        $startDateTime = Carbon::parse($event->datum . ' ' . $event->starttijd);
-        $endDateTime = Carbon::parse($event->einddatum . ' ' . $event->eindtijd);
-        $dtstamp = optional($event->created_at)->format('Ymd\THis\Z') ?? now()->format('Ymd\THis\Z');
+        $calendar = Calendar::create(config('app.name'))->event(
+            IcsEvent::create($event->titel)
+                ->startsAt(Carbon::parse($event->datum . ' ' . $event->starttijd))
+                ->endsAt(Carbon::parse($event->einddatum . ' ' . $event->eindtijd))
+                ->description($event->beschrijving)
+                ->address($event->locatie)
+                ->uniqueIdentifier($event->id . '@' . $domain)
+        );
 
-        // Escape function to sanitize ICS text fields
-        function escapeIcsText($text)
-        {
-            return addcslashes($text, ",;\\\n\r");
-        }
-
-        $summary = escapeIcsText($event->titel ?? '');
-        $description = escapeIcsText($event->beschrijving ?? '');
-        $location = escapeIcsText($event->locatie ?? '');
-
-        $content = <<<ICS
-            BEGIN:VCALENDAR
-            VERSION:2.0
-            PRODID:-//YourApp//Rooster Calendar//NL
-            BEGIN:VEVENT
-            UID:{$event->id}@yourapp.com
-            DTSTAMP:$dtstamp
-            DTSTART:{$startDateTime->format('Ymd\THis')}
-            DTEND:{$endDateTime->format('Ymd\THis')}
-            SUMMARY:{$summary}
-            DESCRIPTION:{$description}
-            LOCATION:{$location}
-            END:VEVENT
-            END:VCALENDAR
-        ICS;
-
-        return response($content, 200, [
-            'Content-Type' => 'text/calendar; charset=utf-8',
-            'Content-Disposition' => 'attachment; filename="evenement-' . $event->id . '.ics"',
-        ]);
+        return response(
+            $calendar->get(), 200,
+            [
+                'Content-Type' => 'text/calendar; charset=utf-8',
+                'Content-Disposition' => 'attachment; filename="evenement-' . $event->id . '.ics"',
+            ]
+        );
     }
 
-    public function DownloadAllICS()
+    public function downloadAllIcs()
     {
-        $events = Event::all();
+        $calendar = Calendar::create(config('app.name'));
+        $domain = parse_url(config('app.url'), PHP_URL_HOST);
 
-        $icalContent = "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//YourApp//Event Calendar//EN\r\n";
+        Event::each(function (Event $event) use ($domain, $calendar) {
+            $calendar->event(
+                IcsEvent::create($event->titel)
+                    ->startsAt(Carbon::parse($event->datum . ' ' . $event->starttijd))
+                    ->endsAt(Carbon::parse($event->einddatum . ' ' . $event->eindtijd))
+                    ->description($event->beschrijving)
+                    ->address($event->locatie)
+                    ->uniqueIdentifier($event->id . '@' . $domain)
+            );
+        });
 
-        foreach ($events as $event) {
-            $startDateTime = Carbon::parse($event->datum . ' ' . $event->starttijd);
-            $endDateTime = Carbon::parse($event->einddatum . ' ' . $event->eindtijd);
-            $dtstamp = optional($event->created_at)->format('Ymd\THis\Z') ?? now()->format('Ymd\THis\Z');
-
-            $summary = addcslashes($event->titel ?? '', ",;\\\n\r");
-            $description = addcslashes($event->beschrijving ?? '', ",;\\\n\r");
-            $location = addcslashes($event->locatie ?? '', ",;\\\n\r");
-
-            $icalContent .= "BEGIN:VEVENT\r\n";
-            $icalContent .= "UID:{$event->id}@yourapp.com\r\n";
-            $icalContent .= "DTSTAMP:$dtstamp\r\n";
-            $icalContent .= "DTSTART:{$startDateTime->format('Ymd\THis')}\r\n";
-            $icalContent .= "DTEND:{$endDateTime->format('Ymd\THis')}\r\n";
-            $icalContent .= "SUMMARY:$summary\r\n";
-            $icalContent .= "DESCRIPTION:$description\r\n";
-            $icalContent .= "LOCATION:$location\r\n";
-            $icalContent .= "END:VEVENT\r\n";
-        }
-
-        $icalContent .= "END:VCALENDAR\r\n";
-
-        return response($icalContent)
-            ->header('Content-Type', 'text/calendar; charset=utf-8')
-            ->header('Content-Disposition', 'attachment; filename="alle-evenementen.ics"');
+        return response(
+            $calendar->get(), 200,
+            [
+                'Content-Type' => 'text/calendar; charset=utf-8',
+                'Content-Disposition' => 'attachment; filename="alle-evenementen.ics"',
+            ]
+        );
     }
 
     public function destroy(Event $event)

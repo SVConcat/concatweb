@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Event extends Model
 {
@@ -27,6 +29,26 @@ class Event extends Model
 
     public $timestamps = true;
 
+    public function getFormattedStartDatumAttribute(): ?string
+    {
+        return Carbon::parse($this->datum)->format('d-m-Y');
+    }
+
+    public function getFormattedEindDatumAttribute(): ?string
+    {
+        return Carbon::parse($this->einddatum)->format('d-m-Y');
+    }
+
+    public function getFormattedStartTijdAttribute(): ?string
+    {
+        return Carbon::parse($this->starttijd)->format('H:i');
+    }
+
+    public function getFormattedEindTijdAttribute(): ?string
+    {
+        return Carbon::parse($this->eindtijd)->format('H:i');
+    }
+
     public function getRegisteredCountAttribute(): int
     {
         return $this->registrations()->count();
@@ -35,6 +57,11 @@ class Event extends Model
     public function getAvailableSpotsAttribute(): int
     {
         return $this->aantal_beschikbare_plekken ?? 0;
+    }
+
+    public function getShortDescriptionAttribute(): string
+    {
+        return Str::limit(strip_tags($this->beschrijving), 150, '...');
     }
 
     public function registrations(): HasMany
@@ -50,5 +77,10 @@ class Event extends Model
     public function isUserRegistered($userId): bool
     {
         return $this->registrations()->where('user_id', $userId)->exists();
+    }
+
+    public static function latestEvent(): ?self
+    {
+        return self::orderBy('created_at', 'desc')->first();
     }
 }

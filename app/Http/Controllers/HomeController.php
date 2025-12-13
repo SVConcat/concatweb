@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Announcement;
 use App\Models\CommunityNight;
+use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 
@@ -74,15 +75,16 @@ class HomeController extends Controller
         $groupedAnnouncements = $this->groupAnnouncements($announcements);
 
         // Laatste community en event ophalen
-        $communityNight = CommunityNight::orderBy('created_at', 'desc')->first();
-        $eventData = App::make(EventController::class)->latest();
+        $communityNight = CommunityNight::latestCommunityNight();
+        $latestEvent = Event::latestEvent();
+//        dd($eventData);
 
         return view('home', [
             'photos' => $photos,
             'groupedAnnouncements' => $groupedAnnouncements,
-            'event' => $eventData['event'],
-            'registeredCount' => $eventData['registeredCount'],
-            'availableSpots' => $eventData['availableSpots'],
+            'latestEvent' => $latestEvent,
+            'registeredCount' => $latestEvent->registrations()->count(),
+            'availableSpots' => $latestEvent->aantal_beschikbare_plekken,
             'communityNight' => $communityNight
         ]);
     }
