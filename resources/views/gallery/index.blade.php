@@ -48,13 +48,19 @@
                 <!-- De foto-grid -->
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6" role="list">
                     @foreach($photos as $photo)
-                        <div role="listitem" class="bg-white rounded-xl shadow-md p-4 cursor-pointer flex flex-col" tabindex="0"
-                            aria-label="Bekijk foto {{ $photo['title'] }} van {{ $photo['date'] }}"
-                            onclick="openModal('{{ e($photo['title']) }}', '{{ e($photo['date']) }}', '{{ e($photo['src']) }}')"
-                            onkeypress="if(event.key === 'Enter' || event.key === ' ') openModal('{{ e($photo['title']) }}', '{{ e($photo['date']) }}', '{{ e($photo['src']) }}')">
+                        <div
+                            role="listitem"
+                            class="bg-white rounded-xl shadow-md p-4 cursor-pointer flex flex-col"
+                            tabindex="0"
+                            aria-label="Bekijk foto {{ $photo->title }} van {{ $photo->date }}"
+                            onclick="openModal('{{ e($photo->title) }}', '{{ e($photo->date) }}', '{{ e($photo->image_url) }}')"
+                            onkeypress="if(event.key === 'Enter' || event.key === ' ') openModal('{{ e($photo->title) }}', '{{ e($photo->date) }}', '{{ e($photo->image_url) }}')"
+                        >
 
-                            <img src="{{ $photo['src'] }}" alt="Foto"
+                            <img src="{{ $photo->image_url }}" alt="Foto"
                                 class="h-40 w-full object-contain bg-gray-100 rounded-lg mb-2" />
+
+                            <p class="pb-1">{{ $photo->title }}</p>
 
                             @auth
                                 @if(auth()->user()->isAdmin())
@@ -100,77 +106,60 @@
     </div>
 
     <script>
-        const modal = document.getElementById('photoModal');
-        const focusableSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-        let lastFocusedElement = null;
+        document.addEventListener('DOMContentLoaded', function () {
 
-        function openModal(name, date, src) {
-            lastFocusedElement = document.activeElement;
+            const modal = document.getElementById('photoModal');
+            let lastFocusedElement = null;
 
-            document.getElementById('eventName').innerText = name;
-            document.getElementById('eventDate').innerText = date;
-            const modalImg = document.getElementById('modalPhoto');
-            modalImg.src = src;
-            modalImg.alt = `Foto van ${name} op ${date}`;
+            window.openModal = function (name, date, src) {
+                lastFocusedElement = document.activeElement;
 
-            modal.setAttribute('aria-hidden', 'false');
+                document.getElementById('eventName').innerText = name;
+                document.getElementById('eventDate').innerText = date;
 
-            // Eerst de modal display maken zonder animatie class
-            modal.style.display = 'flex';
-            modal.style.opacity = '1';
-            modal.style.backdropFilter = 'blur(6px)';
+                const modalImg = document.getElementById('modalPhoto');
+                modalImg.src = src;
+                modalImg.alt = `Foto van ${name} op ${date}`;
 
-            document.body.classList.add('modal-open');
+                modal.setAttribute('aria-hidden', 'false');
+                modal.style.display = 'flex';
 
-            // Kleine vertraging om de browser de kans te geven de initiële state te renderen
-            requestAnimationFrame(() => {
+                document.body.classList.add('modal-open');
+
                 requestAnimationFrame(() => {
                     modal.classList.add('gallery-modal-active');
                 });
-            });
 
-            setTimeout(() => {
                 modal.querySelector('button').focus();
-            }, 500);
-        }
+            };
 
-        function closeModal() {
-            modal.classList.add('gallery-modal-closing');
+            window.closeModal = function () {
+                modal.classList.add('gallery-modal-closing');
 
-            setTimeout(() => {
-                modal.setAttribute('aria-hidden', 'true');
-                modal.classList.remove('gallery-modal-active', 'gallery-modal-closing');
+                setTimeout(() => {
+                    modal.setAttribute('aria-hidden', 'true');
+                    modal.classList.remove('gallery-modal-active', 'gallery-modal-closing');
+                    modal.style.display = '';
+                    document.body.classList.remove('modal-open');
 
-                // Reset de inline styles
-                modal.style.display = '';
-                modal.style.opacity = '';
-                modal.style.backdropFilter = '';
+                    if (lastFocusedElement) {
+                        lastFocusedElement.focus();
+                    }
+                }, 300);
+            };
 
-                document.body.classList.remove('modal-open');
-
-                if (lastFocusedElement) {
-                    lastFocusedElement.focus();
+            window.handleBackdropClick = function (event) {
+                if (event.target === event.currentTarget) {
+                    closeModal();
                 }
-            }, 300);
-        }
+            };
 
-        function handleBackdropClick(event) {
-            if (event.target === event.currentTarget) {
-                closeModal();
-            }
-        }
-
-        // Escape key sluit modal
-        window.addEventListener('keydown', function (event) {
-            if (event.key === 'Escape' && modal.classList.contains('gallery-modal-active')) {
-                closeModal();
-            }
-        });
-
-        document.querySelectorAll('#filterForm select').forEach(select => {
-            select.addEventListener('change', () => {
-                document.getElementById('filterForm').submit();
+            window.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape' && modal.classList.contains('gallery-modal-active')) {
+                    closeModal();
+                }
             });
+
         });
     </script>
 </body>
