@@ -60,7 +60,7 @@
 
 
                             <div class="mb-4 grow text-gray-700 relative overflow-hidden">
-                                <p class="mb-3 font-normal text-gray-700 ">{!! $sponsor->formattedDescription !!}</p>
+                                <p class="mb-3 font-normal text-gray-700 ">{{ $sponsor->description }}</p>
                             </div>
                         </div>
                     </div>

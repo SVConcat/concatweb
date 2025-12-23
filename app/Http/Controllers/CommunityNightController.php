@@ -109,7 +109,6 @@ class CommunityNightController extends Controller
         return redirect()
             ->back()
             ->with('success', 'Community avond succesvol bijgewerkt!');
-
     }
 
     public function destroy(CommunityNight $communityNight)

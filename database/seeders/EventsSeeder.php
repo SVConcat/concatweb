@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Event;
-use App\Models\Event;
 use Illuminate\Database\Seeder;
 
 class EventsSeeder extends Seeder
@@ -11,7 +10,7 @@ class EventsSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run()
+    public function run(): void
     {
         Event::create([
             'titel' => 'Tech Conferentie 2025',
