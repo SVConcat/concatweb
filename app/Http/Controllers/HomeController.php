@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Announcement;
 use App\Models\CommunityNight;
 use App\Models\Event;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 
@@ -66,18 +67,15 @@ class HomeController extends Controller
             ]
         ];
 
-        // Aankondigingen ophalen
         $announcements = Announcement::where('isVisible', true)
             ->orderByDesc('published_at')
             ->get();
 
-        // Groepeer aankondigingen
+        // Group announcements by date
         $groupedAnnouncements = $this->groupAnnouncements($announcements);
 
-        // Laatste community en event ophalen
         $communityNight = CommunityNight::latestCommunityNight();
         $latestEvent = Event::latestEvent();
-//        dd($eventData);
 
         return view('home', [
             'photos' => $photos,
@@ -99,18 +97,24 @@ class HomeController extends Controller
         return $grouped;
     }
 
-    private function getDateGroup($date)
+    private function getDateGroup(Carbon $date)
     {
         $now = now();
         $date = $date->copy()->startOfDay();
-        $diffInDays = $date->diffInDays($now);
 
-        if($date->isToday()) return 'Vandaag';
-        if($date->isYesterday()) return 'Gisteren';
-        if($diffInDays <= 7) return 'Deze Week';
-        if($diffInDays <= 14) return 'Vorige Week';
-        if($date->month == $now->month && $date->year == $now->year) return 'Deze Maand';
-        if($date->month == $now->subMonth()->month && $date->year == $now->year) return 'Vorige Maand';
+        if ($date->isToday()) {
+            return 'Vandaag';
+        } elseif ($date->isYesterday()) {
+            return 'Gisteren';
+        } elseif ($date->isSameWeek($now)) {
+            return 'Deze Week';
+        } elseif ($date->isSameWeek($now->copy()->subWeek())) {
+            return 'Vorige Week';
+        } elseif ($date->isSameMonth($now)) {
+            return 'Deze Maand';
+        } elseif ($date->isSameMonth($now->copy()->subMonth())) {
+            return 'Vorige Maand';
+        }
 
         return $date->translatedFormat('F Y');
     }
