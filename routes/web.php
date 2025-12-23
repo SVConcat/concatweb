@@ -11,7 +11,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegistrationController;
-use App\Http\Controllers\RoostersController;
+use App\Http\Controllers\RoosterController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\AccountController;
@@ -143,9 +143,9 @@ Route::middleware('auth')->group(function () {
         Route::put('/announcements/{announcement}', [AnnouncementController::class, 'update'])->name('announcements.update');
         Route::delete('/announcements/{announcement}', [AnnouncementController::class, 'destroy'])->name('announcements.destroy');
 
-        Route::get('/roosters', [RoostersController::class, 'index']);
-        Route::post('/roosters', [RoostersController::class, 'store']);
-        Route::delete('/roosters/{rooster}', [RoostersController::class, 'destroy'])->name('roosters.destroy');
+        Route::get('/roosters', [RoosterController::class, 'index']);
+        Route::post('/roosters', [RoosterController::class, 'store']);
+        Route::delete('/roosters/{rooster}', [RoosterController::class, 'destroy'])->name('roosters.destroy');
         Route::get('/events/{event}/edit', [EventController::class, 'edit'])->name('events.edit');
         Route::put('/events/{event}', [EventController::class, 'update'])->name('events.update');
         Route::delete('/events/{event}', [EventController::class, 'destroy'])->name('events.destroy');
