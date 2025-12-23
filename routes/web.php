@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\RegistrationsController;
+use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\RoostersController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\AboutUsController;
@@ -31,7 +31,7 @@ Route::post('/sponsors/{sponsor}/force-delete', [SponsorController::class, 'forc
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::post('/registration', [RegistrationsController::class, 'store'])->name('registration');
+Route::post('/registration', [RegistrationController::class, 'store'])->name('registration');
 
 Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
 Route::post('/events/create', [EventController::class, 'store'])->name('events.store');
