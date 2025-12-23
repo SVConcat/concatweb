@@ -99,9 +99,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/newsletters', [NewsletterController::class, 'store'])->name('newsletters.store');
     Route::get('newsletters/{newsletter}/edit', [NewsletterController::class, 'edit'])->name('newsletters.edit');
     Route::put('/newsletters/{newsletter}', [NewsletterController::class, 'update'])->name('newsletters.update');
-    Route::get('/newsletters/{newsletter}', [NewsletterController::class, 'show'])->name(name: 'newsletters.show');
-
-
 });
 
 // account

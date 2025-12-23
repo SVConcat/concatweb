@@ -20,7 +20,7 @@ class GalleryRequest extends FormRequest
             'date' => 'required|date',
             'type' => 'required|in:blokborrel,education',
             'images' => 'nullable|array',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2026',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'evenementen' => 'nullable|array',
             'evenementen.*' => 'exists:events,id',
         ];
