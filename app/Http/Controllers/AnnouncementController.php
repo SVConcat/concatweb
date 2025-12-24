@@ -12,17 +12,14 @@ class AnnouncementController extends Controller
     public function index()
     {
         // Visible announcements for all users
-        $visibleAnnouncements = Announcement::where('isVisible', true)
-            ->orderByDesc('published_at')
-            ->get();
+        $visibleAnnouncements = Announcement::where('isVisible', true)->orderByDesc('published_at')->get();
         $groupedVisible = $this->groupAnnouncements($visibleAnnouncements);
 
         // Not visible announcements for admin users only
         $groupedNonVisible = [];
+
         if (auth()->user() && auth()->user()->isAdmin()) {
-            $nonVisibleAnnouncements = Announcement::where('isVisible', false)
-                ->orderByDesc('published_at')
-                ->get();
+            $nonVisibleAnnouncements = Announcement::where('isVisible', false)->orderByDesc('published_at')->get();
             $groupedNonVisible = $this->groupAnnouncements($nonVisibleAnnouncements);
         }
 
@@ -36,11 +33,13 @@ class AnnouncementController extends Controller
     private function groupAnnouncements($announcements)
     {
         $grouped = [];
+
         foreach ($announcements as $announcement) {
             $date = $announcement->published_at ?? $announcement->created_at;
             $group = $this->getDateGroup($date);
             $grouped[$group][] = $announcement;
         }
+
         return $grouped;
     }
 
@@ -66,11 +65,8 @@ class AnnouncementController extends Controller
 
     public function store(AnnouncementRequest $request)
     {
-        // Check which button was clicked in the form
         $isVisible = $request->input('action') === 'publish';
-        $announcement = Announcement::create(array_merge($request->validated(),
-            ['isVisible' => $isVisible]
-        ));
+        $announcement = Announcement::create([...$request->validated(), 'isVisible' => $isVisible,]);
 
         if ($isVisible) {
             // Fire the event to notify Discord
@@ -93,22 +89,19 @@ class AnnouncementController extends Controller
 
     public function update(AnnouncementRequest $request, Announcement $announcement)
     {
-        // Check which button was clicked in the form
         $action = $request->input('action');
 
         if ($action === 'update') {
             $announcement->update($request->validated());
 
-            return redirect()->route('announcements.index')
+            return redirect()
+                ->route('announcements.index')
                 ->with('success', 'Announcement bijgewerkt.');
         }
 
         $isVisible = $action === 'publish';
         $wasDraft = !$announcement->isVisible && $isVisible;
-
-        $announcement->update(array_merge($request->validated(), [
-            'isVisible' => $isVisible,
-        ]));
+        $announcement->update([...$request->validated(), 'isVisible' => $isVisible,]);
 
         if ($wasDraft) {
             $announcement->update(['published_at' => now()]);

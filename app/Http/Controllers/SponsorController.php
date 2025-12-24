@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SponsorRequest;
+use App\Models\CommunityNight;
 use App\Models\Sponsor;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Storage;
@@ -32,24 +33,18 @@ class SponsorController extends Controller
     {
         $this->authorize('create', Sponsor::class);
 
-        $imagePath = $request->file('logo')->store('sponsor_logos', 'public');
-
-        $sponsor = Sponsor::create([
-            'name' => $request->validated(['name']),
-            'description' => $request->validated(['description']),
-            'url' => $request->validated(['url']),
-            'image_path' => $imagePath
-        ]);
-
+        $validated = $request->validated();
+        $request->hasFile('logo') && $validated['logo'] = $request->file('logo')->store('sponsor_logos', 'public');
+        $sponsor = Sponsor::create($validated);
         $request['hide'] === 'on' && $sponsor->delete();
 
-        return redirect()
-            ->route('sponsors.index');
+        return redirect()->route('sponsors.index');
     }
 
     public function edit(Sponsor $sponsor)
     {
         $this->authorize('update', $sponsor);
+
         return view('sponsors.edit', compact('sponsor'));
     }
 
@@ -69,17 +64,8 @@ class SponsorController extends Controller
         $this->authorize('update', $sponsor);
 
         $validated = $request->validated();
-
-        if ($request->hasFile('logo')) {
-            if ($sponsor->image_path) {
-                Storage::disk('public')->delete($sponsor->image_path);
-            }
-
-            $validated['image_path'] = $request->file('logo')->store('sponsor_logos', 'public');
-        }
-
+        $request->hasFile('logo') && $validated['logo'] = $sponsor->replaceFile($request->file('logo'), 'sponsor_logos', 'public', 'logo');
         $sponsor->update($validated);
-
         $request->has('hide')
             ? $sponsor->trashed() || $sponsor->delete()
             : $sponsor->trashed() && $sponsor->restore();
@@ -103,8 +89,7 @@ class SponsorController extends Controller
 
         $this->authorize('forceDelete', $sponsor);
 
-        Storage::disk('public')->delete($sponsor->image_path);
-
+        $sponsor->image_path && Storage::disk('public')->delete($sponsor->image_path);
         $sponsor->forceDelete();
 
         return redirect()

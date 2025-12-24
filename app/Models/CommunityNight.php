@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\HasFileUpload;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
 class CommunityNight extends Model
 {
-    use HasFactory;
+    use HasFactory, HasFileUpload;
 
     protected $fillable = [
         'title',

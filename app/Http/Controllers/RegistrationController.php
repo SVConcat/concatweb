@@ -9,11 +9,11 @@ class RegistrationController extends Controller
 {
     public function store(RegistrationRequest $request)
     {
+        $validated = $request->validated();
+
         Registration::create([
+            ...$validated,
             'user_id' => auth()->check() ? auth()->id() : null,
-            'event_id' => $request->validated(['event_id']),
-            'naam' => $request->validated(['naam']),
-            'email' => $request->validated(['email']),
         ]);
 
         return redirect()

@@ -73,26 +73,9 @@ class EventController extends Controller
 
     public function store(EventRequest $request)
     {
-        $afbeeldingPath = null;
-
-        if ($request->hasFile('afbeelding')) {
-            $afbeeldingPath = $request->file('afbeelding')->store('event_images', 'public');
-        }
-
-        $event = Event::create([
-            'titel' => $request->validated('titel'),
-            'categorie' => $request->validated('categorie'),
-            'datum' => $request->validated('datum'),
-            'einddatum' => $request->validated('einddatum'),
-            'starttijd' => $request->validated('starttijd'),
-            'eindtijd' => $request->validated('eindtijd'),
-            'beschrijving' => $request->validated('beschrijving'),
-            'locatie' => $request->validated('locatie'),
-            'aantal_beschikbare_plekken' => $request->validated('aantal_beschikbare_plekken'),
-            'betaal_link' => $request->validated('betaal_link'),
-            'afbeelding' => $afbeeldingPath
-        ]);
-
+        $validated = $request->validated();
+        $request->hasFile('afbeelding') && $validated['afbeelding'] = $request->file('afbeelding')->store('event_images', 'public');
+        $event = Event::create($validated);
         $afbeeldingUrl = null;
 
         if ($event->afbeelding) {
@@ -123,29 +106,9 @@ class EventController extends Controller
 
     public function update(EventRequest $request, Event $event)
     {
-        $event->titel = $request->validated('titel');
-        $event->categorie = $request->validated('categorie');
-        $event->datum = $request->validated('datum');
-        $event->einddatum = $request->validated('einddatum');
-        $event->starttijd = $request->validated('starttijd');
-        $event->eindtijd = $request->validated('eindtijd');
-        $event->beschrijving = $request->validated('beschrijving');
-        $event->locatie = $request->validated('locatie');
-        $event->aantal_beschikbare_plekken = $request->validated('aantal_beschikbare_plekken');
-        $event->betaal_link = $request->validated('betaal_link');
-
-        if ($request->hasFile('image')) {
-
-            if ($event->afbeelding) {
-                Storage::delete($event->afbeelding);
-            }
-
-            $afbeeldingPath = $request->file('afbeelding')->store('community-nights', 'public');
-
-            $event->afbeelding = $afbeeldingPath;
-        }
-
-        $event->save();
+        $validated = $request->validated();
+        $request->hasFile('afbeelding') && $validated['afbeelding'] = $event->replaceFile($request->file('afbeelding'), 'event_images', 'public', 'afbeelding');
+        $event->update($validated);
 
         return redirect()
             ->route('events.index')
@@ -155,7 +118,6 @@ class EventController extends Controller
     public function downloadIcs(Event $event)
     {
         $domain = parse_url(config('app.url'), PHP_URL_HOST);
-
         $calendar = Calendar::create(config('app.name'))->event(
             IcsEvent::create($event->titel)
                 ->startsAt(Carbon::parse($event->datum . ' ' . $event->starttijd))
@@ -201,10 +163,7 @@ class EventController extends Controller
 
     public function destroy(Event $event)
     {
-        if ($event->afbeelding) {
-            Storage::delete($event->afbeelding);
-        }
-
+        $event->afbeelding && Storage::delete($event->afbeelding);
         $event->delete();
 
         return redirect()

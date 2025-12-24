@@ -38,12 +38,11 @@ class AccountController extends Controller
     public function update(AccountUpdateRequest $request)
     {
         $user = auth()->user();
-
-        $user->name = $request->validated('name');
-        $user->email = $request->validated('email');
-        $user->password = Hash::make($request->validated('password'));
-
-        $user->save();
+        $validated = $request->validated();
+        $user->update([
+            ...$validated,
+            'password' => Hash::make($validated['password'])
+        ]);
 
         return redirect()
             ->route('account.show')
@@ -63,9 +62,8 @@ class AccountController extends Controller
                 ->withErrors(['role' => 'Je kunt je eigen rol niet wijzigen.']);
         }
 
-        $user->role = $request->validated('role');
-
-        $user->save();
+        $validated = $request->validated();
+        $user->update($validated);
 
         return redirect()
             ->back()

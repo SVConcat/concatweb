@@ -48,7 +48,7 @@ class NewsletterController extends Controller
             }
         }
 
-        $events = collect($request->validated(['events']))->map(function ($event) {
+        $events = collect($request->validated('events'))->map(function ($event) {
             return [
                 'titel' => $event['titel'],
                 'datum' => $event['datum'],
@@ -58,8 +58,7 @@ class NewsletterController extends Controller
             ];
         })->toArray();
 
-        $formattedDate = Carbon::parse($request->validated(['publicatiedatum']))->format('d-m-Y');
-
+        $formattedDate = Carbon::parse($request->validated('publicatiedatum'))->format('d-m-Y');
         $pdf = Pdf::loadView('newsletters.pdf', [
             'title' => $request->validated(['titel']),
             'publicatiedatum' => $formattedDate,
@@ -67,15 +66,15 @@ class NewsletterController extends Controller
             'images' => $imagePaths,
         ]);
 
-        $filename = Str::slug($request->validated(['titel'])) . '-' . time() . '.pdf';
+        $filename = Str::slug($request->validated('titel')) . '-' . time() . '.pdf';
         $pdfPath = 'newsletters/' . $filename;
 
         Storage::disk('public')->put($pdfPath, $pdf->output());
 
         Newsletter::create([
             'titel' => $request->validated(['titel']),
-            'publicatiedatum' => Carbon::parse($request->validated(['publicatiedatum'])),
-            'inhoud' => $request->validated(['events']),
+            'publicatiedatum' => Carbon::parse($request->validated('publicatiedatum')),
+            'inhoud' => $request->validated('events'),
             'pdf' => $pdfPath,
             'images' => $imagePaths,
         ]);
@@ -88,6 +87,7 @@ class NewsletterController extends Controller
     public function edit(Newsletter $newsletter)
     {
         $events = $newsletter->inhoud;
+
         return view('newsletters.edit', compact('newsletter', 'events'));
     }
 
@@ -102,7 +102,7 @@ class NewsletterController extends Controller
             }
         }
 
-        $formattedEvents = collect($request->validated(['events']))->map(function ($event) {
+        $formattedEvents = collect($request->validated('events'))->map(function ($event) {
             return [
                 'titel' => $event['titel'],
                 'datum' => $event['datum'],
@@ -112,8 +112,7 @@ class NewsletterController extends Controller
             ];
         })->toArray();
 
-        $formattedDate = Carbon::parse($request->validated(['publicatiedatum']))->format('d-m-Y');
-
+        $formattedDate = Carbon::parse($request->validated('publicatiedatum'))->format('d-m-Y');
         $pdf = Pdf::loadView('newsletters.pdf', [
             'title' => $request->validated(['title']),
             'publicatiedatum' => $formattedDate,

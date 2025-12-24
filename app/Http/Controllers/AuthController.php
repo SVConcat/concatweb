@@ -24,10 +24,10 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request)
     {
+        $validated = $request->validated();
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            ...$validated,
+            'password' => Hash::make($validated['password']),
             'role' => 'client'
         ]);
 
@@ -41,18 +41,19 @@ class AuthController extends Controller
     {
         if (Auth::attempt($request->validated())) {
             $request->session()->regenerate();
+
             return redirect()->route('home');
         }
 
         throw ValidationValidationException::withMessages([
             'credentials' => 'Sorry, onjuiste inloggegevens'
         ]);
-
     }
 
     public function logout(Request $request)
     {
         Auth::logout();
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

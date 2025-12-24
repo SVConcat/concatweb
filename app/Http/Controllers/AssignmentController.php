@@ -13,12 +13,14 @@ class AssignmentController extends Controller
     public function index()
     {
         $assignments = Assignment::orderBy('created_at', 'desc')->paginate(6);
+
         return view('assignments.index', compact('assignments'));
     }
 
     public function create()
     {
         $this->authorize('create', Assignment::class);
+
         return view('assignments.create');
     }
 
@@ -36,6 +38,7 @@ class AssignmentController extends Controller
     public function edit(Assignment $assignment)
     {
         $this->authorize('update', $assignment);
+
         return view('assignments.edit', compact('assignment'));
     }
 
@@ -43,7 +46,8 @@ class AssignmentController extends Controller
     {
         $this->authorize('update', $assignment);
 
-        $assignment->update($request->validated());
+        $validated = $request->validated();
+        $assignment->update($validated);
 
         return redirect()
             ->route('assignments.index')
@@ -53,6 +57,7 @@ class AssignmentController extends Controller
     public function destroy(Assignment $assignment)
     {
         $this->authorize('delete', $assignment);
+
         $assignment->delete();
 
         return redirect()

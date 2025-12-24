@@ -71,6 +71,7 @@ class RoosterController extends Controller
     protected function getCalendarShortName(string $icalUrl): string
     {
         $urlParts = parse_url($icalUrl);
+
         parse_str($urlParts['query'] ?? '', $params);
 
         return $params['value'] ?? 'onbekend';

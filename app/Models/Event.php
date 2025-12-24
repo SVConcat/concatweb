@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasFileUpload;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ use Illuminate\Support\Str;
 
 class Event extends Model
 {
-    use HasFactory;
+    use HasFactory, HasFileUpload;
 
     protected $fillable = [
         'titel',

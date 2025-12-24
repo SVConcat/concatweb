@@ -73,7 +73,6 @@ class HomeController extends Controller
 
         // Group announcements by date
         $groupedAnnouncements = $this->groupAnnouncements($announcements);
-
         $communityNight = CommunityNight::latestCommunityNight();
         $latestEvent = Event::latestEvent();
 
@@ -90,10 +89,12 @@ class HomeController extends Controller
     private function groupAnnouncements($announcements)
     {
         $grouped = [];
+
         foreach($announcements as $announcement) {
             $group = $this->getDateGroup($announcement->published_at);
             $grouped[$group][] = $announcement;
         }
+
         return $grouped;
     }
 
