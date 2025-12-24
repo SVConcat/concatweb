@@ -17,16 +17,7 @@ class AboutUsController extends Controller
     public function index()
     {
         $currentBoard = BoardMember::all();
-
-        $previousBoards = PreviousBoard::all()->map(function ($board) {
-            return [
-                'id' => $board->id,
-                'from' => Carbon::parse($board->FromYear)->format('Y'),
-                'to' => Carbon::parse($board->ToYear)->format('Y'),
-                'members' => $board->members,
-                'photo' => $board->photo,
-            ];
-        });
+        $previousBoards = PreviousBoard::all();
 
         return view('about-us.index', compact('currentBoard', 'previousBoards'));
     }
@@ -34,6 +25,7 @@ class AboutUsController extends Controller
     public function edit_board_member(BoardMember $boardMember)
     {
         $this->authorize('editBoardMember', $boardMember);
+
         return view('about-us.board_member_edit', compact('boardMember'));
     }
 
@@ -41,28 +33,19 @@ class AboutUsController extends Controller
     {
         $this->authorize('updateBoardMember', $boardMember);
 
-        $boardMember->name = $request->validated('name');
-        $boardMember->role = $request->validated('role');
-        $boardMember->bio = $request->validated('bio');
-
-        if ($request->hasFile('photo')) {
-            if ($boardMember->photo) {
-                Storage::disk('public')->delete($boardMember->photo);
-            }
-
-            $photoPath = $request->file('photo')->store('board-members', 'public');
-            $boardMember->photo = $photoPath;
-        }
-        $boardMember->save();
+        $validated = $request->validated();
+        $request->hasFile('photo') && $validated['photo'] = $boardMember->replaceFile($request->file('photo'), 'board-members', 'public', 'photo');
+        $boardMember->update($validated);
 
         return redirect()
-            ->back()
+            ->route('about-us.index')
             ->with('success', 'Bestuurslid succesvol bijgewerkt!');
     }
 
     public function edit_previous_board(PreviousBoard $previousBoard)
     {
         $this->authorize('editPreviousBoard', $previousBoard);
+
         return view('about-us.previous_board_edit', compact('previousBoard'));
     }
 
@@ -70,23 +53,12 @@ class AboutUsController extends Controller
     {
         $this->authorize('updatePreviousBoard', $previousBoard);
 
-        $previousBoard->FromYear = $request->validated('FromYear');
-        $previousBoard->ToYear = $request->validated('ToYear');
-        $previousBoard->members = $request->validated('members');
-
-        if ($request->hasFile('photo')) {
-            if ($previousBoard->photo) {
-                Storage::disk('public')->delete($previousBoard->photo);
-            }
-
-            $photoPath = $request->file('photo')->store('previous-boards', 'public');
-            $previousBoard->photo = $photoPath;
-        }
-
-        $previousBoard->save();
+        $validated = $request->validated();
+        $request->hasFile('photo') && $validated['photo'] = $previousBoard->replaceFile($request->file('photo'), 'previous-boards', 'public', 'photo');
+        $previousBoard->update($validated);
 
         return redirect()
-            ->back()
+            ->route('about-us.index')
             ->with('success', 'Vorig bestuur succesvol bijgewerkt!');
     }
 }

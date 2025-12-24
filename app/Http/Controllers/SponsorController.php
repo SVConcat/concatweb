@@ -76,8 +76,6 @@ class SponsorController extends Controller
             }
 
             $validated['image_path'] = $request->file('logo')->store('sponsor_logos', 'public');
-        } else {
-            $validated['image_path'] = $sponsor->image_path;
         }
 
         $sponsor->update($validated);

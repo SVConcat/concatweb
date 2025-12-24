@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\HasFileUpload;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class PreviousBoard extends Model
 {
+    use HasFileUpload;
+
     protected $fillable = [
         'FromYear',
         'ToYear',
@@ -17,11 +21,21 @@ class PreviousBoard extends Model
 
     public function getFormattedFromYearAttribute(): string
     {
-        return $this->FromYear->format('Y-m-d');
+        return Carbon::parse($this->FromYear)->format('Y-m-d');
     }
 
     public function getFormattedToYearAttribute(): string
     {
-        return $this->ToYear->format('Y-m-d');
+        return Carbon::parse($this->ToYear)->format('Y-m-d');
+    }
+
+    public function getOnlyFromYearAttribute(): string
+    {
+        return Carbon::parse($this->FromYear)->format('Y');
+    }
+
+    public function getOnlyToYearAttribute(): string
+    {
+        return Carbon::parse($this->ToYear)->format('Y');
     }
 }
