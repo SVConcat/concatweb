@@ -45,15 +45,16 @@ class AnnouncementController extends Controller
 
     private function getDateGroup($date)
     {
+        $now = now();
         $date = $date->copy()->startOfDay();
-        $diffInDays = $date->diffInDays(now());
+        $diffInDays = $date->diffInDays($now);
 
         if ($date->isToday()) return 'Vandaag';
         elseif ($date->isYesterday()) return 'Gisteren';
         elseif ($diffInDays <= 7) return 'Deze Week';
         elseif ($diffInDays <= 14) return 'Vorige Week';
-        elseif ($date->month == now()->month && $date->year == now()->year) return 'Deze Maand';
-        elseif ($date->month == now()->subMonth()->month && $date->year == now()->year) return 'Vorige Maand';
+        elseif ($date->month == $now->month && $date->year == $now->year) return 'Deze Maand';
+        elseif ($date->month == $now->subMonth()->month && $date->year == $now->year) return 'Vorige Maand';
 
         return $date->translatedFormat('F Y');
     }
