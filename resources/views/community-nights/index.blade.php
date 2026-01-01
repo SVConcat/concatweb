@@ -29,20 +29,23 @@
             <div class="grid sm:grid-cols-2 gap-8 lg:gap-6 mx-auto">
                 @foreach($communityNights as $communityNight)
                     <div>
-                        <div class="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden flex flex-col h-full">
-                            <a href="{{ route('community-nights.show', $communityNight) }}" class="block w-full aspect-square relative overflow-hidden">
-                                @if(isset($communityNight->image))
-                                    <img src="{{ asset('storage/' . $communityNight->image) }}"
-                                         alt="{{ $communityNight->title }}"
+                        <div
+                            class="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden flex flex-col h-full">
+                            <a href="{{ route('community-nights.show', $communityNight) }}"
+                               class="block w-full aspect-square relative overflow-hidden">
+                                @if($communityNight->image)
+                                    <img src="{{ Storage::url($communityNight['image']) }}"
+                                         alt="Afbeelding van {{ $communityNight->title }}"
                                          class="aspect-square object-cover w-full h-full">
                                 @else
                                     <div
                                         class="p-5 flex items-center justify-center bg-gradient-to-r from-blue-400 to-purple-500 w-full h-full">
-                                        <h1 class="text-white text-3xl font-bold text-center w-full break-words">{{ $communityNight->title ?? 'Community Night' }}</h1>
+                                        <h1 class="text-white text-3xl font-bold text-center w-full break-words">
+                                            {{ $communityNight->title ?? 'Community Night' }}
+                                        </h1>
                                     </div>
                                 @endif
                             </a>
-
 
                             @auth
                                 @if(auth()->user()->role === 'admin')
@@ -85,14 +88,16 @@
                                 @if(isset($communityNight->location))
                                     <div class="flex items-center text-gray-500 mb-4">
                                         <i class="flex flex-shrink-0 fa-solid fa-location-dot fa-fw text-3xl"></i>
-                                        <span class="text-md font-bold">{{ $communityNight->location ?? 'Locatie TBD' }}</span>
+                                        <span
+                                            class="text-md font-bold">{{ $communityNight->location ?? 'Locatie TBD' }}</span>
                                     </div>
                                 @endif
 
                                 <div class="flex flex-col justify-between max-h-40 mt-auto">
                                     <div class="mb-4 grow text-gray-700 relative overflow-hidden">
                                         <p class="mb-3 font-normal text-gray-700 ">{{ $communityNight->description }}</p>
-                                        <div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-b from-transparent to-white"></div>
+                                        <div
+                                            class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-b from-transparent to-white"></div>
                                     </div>
 
                                     <div>

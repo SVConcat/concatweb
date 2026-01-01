@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -31,18 +32,12 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    /**
-    * Check if the user has admin privileges.
-    *
-    * @return bool
-    */
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
     }
 
-    // connectie voor inschrijving
-    public function registrations()
+    public function registrations(): HasMany
     {
         return $this->hasMany(Registration::class);
     }

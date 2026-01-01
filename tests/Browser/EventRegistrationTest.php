@@ -2,7 +2,7 @@
 
 namespace Tests\Browser;
 
-use App\Models\Events;
+use App\Models\Event;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
@@ -15,7 +15,7 @@ class EventRegistrationTest extends DuskTestCase
     /** @test */
     public function link_zet_in_agenda_is_aanwezig_en_werkt()
     {
-        $evenement = Events::factory()->create([
+        $evenement = Event::factory()->create([
             'titel' => 'Test Evenement Dusk',
             'datum' => '2025-03-07',
             'starttijd' => '18:00',
@@ -44,7 +44,7 @@ class EventRegistrationTest extends DuskTestCase
             'role' => 'admin',
         ]);
 
-        $event = Events::factory()->create([
+        $event = Event::factory()->create([
             'titel' => 'Originele Titel',
             'categorie' => 'blokborrel',
             'datum' => '2025-07-20',
@@ -76,7 +76,7 @@ class EventRegistrationTest extends DuskTestCase
 
     public function test_event_page_loads_and_registers()
     {
-        $event = Events::factory()->create([
+        $event = Event::factory()->create([
             'titel' => 'Test Event',
             'datum' => '2025-04-15',
             'starttijd' => '18:00',
@@ -89,7 +89,7 @@ class EventRegistrationTest extends DuskTestCase
 
     public function test_event_page_loads_and_displays_elements()
     {
-        $events = Events::factory()->count(5)->create();
+        $events = Event::factory()->count(5)->create();
 
         $this->browse(function (Browser $browser) use ($events) {
             $browser->visit('/events/index')
@@ -110,7 +110,7 @@ class EventRegistrationTest extends DuskTestCase
             'role' => 'admin',
         ]);
 
-        $event = Events::factory()->create([
+        $event = Event::factory()->create([
             'titel' => 'Test Event',
             'categorie' => 'Test Category',
             'datum' => '2025-05-01',
@@ -147,7 +147,7 @@ class EventRegistrationTest extends DuskTestCase
             'role' => 'admin',
         ]);
 
-        $event = Events::factory()->create([
+        $event = Event::factory()->create([
             'titel' => 'Test Event',
             'datum' => '2025-04-15',
             'starttijd' => '18:00',

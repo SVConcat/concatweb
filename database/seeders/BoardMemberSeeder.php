@@ -2,9 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Announcement;
-use Illuminate\Support\Carbon;
-
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 

@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\Events;
+use App\Models\Event;
 use PHPUnit\Framework\Attributes\Test;
 
 class EventsTest extends TestCase
@@ -16,9 +16,9 @@ class EventsTest extends TestCase
     public function it_displays_events_sorted_by_start_date()
     {
         // Arrange: Maak 3 test events met verschillende startdatums
-        $event1 = Events::factory()->create(['start_datum' => '2024-05-01']);
-        $event2 = Events::factory()->create(['start_datum' => '2024-03-01']);
-        $event3 = Events::factory()->create(['start_datum' => '2024-04-01']);
+        $event1 = Event::factory()->create(['start_datum' => '2024-05-01']);
+        $event2 = Event::factory()->create(['start_datum' => '2024-03-01']);
+        $event3 = Event::factory()->create(['start_datum' => '2024-04-01']);
 
         // Act: Haal de events op in oplopende volgorde
         $response = $this->get('/events?sort=asc');
@@ -32,9 +32,9 @@ class EventsTest extends TestCase
     public function it_displays_events_in_descending_order_when_sorted_desc()
     {
         // Arrange: Maak testdata
-        $event1 = Events::factory()->create(['start_datum' => '2024-05-01']);
-        $event2 = Events::factory()->create(['start_datum' => '2024-03-01']);
-        $event3 = Events::factory()->create(['start_datum' => '2024-04-01']);
+        $event1 = Event::factory()->create(['start_datum' => '2024-05-01']);
+        $event2 = Event::factory()->create(['start_datum' => '2024-03-01']);
+        $event3 = Event::factory()->create(['start_datum' => '2024-04-01']);
 
         // Act: Vraag events op in aflopende volgorde
         $response = $this->get('/events?sort=desc');
@@ -48,7 +48,7 @@ class EventsTest extends TestCase
     public function it_paginates_the_events_correctly()
     {
         // Arrange: Maak 10 test-events
-        Events::factory(10)->create();
+        Event::factory(10)->create();
 
         // Act: Haal de eventspagina op
         $response = $this->get('/events');

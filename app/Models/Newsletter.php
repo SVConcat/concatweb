@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Newsletter extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'titel',
         'publicatiedatum',
@@ -16,6 +14,8 @@ class Newsletter extends Model
         'pdf',
         'images',
     ];
+
+    public $timestamps = true;
 
     protected $casts = [
         'inhoud' => 'array',

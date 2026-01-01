@@ -6,11 +6,12 @@
 </head>
 <x-layout>
     <div class="lg:my-12 w-full max-w-5xl border-2 mx-auto shadow-xl rounded-lg overflow-hidden bg-white">
-        <!-- Header with cover image (if available) -->
         <div class="relative bg-gray-200 overflow-hidden">
-            @if(isset($communityNight->image))
+            @if($communityNight->image)
                 <div class="lg:h-64">
-                    <img src="{{ asset('storage/' . $communityNight->image) }}" alt="{{ $communityNight->title }}" class="w-full h-full object-cover">
+                    <img src="{{ Storage::url($communityNight['image']) }}"
+                         alt="Afbeelding van {{ $communityNight->title }}"
+                         class="w-full h-full object-cover">
                 </div>
             @else
                 <div class="p-6 sm:h-44 flex items-center justify-center bg-gradient-to-r from-blue-400 to-purple-500">
@@ -19,17 +20,17 @@
             @endif
         </div>
 
-        <!-- Content -->
         <div class="p-6 md:p-14">
             <div class="mb-8">
                 @if(isset($communityNight->image))
                     <h1 class="text-3xl font-bold mb-5">{{ $communityNight->title}}</h1>
                 @endif
 
-                @if(isset($communityNight->date)) @endif
                 <div class="flex items-center text-gray-500 mb-4">
                     <i class="flex flex-shrink-0 fa-fw fa-solid fa-calendar text-3xl"></i>
-                    <span class="text-lg font-bold">{{ $communityNight->date }}, {{ $communityNight->start_time }} - {{ $communityNight->end_time }}</span>
+                    <span class="text-lg font-bold">
+                        {{ $communityNight->discord_start_date}}, {{ $communityNight->discord_start_time }} - {{ $communityNight->discord_end_time }}
+                    </span>
                 </div>
 
                 @if(isset($communityNight->location))
@@ -42,11 +43,11 @@
                 <hr class="my-1 border-2 border-gray-400 rounded">
 
                 <div class="sm:text-right sm:text-lg text-md text-gray-500">
-                    Laatst bijgewerkt op: {{ $communityNight->updatedAt }}
+                    Laatst bijgewerkt op: {{ $communityNight->formatted_updated_at }}
                 </div>
             </div>
             <div class="text-lg sm:text-xl leading-relaxed max-w-prose">
-                <p>{!! $communityNight->formattedDescription ?? 'No description available.' !!}</p>
+                <p>{{ $communityNight->description }}</p>
             </div>
         </div>
     </div>

@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\RegistrationsController;
-use App\Http\Controllers\RoostersController;
+use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\RoosterController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\AccountController;
@@ -31,7 +31,7 @@ Route::post('/sponsors/{sponsor}/force-delete', [SponsorController::class, 'forc
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::post('/registration', [RegistrationsController::class, 'store'])->name('registration');
+Route::post('/registration', [RegistrationController::class, 'store'])->name('registration');
 
 Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
 Route::post('/events/create', [EventController::class, 'store'])->name('events.store');
@@ -48,13 +48,13 @@ Route::get('/community-nights/{id}/edit', [CommunityNightController::class, 'edi
 Route::put('/community-nights/{communityNight}/update', [CommunityNightController::class, 'update'])->name('community-nights.update');
 
 
-// Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show'); // hier moet het verified gedeelte 
+// Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show'); // hier moet het verified gedeelte
 
 Route::get('/events/{event}', [EventController::class, 'show'])
      ->middleware(['auth', 'verified'])
      ->name('events.show');
 
-     
+
 //galerij
 Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
 Route::middleware(['auth'])->group(function () {
@@ -99,9 +99,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/newsletters', [NewsletterController::class, 'store'])->name('newsletters.store');
     Route::get('newsletters/{newsletter}/edit', [NewsletterController::class, 'edit'])->name('newsletters.edit');
     Route::put('/newsletters/{newsletter}', [NewsletterController::class, 'update'])->name('newsletters.update');
-    Route::get('/newsletters/{newsletter}', [NewsletterController::class, 'show'])->name(name: 'newsletters.show');
-
-
 });
 
 // account
@@ -123,18 +120,18 @@ Route::resource('/assignments', AssignmentController::class);
 Route::get('/about-us', [AboutUsController::class, 'index'])->name('about-us.index');
 
 // Board Members
-Route::get('/board-members/{id}/edit', [AboutUsController::class, 'edit_board_member'])->name('board-members.edit');
-Route::put('/board-members/{id}', [AboutUsController::class, 'update_board_member'])->name('board-members.update');
+Route::get('/board-members/{boardMember}/edit', [AboutUsController::class, 'edit_board_member'])->name('board-members.edit');
+Route::put('/board-members/{boardMember}', [AboutUsController::class, 'update_board_member'])->name('board-members.update');
 
 // PreviousBoard
-Route::get('/previous-boards/{id}/edit', [AboutUsController::class, 'edit_previous_board'])->name('previous-boards.edit');
-Route::put('/previous-boards/{id}', [AboutUsController::class, 'update_previous_board'])->name('previous-boards.update');
+Route::get('/previous-boards/{previousBoard}/edit', [AboutUsController::class, 'edit_previous_board'])->name('previous-boards.edit');
+Route::put('/previous-boards/{previousBoard}', [AboutUsController::class, 'update_previous_board'])->name('previous-boards.update');
 
 //PROBLEMEN MET AUTHENTICATIE KIJK ERNAAR!!!
 Route::middleware('auth')->group(function () {
     Route::group([
         'middleware' => function ($request, $next) {
-            if (auth()->user()->role !== 'admin') {
+            if (!auth()->user()->isAdmin()) {
                 abort(403, 'Access denied');
             }
             return $next($request);
@@ -146,9 +143,9 @@ Route::middleware('auth')->group(function () {
         Route::put('/announcements/{announcement}', [AnnouncementController::class, 'update'])->name('announcements.update');
         Route::delete('/announcements/{announcement}', [AnnouncementController::class, 'destroy'])->name('announcements.destroy');
 
-        Route::get('/roosters', [RoostersController::class, 'index']);
-        Route::post('/roosters', [RoostersController::class, 'store']);
-        Route::delete('/roosters/{rooster}', [RoostersController::class, 'destroy'])->name('roosters.destroy');
+        Route::get('/roosters', [RoosterController::class, 'index']);
+        Route::post('/roosters', [RoosterController::class, 'store']);
+        Route::delete('/roosters/{rooster}', [RoosterController::class, 'destroy'])->name('roosters.destroy');
         Route::get('/events/{event}/edit', [EventController::class, 'edit'])->name('events.edit');
         Route::put('/events/{event}', [EventController::class, 'update'])->name('events.update');
         Route::delete('/events/{event}', [EventController::class, 'destroy'])->name('events.destroy');
