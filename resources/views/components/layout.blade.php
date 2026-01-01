@@ -15,8 +15,6 @@
     @vite('resources/js/app.js')
     @stack('styles')
     @stack('scripts')
-    {{-- @vite(['resources/img/logo-white.png']) --}}
-
 </head>
 
 <body>
