@@ -11,12 +11,10 @@
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <title>{{ config('app.name') }}</title>
 
-    
-    @vite('resources/css/slider.css')
-    @vite('resources/css/banner.css')
     @vite('resources/css/app.css')
-    @vite('resources/js/slider.js')
     @vite('resources/js/app.js')
+    @stack('styles')
+    @stack('scripts')
     {{-- @vite(['resources/img/logo-white.png']) --}}
 
 </head>
