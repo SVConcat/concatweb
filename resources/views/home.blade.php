@@ -10,7 +10,7 @@
         <div class="flex flex-col gap-6 justify-start w-full lg:w-3/4">
 
             <!-- Carrousel -->
-            {{-- @if (!Agent::isMobile()) --}}
+             @if (!Agent::isMobile())
             <div id="home-slider" class="keen-slider">
                 <div class="keen-slider__slide concat-banner-wrapper">
                     <div class="concat-banner">
@@ -38,7 +38,7 @@
                 </div>
                 @endforeach
             </div>
-            {{-- @endif --}}
+             @endif
             <div class="flex flex-col gap-6 lg:flex-row">
                 {{-- Events Section Wrapper --}}
                 <div class="w-full lg:max-w-6/12 flex flex-col h-full">
