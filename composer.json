@@ -12,10 +12,11 @@
         "php": "^8.2",
         "barryvdh/laravel-dompdf": "^3.1",
         "eluceo/ical": "^2.14",
+        "jenssegers/agent": "^2.6",
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9",
         "league/flysystem-path-prefixing": "^3.28",
-        "u01jmg3/ics-parser": "^3.4"
+        "spatie/icalendar-generator": "^3.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

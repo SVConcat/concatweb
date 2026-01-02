@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Announcement;
+use App\Models\CommunityNight;
+use App\Models\Event;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 
@@ -15,73 +18,30 @@ class HomeController extends Controller
             [
                 'title' => 'Studiereis Gent',
                 'date' => '12-03-2024',
-                'src' => asset('storage/gallery/concat_foto_1.png')
+                'src' => asset('assets/images/jules_concat.png')
             ],
             [
                 'title' => 'Workshop PHP',
                 'date' => '15-03-2024',
-                'src' => asset('storage/gallery/concat_foto_2.png')
-            ],
-            [
-                'title' => 'Jaarlijks BBQ Feest',
-                'date' => '18-03-2024',
-                'src' => asset('storage/gallery/concat_foto_3.png')
-            ],
-            [
-                'title' => 'Hackathon 2024',
-                'date' => '20-03-2024',
-                'src' => asset('storage/gallery/concat_foto_4.png')
-            ],
-            [
-                'title' => 'Algemene Ledenvergadering',
-                'date' => '22-03-2024',
-                'src' => asset('storage/gallery/concat_foto_5.png')
-            ],
-            [
-                'title' => 'Excursie Techbedrijf',
-                'date' => '25-03-2024',
-                'src' => asset('storage/gallery/concat_foto_6.png')
-            ],
-            [
-                'title' => 'Introductieweek Nieuwe Studenten',
-                'date' => '28-03-2024',
-                'src' => asset('storage/gallery/concat_foto_7.png')
-            ],
-            [
-                'title' => 'Codeersessie JavaScript',
-                'date' => '01-04-2024',
-                'src' => asset('storage/gallery/concat_foto_8.png')
-            ],
-            [
-                'title' => 'Netwerkevent Partners',
-                'date' => '05-04-2024',
-                'src' => asset('storage/gallery/concat_foto_9.png')
-            ],
-            [
-                'title' => 'Eindpresentaties Projecten',
-                'date' => '10-04-2024',
-                'src' => asset('storage/gallery/concat_foto_10.png')
+                'src' => 'https://media.printables.com/media/prints/f3353adc-083b-4e3a-9b87-752574fc9f0f/images/9693228_4f10ea7a-9925-474a-8110-02e7d5028e3a_c9858f90-6660-45f0-8de8-e6da08b80e95/thumbs/inside/1280x960/jpg/20250506_134530.webp'
             ]
         ];
 
-        // Aankondigingen ophalen
         $announcements = Announcement::where('isVisible', true)
             ->orderByDesc('published_at')
             ->get();
 
-        // Groepeer aankondigingen
+        // Group announcements by date
         $groupedAnnouncements = $this->groupAnnouncements($announcements);
-
-        // Laatste community en event ophalen
-        $communityNight = App::make(CommunityNightController::class)->latest();
-        $eventData = App::make(EventController::class)->latest();
+        $communityNight = CommunityNight::latestCommunityNight();
+        $latestEvent = Event::latestEvent();
 
         return view('home', [
             'photos' => $photos,
             'groupedAnnouncements' => $groupedAnnouncements,
-            'event' => $eventData['event'],
-            'registeredCount' => $eventData['registeredCount'],
-            'availableSpots' => $eventData['availableSpots'],
+            'latestEvent' => $latestEvent,
+            'registeredCount' => $latestEvent->registrations()->count(),
+            'availableSpots' => $latestEvent->aantal_beschikbare_plekken,
             'communityNight' => $communityNight
         ]);
     }
@@ -89,25 +49,33 @@ class HomeController extends Controller
     private function groupAnnouncements($announcements)
     {
         $grouped = [];
+
         foreach($announcements as $announcement) {
             $group = $this->getDateGroup($announcement->published_at);
             $grouped[$group][] = $announcement;
         }
+
         return $grouped;
     }
 
-    private function getDateGroup($date)
+    private function getDateGroup(Carbon $date)
     {
         $now = now();
         $date = $date->copy()->startOfDay();
-        $diffInDays = $date->diffInDays($now);
 
-        if($date->isToday()) return 'Vandaag';
-        if($date->isYesterday()) return 'Gisteren';
-        if($diffInDays <= 7) return 'Deze Week';
-        if($diffInDays <= 14) return 'Vorige Week';
-        if($date->month == $now->month && $date->year == $now->year) return 'Deze Maand';
-        if($date->month == $now->subMonth()->month && $date->year == $now->year) return 'Vorige Maand';
+        if ($date->isToday()) {
+            return 'Vandaag';
+        } elseif ($date->isYesterday()) {
+            return 'Gisteren';
+        } elseif ($date->isSameWeek($now)) {
+            return 'Deze Week';
+        } elseif ($date->isSameWeek($now->copy()->subWeek())) {
+            return 'Vorige Week';
+        } elseif ($date->isSameMonth($now)) {
+            return 'Deze Maand';
+        } elseif ($date->isSameMonth($now->copy()->subMonth())) {
+            return 'Vorige Maand';
+        }
 
         return $date->translatedFormat('F Y');
     }

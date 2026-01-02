@@ -5,26 +5,26 @@
         </h1>
 
         <form method="POST" action="{{ route('newsletters.update', $newsletter) }}" enctype="multipart/form-data"
-            class="mt-4 space-y-6">
+              class="mt-4 space-y-6">
             @csrf
             @method('PUT')
 
             <div>
                 <label for="titel" class="block font-bold">Titel*</label>
                 <input type="text" name="titel" id="titel" value="{{ old('titel', $newsletter->titel) }}"
-                    class="w-full p-2 bg-purple-100 border-purple-300 text-purple-700 rounded-lg border">
+                       class="w-full p-2 bg-purple-100 border-purple-300 text-purple-700 rounded-lg border">
                 @error('titel')
-                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                 @enderror
             </div>
 
             <div>
                 <label for="publicatiedatum" class="block font-bold">Publicatiedatum*</label>
                 <input type="date" name="publicatiedatum" id="publicatiedatum"
-                    value="{{ old('publicatiedatum', $newsletter->publicatiedatum->format('Y-m-d')) }}"
-                    class="w-full p-2 bg-purple-100 border-purple-300 text-purple-700 rounded-lg border">
+                       value="{{ old('publicatiedatum', $newsletter->publicatiedatum->format('Y-m-d')) }}"
+                       class="w-full p-2 bg-purple-100 border-purple-300 text-purple-700 rounded-lg border">
                 @error('publicatiedatum')
-                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                 @enderror
             </div>
 
@@ -34,36 +34,49 @@
                     <div class="event-block border p-4 mb-4 rounded-xl bg-purple-50">
                         <label>Titel*</label>
                         <input type="text" name="events[{{ $index }}][titel]"
-                            value="{{ old("events.$index.titel", $event['titel']) }}" class="w-full mb-2">
-                            @error("events.$index.titel")
-                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                            @enderror
+                               value="{{ old("events.$index.titel", $event['titel']) }}" class="w-full mb-2">
+                        @error("events.$index.titel")
+                        <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                        @enderror
 
                         <label>Datum</label>
                         <input type="date" name="events[{{ $index }}][datum]"
-                            value="{{ old("events.$index.datum", $event['datum']) }}" class="w-full mb-2">
+                               value="{{ old("events.$index.datum", $event['datum']) }}" class="w-full mb-2">
+                        @error("events.$index.datum")
+                        <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                        @enderror
 
                         <label>Tijd</label>
                         <input type="text" name="events[{{ $index }}][tijd]"
-                            value="{{ old("events.$index.tijd", $event['tijd'] ?? '') }}" class="w-full mb-2">
+                               value="{{ old("events.$index.tijd", $event['tijd'] ?? '') }}" class="w-full mb-2">
+                        @error("events.$index.tijd")
+                        <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                        @enderror
 
                         <label>Locatie</label>
                         <input type="text" name="events[{{ $index }}][locatie]"
-                            value="{{ old("events.$index.locatie", $event['locatie'] ?? '') }}" class="w-full mb-2">
+                               value="{{ old("events.$index.locatie", $event['locatie'] ?? '') }}" class="w-full mb-2">
+                        @error("events.$index.locatie")
+                        <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                        @enderror
 
                         <label>Inhoud*</label>
                         <textarea name="events[{{ $index }}][inhoud]" rows="4"
-                            class="w-full mb-2">{{ old("events.$index.inhoud", $event['inhoud']) }}</textarea>
+                                  class="w-full mb-2">{{ old("events.$index.inhoud", $event['inhoud']) }}</textarea>
                         @error("events.$index.inhoud")
-                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                        <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                         @enderror
 
                         <label>Afbeelding</label>
                         <input type="file" name="event_images[{{ $index }}]" accept="image/*" class="w-full mb-2">
+                        @error("event_images.$index")
+                        <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                        @enderror
 
                         @if (!empty($newsletter->images[$index]))
-                            <img src="{{ asset($newsletter->images[$index]) }}" alt="Event afbeelding"
-                                class="w-full max-w-xs rounded shadow border mt-2">
+                            <img src="{{ Storage::url($newsletter->images[$index]) }}"
+                                 alt="Event afbeelding"
+                                 class="w-full max-w-xs rounded shadow border mt-2">
                         @endif
                     </div>
                 @endforeach
@@ -73,13 +86,16 @@
                 + Blok toevoegen
             </button>
 
-            <input type="submit" value="Wijzigingen opslaan"
-                class="w-full bg-orange-500 text-white p-3 rounded-lg hover:bg-orange-600 transition font-semibold cursor-pointer">
+            <button type="submit"
+                    class="w-full bg-orange-500 text-white p-3 rounded-lg hover:bg-orange-600 transition font-semibold cursor-pointer">
+                Wijzigingen opslaan
+            </button>
         </form>
     </div>
 
     <script>
         let eventCount = {{ count($events) }};
+
         function addEventBlock() {
             const container = document.getElementById('event-blocks');
             const block = document.createElement('div');

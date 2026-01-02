@@ -2,10 +2,19 @@
 
 namespace App\Models;
 
+use App\Traits\HasFileUpload;
 use Illuminate\Database\Eloquent\Model;
 
 class BoardMember extends Model
 {
-        protected $guarded = [];
+    use HasFileUpload;
 
+    protected $fillable = [
+        'name',
+        'role',
+        'bio',
+        'photo'
+    ];
+
+    public $timestamps = true;
 }

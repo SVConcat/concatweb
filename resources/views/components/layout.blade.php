@@ -6,31 +6,18 @@
     <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <title>{{ config('app.name') }}</title>
+
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
-    {{-- @vite(['resources/img/logo-white.png']) --}}
-
+    @stack('styles')
+    @stack('scripts')
 </head>
 
 <body>
-
-    @if (request()->is('/'))
-        <div class="text-center p-6 lg:py-16"> {{-- Adjust padding as needed --}}
-            <h2 class="text-3xl font-light text-gray-700"> {{-- Adjust styling as needed --}}
-                Welkom bij
-            </h2>
-            <h1 class="text-5xl font-bold text-blue-600 mt-2"> {{-- Adjust styling as needed --}}
-                Studievereniging Concat
-            </h1>
-            {{-- You can add more introductory text or elements here --}}
-        </div>
-    @endif
-
     <div class="nav-container px-6">
         <!-- Desktop Navigation -->
         <nav id="main-nav" class="opacity-0 -translate-y-6 transition-all duration-700 ease-out">
