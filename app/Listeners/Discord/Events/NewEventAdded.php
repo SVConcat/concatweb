@@ -8,23 +8,23 @@ class NewEventAdded
 {
     use Dispatchable;
 
-    public $title;
-    public $description;
-    public $startDate;
-    public $startTime;
-    public $location;
-    public $spotsAvailable;
-    public $url;
-    public $imageUrl;
-    public $type;
+    public string $title;
+    public string $description;
+    public string $startDate;
+    public string $startTime;
+    public string $location;
+    public string $spotsAvailable;
+    public string $url;
+    public ?string $imageUrl;
+    public string $type;
 
     public function __construct(string $title, string $description, ?string $startDate, ?string $startTime, ?string $location, ?int $spotsAvailable, string $url, ?string $imageUrl = null)
     {
-        $this->title = $title ?? 'Geen titel';
-        $this->description = $description ?? 'Geen beschrijving beschikbaar';
+        $this->title = $title;
+        $this->description = $description;
         $this->startDate = $startDate ?? 'Datum nog niet bekend';
         $this->startTime = $startTime ?? 'Tijd nog niet bekend';
-        $this->location = $location ?? 'Locatie nog niet bekend';
+        $this->location = $location;
         $this->spotsAvailable = $spotsAvailable === null ? 'Onbeperkt' : (string)$spotsAvailable;
         $this->url = $url;
         $this->imageUrl = $imageUrl;

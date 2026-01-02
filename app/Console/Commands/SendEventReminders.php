@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Mail\EventNotification;
-use App\Models\Events;
+use App\Models\Event;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
@@ -35,7 +35,7 @@ class SendEventReminders extends Command
         $targetDate = Carbon::today()->addDays(3)->toDateString();
 
 
-        $events = Events::with('registrations.user')
+        $events = Event::with('registrations.user')
                             ->whereDate('datum', $targetDate)
                             ->get();
 
@@ -55,7 +55,7 @@ class SendEventReminders extends Command
             $this->info('  -> Versturen van herinneringen voor "' . $event->titel . '" naar ' . $event->registrations->count() . ' inschrijving(en).');
 
             foreach ($event->registrations as $registration) {
-                
+
                 $recipientName = $registration->user ? $registration->user->name : $registration->naam;
                 $recipientEmail = $registration->user ? $registration->user->email : $registration->email;
 
@@ -75,6 +75,6 @@ class SendEventReminders extends Command
 
         $this->info('Alle herinneringen zijn succesvol verwerkt.');
         return Command::SUCCESS;
-    
+
         }
 }

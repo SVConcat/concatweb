@@ -49,18 +49,18 @@
                     <div class="grid gap-8 lg:gap-6 flex-grow">
                         <div
                             class="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden flex flex-col h-full">
-                            <a href="{{ route('events.show', $event->id) }}"
+                            <a href="{{ route('events.show', $latestEvent->id) }}"
                                class="block w-full aspect-square relative overflow-hidden"
-                               aria-label="Details bekijken van {{ $event->titel }}">
-                                @if(isset($event->afbeelding))
-                                    <img src="{{ asset('storage/' . $event->afbeelding) }}"
-                                         alt="Afbeelding van {{ $event->titel }}. Datum: {{ \Carbon\Carbon::parse($event->start_datum)->format('d-m-Y') }} tot {{ \Carbon\Carbon::parse($event->einddatum)->format('d-m-Y') }} in {{ $event->locatie }}"
+                               aria-label="Details bekijken van {{ $latestEvent->titel }}">
+                                @if(isset($latestEvent->afbeelding))
+                                    <img src="{{ Storage::url($latestEvent['afbeelding'])  }}"
+                                         alt="Afbeelding van {{ $latestEvent->titel }}. Datum: {{ $latestEvent->formatted_start_datum }} tot {{  $latestEvent->formatted_eind_datum }} in {{ $latestEvent->locatie }}"
                                          class="w-full object-cover">
                                 @else
                                     <div
                                         class="p-5 flex h-full w-full items-center justify-center bg-gradient-to-r from-blue-400 to-purple-500"
                                         aria-hidden="true">
-                                        <h1 class="text-white text-3xl font-bold text-center w-full break-words">{{ $event->titel }}</h1>
+                                        <h1 class="text-white text-3xl font-bold text-center w-full break-words">{{ $latestEvent->titel }}</h1>
                                     </div>
                                 @endif
                             </a>
@@ -68,40 +68,40 @@
                             <div class="p-5 flex flex-col flex-grow">
                                 {{-- Titel --}}
                                 {{-- Categorie --}}
-                                @if(isset($event->categorie))
+                                @if(isset($latestEvent->categorie))
                                     <div>
                                         <span
                                             class="inline-block mb-2 bg-purple-100 text-purple-700 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">
-                                            {{ ucfirst($event->categorie) }}
+                                            {{ ucfirst($latestEvent->categorie) }}
                                         </span>
                                     </div>
                                 @endif
 
                                 {{-- Datum & tijd --}}
-                                @if(isset($event->start_datum) && isset($event->einddatum))
+                                @if(isset($latestEvent->datum) && isset($latestEvent->einddatum))
                                     <div class="flex items-center text-gray-500 mb-4">
                                         <i class="flex flex-shrink-0 fa-solid fa-calendar fa-fw text-3xl"
                                            aria-hidden="true"></i>
                                         <span class="text-lg font-bold ml-2">
-                                                {{ \Carbon\Carbon::parse($event->start_datum)->format('d-m-Y') }} {{ \Carbon\Carbon::parse($event->starttijd)->format('H:i') }},
-                                                {{ \Carbon\Carbon::parse($event->einddatum)->format('d-m-Y') }} {{ \Carbon\Carbon::parse($event->eindtijd)->format('H:i') }}
-                                    </span>
+                                               Van {{ $latestEvent->formatted_start_datum }} {{ $latestEvent->formatted_start_tijd }},
+                                               Tot {{ $latestEvent->formatted_eind_datum }} {{ $latestEvent->formatted_start_tijd }}
+                                        </span>
                                     </div>
                                 @endif
 
                                 {{-- Locatie --}}
-                                @if(isset($event->locatie))
+                                @if(isset($latestEvent->locatie))
                                     <div class="flex items-center text-gray-500 mb-4">
                                         <i class="flex flex-shrink-0 fa-solid fa-location-dot fa-fw text-3xl"
                                            aria-hidden="true"></i>
-                                        <span class="text-md font-bold ml-2">{{ $event->locatie }}</span>
+                                        <span class="text-md font-bold ml-2">{{ $latestEvent->locatie }}</span>
                                     </div>
                                 @endif
 
                                 {{-- Beschrijving --}}
                                 <div class="mb-4 grow text-gray-700 relative overflow-hidden max-h-32">
                                     <p class="mb-3 font-normal text-gray-700">
-                                        {{ \Illuminate\Support\Str::limit(strip_tags($event->beschrijving), 150, '...') }}
+                                        {{ \Illuminate\Support\Str::limit(strip_tags($latestEvent->beschrijving), 150, '...') }}
                                     </p>
                                     <div
                                         class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-b from-transparent to-white"
@@ -137,9 +137,9 @@
                                     </div>
 
                                     {{-- Lees meer knop --}}
-                                    <a href="{{ route('events.show', $event->id) }}"
+                                    <a href="{{ route('events.show', $latestEvent->id) }}"
                                        class="inline-flex items-center text-sm text-center bg-[#3129FF] text-white py-2 px-4 rounded-lg hover:bg-[#E39FF6] transition font-semibold"
-                                       aria-label="Lees meer over {{ $event->titel }}. Datum van {{ \Carbon\Carbon::parse($event->start_datum)->format('d-m-Y') }} tot {{ \Carbon\Carbon::parse($event->einddatum)->format('d-m-Y') }} in {{ $event->locatie }}">
+                                       aria-label="Lees meer over {{ $latestEvent->titel }}. Datum van {{ $latestEvent->formatted_start_datum }} tot {{ $latestEvent->formatted_eind_datum }} in {{ $latestEvent->locatie }}">
                                         Lees meer...
                                     </a>
                                 </div>

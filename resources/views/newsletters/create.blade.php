@@ -30,28 +30,40 @@
             <div id="event-blocks">
                 <div class="event-block border p-4 mb-4 rounded-xl bg-purple-50">
                     <label>Titel*</label>
-                    <input type="text" name="events[0][titel]" class="w-full mb-2">
+                    <input type="text" name="events[0][titel]" class="w-full mb-2" value="{{ old('events.0.titel') }}">
                     @error('events.0.titel')
-                        <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                     @enderror
 
                     <label>Datum</label>
-                    <input type="date" name="events[0][datum]" class="w-full mb-2">
+                    <input type="date" name="events[0][datum]" class="w-full mb-2" value="{{ old('events.0.datum') }}">
+                    @error('events.0.datum')
+                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                    @enderror
 
                     <label>Tijd</label>
-                    <input type="text" name="events[0][tijd]" class="w-full mb-2">
+                    <input type="text" name="events[0][tijd]" class="w-full mb-2" value="{{ old('events.0.tijd') }}">
+                    @error('events.0.tijd')
+                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                    @enderror
 
                     <label>Locatie</label>
-                    <input type="text" name="events[0][locatie]" class="w-full mb-2">
+                    <input type="text" name="events[0][locatie]" class="w-full mb-2" value="{{ old('events.0.locatie') }}">
+                    @error('events.0.locatie')
+                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                    @enderror
 
                     <label>Inhoud*</label>
-                    <textarea name="events[0][inhoud]" class="w-full mb-2" rows="4"></textarea>
+                    <textarea name="events[0][inhoud]" class="w-full mb-2" rows="4">{{ old('events.0.inhoud') }}</textarea>
                     @error('events.0.inhoud')
-                        <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                     @enderror
 
                     <label>Afbeelding</label>
                     <input type="file" name="event_images[0]" accept="image/*" class="w-full mb-2">
+                    @error('event_images.0')
+                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
 

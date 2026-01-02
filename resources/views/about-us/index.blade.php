@@ -97,7 +97,7 @@
 
                         <div class="flex items-center justify-between mb-3">
                             <h4 class="text-lg font-bold text-purple-700 m-0">
-                                {{ $board['from'] }} - {{ $board['to'] }}
+                                {{ $board->only_from_year }} - {{ $board->only_to_year }}
                             </h4>
 
                             @auth
