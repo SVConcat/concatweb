@@ -12,7 +12,7 @@
         "php": "^8.2",
         "barryvdh/laravel-dompdf": "^3.1",
         "eluceo/ical": "^2.14",
-        "johngrogg/ics-parser": "^3.5",
+        "jenssegers/agent": "^2.6",
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9",
         "league/flysystem-path-prefixing": "^3.28",
