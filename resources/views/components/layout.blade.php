@@ -138,10 +138,6 @@
         <button id="nav-button" class="hamburger"></button>
     </div>
 
-    <!-- Nieuwe bel-icoon knop -->
-
-
-
     <div id="page-content"
         class="flex justify-center items-center p-6 lg:mt-200 opacity-0 translate-y-4 transition-all duration-700 ease-out">
         {{ $slot }}
