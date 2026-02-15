@@ -8,6 +8,7 @@ use App\Models\Event;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -18,7 +19,7 @@ class HomeController extends Controller
             [
                 'title' => 'Studiereis Gent',
                 'date' => '12-03-2024',
-                'src' => asset('assets/images/jules_concat.png')
+                'src' => Storage::url('/about-us/personal/jules_concat.png')
             ],
             [
                 'title' => 'Workshop PHP',
