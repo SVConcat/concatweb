@@ -3,8 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
@@ -18,18 +17,57 @@
 </head>
 
 <body>
-    <div class="sticky flex justify-center top-4 z-10">
-        <!-- Desktop Navigation -->
-        <nav class="flex items-center p-2 w-fit rounded-lg bg-blue-700">
+    <!-- Desktop Navigation -->
+    <div class="sticky hidden lg:flex justify-center top-4 gap-10 z-10 text-white">
+        <nav class="flex items-center px-6 py-2 w-fit rounded-3xl bg-[var(--blue)]">
             <a href="{{ route('home') }}">
                 <!-- TODO: This is gonna return as null when the other site get replaced by this -->
-                <img src="https://svconcat.nl/media/assets/logo-white.svg" alt="Concat Logo" class="size-10">
+                <img src="https://svconcat.nl/media/assets/logo-white.svg" alt="Concat's logo" class="me-8 size-10">
             </a>
-            <ul>
+            <ul class="flex items-center space-x-8 font-bold">
                 <x-nav-link href="{{ route('events.index') }}">Evenementen</x-nav-link>
-                <x-nav-link href=" {{ route('community-nights.index') }}">Community Avonden</x-nav-link>
+                <x-nav-link href="{{ route('community-nights.index') }}">Community Avonden</x-nav-link>
+                <x-nav-link href="{{ route('gallery.index') }}"><i class="text-xl fa-solid fa-image"></i></x-nav-link>
+                <x-nav-link href="{{ route('sponsors.index') }}"><i class="text-xl fa-solid fa-handshake"></i></x-nav-link>
+                <x-nav-link href="{{ route('newsletters.index') }}"><i class="text-xl fa-solid fa-envelope"></i></x-nav-link>
+                <x-nav-link href="{{ route('assignments.index') }}"><i class="text-xl fa-solid fa-briefcase"></i></x-nav-link>
+                <x-nav-link href="{{ route('about-us.index') }}"><i class="text-xl fa-solid fa-users"></i></x-nav-link>
+                <x-nav-link href="{{ route('account.show') }}"><i class="text-xl fa-solid fa-user"></i></x-nav-link>
+
+                <a href="https://sv-concat.myspreadshop.nl/"><i class="text-xl fa-solid fa-cart-shopping"></i></a>
+
+                @guest
+                    <x-nav-link href="{{ route('login') }}"><i class="text-2xl fa-solid fa-right-to-bracket"></i></x-nav-link>
+                @endguest
+
+                @auth
+                    @if(Auth::user()->isAdmin())
+                        <x-nav-link href="{{ route('roosters.index') }}"><i class="text-xl fa-solid fa-calendar-days"></i></x-nav-link>
+                    @endif
+                @endauth
+
+                @auth
+                    <form action="{{ route('logout') }}" method="POST">
+                        @method('POST')
+                        @csrf
+                        <button type="submit" class="x-nav-link">
+                            <i class="text-2xl fa-solid fa-right-from-bracket"></i>
+                        </button>
+                    </form>
+                @endauth
             </ul>
         </nav>
+        <aside class="flex items-center px-4 py-2 w-fit rounded-3xl bg-[var(--blue)]">
+            <a href="{{ route('announcements.index') }}">
+                <i class="text-xl fa-solid fa-bell"></i>
+            </a>
+        </aside>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div class="sticky lg:hidden flex justify-between z-10 top-2 px-2 text-white">
+        <button type="button" class="flex items-center px-4 py-2 w-fit rounded-md bg-[var(--blue)]">Hamburger</button>
+        <button type="button" class="flex items-center px-4 py-2 w-fit rounded-md bg-[var(--blue)]">Notificaties</button>
     </div>
 {{--    <div class="nav-container px-6">--}}
 {{--        <!-- Desktop Navigation -->--}}
