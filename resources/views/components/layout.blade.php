@@ -68,9 +68,9 @@
         <button type="button" id="menu-open" class="flex items-center px-4 py-2 w-fit rounded-md bg-[var(--blue)] shadow-2xl">
             <i class="fa-solid fa-bars text-xl"></i>
         </button>
-        <button type="button" class="flex items-center px-4 py-2 w-fit rounded-md bg-[var(--blue)] shadow-2xl">
+        <a href="{{ route('announcements.index') }}" class="flex items-center px-4 py-2 w-fit rounded-md bg-[var(--blue)] shadow-2xl">
             <i class="fa-solid fa-bell text-xl"></i>
-        </button>
+        </a>
     </div>
 
     <!-- Sidebar -->
