@@ -21,6 +21,9 @@ function navAnimation() {
             content.classList.add('opacity-100', 'translate-y-0');
         }
     });
+
+    const navLinks = document.querySelectorAll('#nav-links > *');
+    navLinks.forEach(link => link.classList.add('nav-underline'));
 }
 
 function toggleNavigation() {

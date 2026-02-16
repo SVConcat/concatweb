@@ -21,10 +21,9 @@
     <div id="desktop-nav" class="sticky hidden lg:flex justify-center top-4 gap-10 z-10 text-white opacity-0 -translate-y-6 transition duration-500">
         <nav class="flex items-center px-6 py-2 w-fit rounded-3xl bg-[var(--blue)] shadow-2xl">
             <a href="{{ route('home') }}">
-                <!-- TODO: This is gonna return as null when the other site get replaced by this -->
                 <img src="https://svconcat.nl/media/assets/logo-white.svg" alt="Concat's logo" class="me-8 size-10">
             </a>
-            <ul class="flex items-center space-x-8 font-bold">
+            <ul id="nav-links" class="flex items-center space-x-8 font-bold">
                 <x-nav-link href="{{ route('events.index') }}">Evenementen</x-nav-link>
                 <x-nav-link href="{{ route('community-nights.index') }}">Community Avonden</x-nav-link>
                 <x-nav-link href="{{ route('gallery.index') }}"><i class="text-xl fa-solid fa-image"></i></x-nav-link>
@@ -78,7 +77,6 @@
     <div id="mobile-sidebar" class="fixed flex-col justify-between items-start lg:hidden p-4 z-50 w-64 h-screen bg-[var(--blue)] text-white transform -translate-x-full transition duration-300">
         <div class="flex justify-between items-center mb-4">
             <a href="{{ route('home') }}">
-                <!-- TODO: This is gonna return as null when the other site get replaced by this -->
                 <img src="https://svconcat.nl/media/assets/logo-white.svg" alt="Concat's logo" class="me-8 size-10">
             </a>
             <button type="button" id="menu-close" class="p-4">
@@ -120,130 +118,13 @@
     </div>
 
     <div id="mobile-overlay" class="fixed hidden lg:hidden z-40 inset-0 bg-black bg-opacity-30 backdrop-blur-sm"></div>
-{{--    <div class="nav-container px-6">--}}
-{{--        <!-- Desktop Navigation -->--}}
-{{--        <nav id="main-nav" class="opacity-0 -translate-y-6 transition-all duration-700 ease-out">--}}
-{{--            <a href="/" class="flex items-center mr-2">--}}
-{{--                <img src="https://svconcat.nl/media/assets/logo-white.svg" alt="Concat Logo" class="h-10 w-auto">--}}
-{{--            </a>--}}
-{{--            <div class="flex horizontal spaced centered">--}}
-{{--                <div class="flex" id="menu-links">--}}
-{{--                    <x-nav-link href="/events/index">Evenementen</x-nav-link>--}}
-{{--                    <x-nav-link href="/community-nights">Community Avonden</x-nav-link>--}}
-{{--                    <x-nav-link href="/gallery"><i class="text-xl fa-solid fa-image"></i></x-nav-link>--}}
-{{--                    <x-nav-link href="{{ route('sponsors.index')  }}"><i--}}
-{{--                            class="text-xl fa-solid fa-handshake"></i></x-nav-link>--}}
-{{--                    <x-nav-link href="/newsletters"><i class="text-xl fa-solid fa-envelope"></i></x-nav-link>--}}
-{{--                    <x-nav-link href="{{ route('assignments.index') }}"><i--}}
-{{--                            class="text-xl fa-solid fa-briefcase"></i></x-nav-link>--}}
-{{--                    <x-nav-link href="/about-us"><i class="text-xl fa-solid fa-users"></i></x-nav-link>--}}
-{{--                    <x-nav-link href="/account"><i class="text-xl fa-solid fa-user"></i></x-nav-link>--}}
 
-{{--                    <a href="https://sv-concat.myspreadshop.nl/" redirect="https://sv-concat.myspreadshop.nl/"><i--}}
-{{--                            class="text-xl fa-solid fa-cart-shopping"></i></a>--}}
-
-{{--                    @guest--}}
-{{--                        <!-- <x-nav-link href="/register">Registreren</x-nav-link> -->--}}
-{{--                        <x-nav-link href="/login"><i class="text-2xl fa-solid fa-right-to-bracket"></i></x-nav-link>--}}
-{{--                    @endguest--}}
-
-{{--                    @auth--}}
-{{--                        @if(Auth::user()->isAdmin())--}}
-{{--                            <x-nav-link href="/roosters"><i class="text-xl fa-solid fa-calendar-days"></i></x-nav-link>--}}
-{{--                        @endif--}}
-{{--                    @endauth--}}
-
-{{--                    @auth--}}
-{{--                        <form action="{{ route('logout') }}" method="POST" style="display:flex;">--}}
-{{--                            @csrf--}}
-{{--                            <a href="#" onclick="event.preventDefault(); this.closest('form').submit();" class="x-nav-link">--}}
-{{--                                <i class="text-2xl fa-solid fa-right-from-bracket"></i>--}}
-{{--                            </a>--}}
-{{--                        </form>--}}
-{{--                    @endauth--}}
-
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </nav>--}}
-
-{{--        <!-- Mobile Menu -->--}}
-{{--        <div id="mobile-menu">--}}
-{{--            <div id="menu-links-mobile">--}}
-{{--                <button class="close-btn">✕</button>--}}
-{{--                <a href="/" class="flex items-center mr-2">--}}
-{{--                    <img src="https://svconcat.nl/media/assets/logo-white.svg" alt="Concat Logo" class="h-10 w-auto">--}}
-{{--                </a>--}}
-{{--                <x-nav-link href="/events/index">Evenementen</x-nav-link>--}}
-{{--                <x-nav-link href="/community-nights">Community Avonden</x-nav-link>--}}
-
-{{--                <x-nav-link href="/gallery">--}}
-{{--                    <i class="text-xl fa-solid fa-image"></i>--}}
-{{--                    <span class="ml-2">Galerij</span>--}}
-{{--                </x-nav-link>--}}
-
-{{--                <x-nav-link href="{{ route('sponsors.index')  }}">--}}
-{{--                    <i class="text-xl fa-solid fa-handshake"></i>--}}
-{{--                    <span class="ml-2">Sponsoren</span>--}}
-{{--                </x-nav-link>--}}
-
-{{--                <x-nav-link href="/newsletters">--}}
-{{--                    <i class="text-xl fa-solid fa-envelope"></i>--}}
-{{--                    <span class="ml-2">Nieuwsbrief</span>--}}
-{{--                </x-nav-link>--}}
-
-{{--                <x-nav-link href="{{ route('assignments.index') }}">--}}
-{{--                    <i class="text-xl fa-solid fa-briefcase"></i>--}}
-{{--                    <span class="ml-2">Opdrachten</span>--}}
-{{--                </x-nav-link>--}}
-
-{{--                <x-nav-link href="/about-us">--}}
-{{--                    <i class="text-xl fa-solid fa-users"></i>--}}
-{{--                    <span class="ml-2">About Us</span>--}}
-{{--                </x-nav-link>--}}
-
-{{--                <x-nav-link href="/account">--}}
-{{--                    <i class="text-xl fa-solid fa-user"></i>--}}
-{{--                    <span class="ml-2">Account</span>--}}
-{{--                </x-nav-link>--}}
-
-{{--                @guest--}}
-{{--                    <x-nav-link href="/login">--}}
-{{--                        <i class="text-xl fa-solid fa-right-to-bracket"></i>--}}
-{{--                        <span class="ml-2">Inloggen</span>--}}
-{{--                    </x-nav-link>--}}
-{{--                @endguest--}}
-{{--                @auth--}}
-{{--                    @if(Auth::user()->isAdmin())--}}
-{{--                        <x-nav-link href="/roosters"><i class="text-xl fa-solid fa-calendar-days"></i></x-nav-link>--}}
-{{--                    @endif--}}
-{{--                @endauth--}}
-
-{{--                @auth--}}
-{{--                    <form action="{{ route('logout') }}" method="POST" style="display:flex;">--}}
-{{--                        @csrf--}}
-{{--                        <a href="#" onclick="event.preventDefault(); this.closest('form').submit();" class="x-nav-link">--}}
-{{--                            Uitloggen--}}
-{{--                        </a>--}}
-{{--                    </form>--}}
-{{--                @endauth--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        <div class="overlay"></div>--}}
-{{--        <a href="{{ route('announcements.index') }}" id="bell-icon"--}}
-{{--            class="absolute right-[2%] z-50 flex items-center justify-center h-16 w-16 bg-white rounded-full shadow-md hover:shadow-lg transition-all hover:scale-105"--}}
-{{--            title="Bekijk aankondigingen" aria-label="Aankondigingen">--}}
-{{--            <i class="fa-solid fa-bell text-gray-700 text-xl"></i>--}}
-{{--            <!-- Notificatie indicator--}}
-{{--        <span class="absolute -top-1 -right-1 bg-red-500 text-xs text-white rounded-full px-2 py-1"></span>-->--}}
-{{--        </a>--}}
-
-{{--        <button id="nav-button" class="hamburger"></button>--}}
-{{--    </div>--}}
-
+    <!-- Main Content -->
     <div id="page-content" class="flex justify-center items-center z-0 p-6 lg:mt-200 opacity-0 translate-y-4 transition-all duration-700 ease-out">
         {{ $slot }}
     </div>
 
+    <!-- Footer -->
     <footer class="bg-gray-900 text-white pt-4 pb-3 text-center mt-auto">
         <div class="container mx-auto px-4">
             <!-- Flex container for responsiveness -->

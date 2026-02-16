@@ -57,195 +57,24 @@ li {
     line-height: 1.5rem;
 }
 
-.nav-container {
-    position: sticky;
-    top: 3.5%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    margin: 1rem 0;
-    z-index: 1000;
-}
-
-#bell-icon {
-    position: absolute;
-    right: 2%;
-    top: 2%;
-    width: 4em;
-    height: 4em;
-    border-radius: 1.4em;
-    background-color: var(--blue);
-    box-shadow: var(--nav-shadow);
-}
-
-#bell-icon i {
-    color: var(--white);
-    font-size: 1em;
-}
-
-/* Desktop Navigation */
-#main-nav {
-    height: 4em;
-    position: static;
-    max-width: 60%;
-    min-width: fit-content;
-    flex-wrap: nowrap;
-    background: var(--blue);
-    padding: 15px 30px;
-    border-radius: 1.6em;
-    box-shadow: 10px 10px 12px 10px var(--blue-shadow);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    z-index: 40;
-    white-space: nowrap;
-    top: 2%;
-    margin: 0 auto;
-}
-
-#main-nav .flex {
-    display: flex;
-    gap: 25px;
-    width: 100%;
-    justify-content: space-between;
-}
-
-#main-nav a {
-    color: var(--white);
-    opacity: 0.8;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 18px;
-    padding: 10px 20px;
-    transition: all 0.3s ease;
+/* Navigation Styles */
+.nav-underline {
     position: relative;
 }
 
-#main-nav a::after {
-    content: "";
+.nav-underline::after {
+    content: '';
     position: absolute;
-    left: 10%;
-    bottom: 5px;
+    left: 0;
+    bottom: 0;
     width: 0;
-    height: 5px;
-    background: var(--red);
-    border-radius: 10px;
-    transition: width 0.3s ease-in-out;
-    box-shadow: 0 4px 6px 2px rgba(254, 64, 64, 0);
-    z-index: -1;
+    height: 2px;
+    background-color: var(--red);
+    transition: width 0.3s ease;
 }
 
-#main-nav a:hover {
-    opacity: 1;
-    background-size: 100% 3px;
-    filter: drop-shadow(var(--link-shadow-hover));
-}
-
-#main-nav a:hover::after {
-    width: 80%;
-    box-shadow: 0 0px 6px 2px rgba(254, 64, 64, 0.4);
-    transition: ease-in-out 0.3s;
-}
-
-#main-nav a.current {
-    position: relative;
-    color: var(--white);
-    opacity: 1;
-    background-image: linear-gradient(90deg, var(--red), var(--red));
-    background-size: 100% 3px;
-    background-position: left bottom;
-    filter: drop-shadow(var(--link-shadow));
-    transform: scale(1.1);
-}
-
-#main-nav a.current::after {
-    content: "";
-    position: absolute;
-    left: 10%;
-    bottom: -3px;
-    width: 80%;
-    height: 3px;
-    background: var(--red);
-    border-radius: 10px;
-    box-shadow: var(--link-shadow);
-    filter: drop-shadow(0px 0px 6px rgba(254, 64, 64, 0.4));
-}
-
-/* Mobile Menu */
-#mobile-menu {
-    position: fixed;
-    top: 0;
-    left: -100%;
-    width: 250px;
-    height: 100vh;
-    background: var(--blue);
-    z-index: 1010;
-    transition: left 0.5s ease;
-    padding: 80px 20px 20px;
-    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
-}
-
-#mobile-menu.active {
-    left: 0;
-}
-
-#menu-links-mobile {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-#menu-links-mobile a {
-    color: var(--white);
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 18px;
-    padding: 15px;
-    transition: all 0.3s ease;
-    background-image: linear-gradient(90deg, var(--red), var(--red));
-    background-size: 0 3px;
-    background-repeat: no-repeat;
-    background-position: left bottom;
-    filter: drop-shadow(var(--link-shadow));
-}
-
-.close-btn {
-    display: none;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: none;
-    border: none;
-    color: var(--white);
-    font-size: 24px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.close-btn:hover {
-    transform: rotate(90deg) scale(1.1);
-}
-
-.overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
+.nav-underline:hover::after {
     width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.3);
-    z-index: 500;
-    backdrop-filter: blur(8px);
-    opacity: 0;
-    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), backdrop-filter 0.4s ease;
-}
-
-.overlay.active {
-    display: block;
-    opacity: 1;
-    backdrop-filter: blur(12px);
 }
 
 /* Gallery Modal Styles */
@@ -347,7 +176,7 @@ li {
     font-weight: 600;
 }
 
-/* Sluit animatie */
+/* Closing animation */
 .gallery-modal-closing {
     opacity: 0 !important;
     backdrop-filter: blur(0px) !important;
@@ -379,7 +208,7 @@ li {
     margin: 1rem 0 !important;
 }
 
-/* Responsive aanpassingen voor modal */
+/* Responsive changes for modal */
 @media (max-width: 768px) {
     .gallery-modal-image {
         width: 95vw;
@@ -416,105 +245,5 @@ li {
 
     .gallery-modal-info span {
         font-size: 1rem !important;
-    }
-}
-
-/* Responsive Styles */
-@media (max-width: 1024px) {
-    .nav-container {
-        position: sticky;
-        width: 100%;
-        height: auto;
-        display: flex;
-        justify-content: space-between;
-        padding: 0 2em;
-        z-index: 1000;
-    }
-
-    #nav-button {
-        position: relative;
-        right: auto;
-        left: auto;
-        width: 5em;
-        height: 5em;
-        border-radius: 1.4em;
-        border: none;
-        box-shadow: var(--nav-shadow);
-        background-color: var(--blue);
-        z-index: 50;
-        cursor: pointer;
-        margin-right: auto;
-    }
-
-    #bell-icon {
-        position: absolute;
-        right: 1.5rem;
-        left: auto;
-        width: 5em;
-        height: 5em;
-        border-radius: 1.4em;
-        background-color: var(--blue);
-        box-shadow: var(--nav-shadow);
-        margin-left: auto;
-    }
-
-    #bell-icon i {
-        color: var(--white);
-        font-size: 1.5em;
-    }
-
-    #nav-button::before,
-    #nav-button::after {
-        display: block;
-        position: absolute;
-        content: '';
-        height: 4px;
-        background-color: var(--white);
-        max-width: calc(100% - 2em);
-        border-radius: 999px;
-        right: 1em;
-        transition: top .3s ease, bottom .3s ease, width .3s ease;
-    }
-
-    #nav-button::before {
-        top: 35%;
-        width: 100%;
-    }
-
-    #nav-button::after {
-        bottom: 35%;
-        width: 50%;
-    }
-
-    #nav-button.active::before {
-        top: 50%;
-        width: 100%;
-    }
-
-    #nav-button.active::after {
-        width: 0;
-    }
-
-    #main-nav {
-        display: none;
-    }
-
-    #nav-button {
-        display: block;
-    }
-
-    .close-btn {
-        display: block;
-    }
-
-    #menu-links-mobile a {
-        width: 100%;
-        padding: 15px;
-        text-align: left;
-        white-space: nowrap;
-    }
-
-    .overlay.active {
-        display: block;
     }
 }
