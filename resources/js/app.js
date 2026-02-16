@@ -1,4 +1,5 @@
-import './bootstrap';
+import './bootstrap.js';
+import './layout.js';
 
     // Updated JavaScript
     function toggleMenu() {
