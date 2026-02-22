@@ -19,29 +19,29 @@
 <body>
     <!-- Desktop Navigation -->
     <div id="desktop-nav" class="sticky hidden lg:flex justify-center top-4 gap-10 z-10 text-white opacity-0 -translate-y-6 transition duration-500">
-        <nav class="flex items-center px-6 py-2 w-fit rounded-3xl bg-[var(--blue)] shadow-2xl">
+        <nav class="flex items-center px-6 py-3 w-fit rounded-3xl bg-[var(--blue)] shadow-2xl">
             <a href="{{ route('home') }}">
                 <img src="https://svconcat.nl/media/assets/logo-white.svg" alt="Concat's logo" class="me-8 size-10">
             </a>
             <ul id="nav-links" class="flex items-center space-x-10 font-bold">
                 <x-nav-link href="{{ route('events.index') }}">Evenementen</x-nav-link>
                 <x-nav-link href="{{ route('community-nights.index') }}">Community Avonden</x-nav-link>
-                <x-nav-link href="{{ route('gallery.index') }}"><i class="text-3xl fa-solid fa-image"></i></x-nav-link>
-                <x-nav-link href="{{ route('sponsors.index') }}"><i class="text-3xl fa-solid fa-handshake"></i></x-nav-link>
-                <x-nav-link href="{{ route('newsletters.index') }}"><i class="text-3xl fa-solid fa-envelope"></i></x-nav-link>
-                <x-nav-link href="{{ route('assignments.index') }}"><i class="text-3xl fa-solid fa-briefcase"></i></x-nav-link>
-                <x-nav-link href="{{ route('about-us.index') }}"><i class="text-3xl fa-solid fa-users"></i></x-nav-link>
-                <x-nav-link href="{{ route('account.show') }}"><i class="text-3xl fa-solid fa-user"></i></x-nav-link>
+                <x-nav-link href="{{ route('gallery.index') }}"><i class="text-2xl fa-solid fa-image"></i></x-nav-link>
+                <x-nav-link href="{{ route('sponsors.index') }}"><i class="text-2xl fa-solid fa-handshake"></i></x-nav-link>
+                <x-nav-link href="{{ route('newsletters.index') }}"><i class="text-2xl fa-solid fa-envelope"></i></x-nav-link>
+                <x-nav-link href="{{ route('assignments.index') }}"><i class="text-2xl fa-solid fa-briefcase"></i></x-nav-link>
+                <x-nav-link href="{{ route('about-us.index') }}"><i class="text-2xl fa-solid fa-users"></i></x-nav-link>
+                <x-nav-link href="{{ route('account.show') }}"><i class="text-2xl fa-solid fa-user"></i></x-nav-link>
 
-                <a href="https://sv-concat.myspreadshop.nl/"><i class="text-3xl fa-solid fa-cart-shopping"></i></a>
+                <a href="https://sv-concat.myspreadshop.nl/"><i class="text-2xl fa-solid fa-cart-shopping"></i></a>
 
                 @guest
-                    <x-nav-link href="{{ route('login') }}"><i class="text-3xl fa-solid fa-right-to-bracket"></i></x-nav-link>
+                    <x-nav-link href="{{ route('login') }}"><i class="text-2xl fa-solid fa-right-to-bracket"></i></x-nav-link>
                 @endguest
 
                 @auth
                     @if(Auth::user()->isAdmin())
-                        <x-nav-link href="{{ route('roosters.index') }}"><i class="text-3xl fa-solid fa-calendar-days"></i></x-nav-link>
+                        <x-nav-link href="{{ route('roosters.index') }}"><i class="text-2xl fa-solid fa-calendar-days"></i></x-nav-link>
                     @endif
                 @endauth
 
@@ -50,7 +50,7 @@
                         @method('POST')
                         @csrf
                         <button type="submit" class="x-nav-link">
-                            <i class="text-3xl fa-solid fa-right-from-bracket"></i>
+                            <i class="text-2xl fa-solid fa-right-from-bracket"></i>
                         </button>
                     </form>
                 @endauth
@@ -58,7 +58,7 @@
         </nav>
         <aside class="flex items-center px-4 py-2 w-fit rounded-3xl bg-[var(--blue)] shadow-2xl">
             <a href="{{ route('announcements.index') }}">
-                <i class="text-3xl fa-solid fa-bell"></i>
+                <i class="text-2xl fa-solid fa-bell"></i>
             </a>
         </aside>
     </div>
