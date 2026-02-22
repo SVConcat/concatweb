@@ -18,7 +18,7 @@
     - All variables starting with `DB_` for your database connection
     - `APP_URL` to match your local development URL
     - `APP_KEY` by running `php artisan key:generate`
-5. Create the database by running `php artisan migrate --seed`
+5. Create the database by running `php artisan migrate`
 6. After that run `php artisan db:seed` to seed the database with initial data
 
 ### Start the development server
