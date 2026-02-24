@@ -143,7 +143,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/announcements/{announcement}', [AnnouncementController::class, 'update'])->name('announcements.update');
         Route::delete('/announcements/{announcement}', [AnnouncementController::class, 'destroy'])->name('announcements.destroy');
 
-        Route::get('/roosters', [RoosterController::class, 'index']);
+        Route::get('/roosters', [RoosterController::class, 'index'])->name('roosters.index');
         Route::post('/roosters', [RoosterController::class, 'store']);
         Route::delete('/roosters/{rooster}', [RoosterController::class, 'destroy'])->name('roosters.destroy');
         Route::get('/events/{event}/edit', [EventController::class, 'edit'])->name('events.edit');

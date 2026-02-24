@@ -12,12 +12,6 @@
     --circle-large: min(17em, 20vw);
 }
 
-html, body {
-    font-size: 20px;
-    margin: 0;
-    padding: 0;
-}
-
 .concat-banner {
     display: flex;
     height: max(20vh, 15vw);
