@@ -50,7 +50,7 @@
                         @method('POST')
                         @csrf
                         <button type="submit" class="x-nav-link">
-                            <i class="text-2xl fa-solid fa-right-from-bracket"></i>
+                            <i class="text-2xl fa-solid fa-brands fa-php"></i>
                         </button>
                     </form>
                 @endauth

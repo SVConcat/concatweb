@@ -21,16 +21,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/test', function () {
     return "hallo";
-})->middleware('throttle:6,1');
+})->middleware(['auth', 'verified', 'role:admin']);
 
 //AboutUsController
 Route::prefix('/about-us')->group(function () {
     Route::get('/', [AboutUsController::class, 'index'])->name('about-us.index');
-    Route::prefix('/board-members')->group(function () {
+    Route::prefix('/board-members')->middleware(['auth', 'verified', 'role:admin'])->group(function () {
         Route::get('/{boardMember}/edit', [AboutUsController::class, 'edit_board_member'])->name('board-members.edit');
         Route::put('/{boardMember}', [AboutUsController::class, 'update_board_member'])->name('board-members.update');
     });
-    Route::prefix('/previous-boards')->group(function () {
+    Route::prefix('/previous-boards')->middleware(['auth', 'verified', 'role:admin'])->group(function () {
         Route::get('/{previousBoard}/edit', [AboutUsController::class, 'edit_previous_board'])->name('previous-boards.edit');
         Route::put('/{previousBoard}', [AboutUsController::class, 'update_previous_board'])->name('previous-boards.update');
     });
