@@ -18,14 +18,29 @@ class HomeController extends Controller
         $photos = [
             [
                 'title' => 'Studiereis Gent',
-                'date' => '12-03-2024',
-                'src' => Storage::url('/about-us/personal/jules_concat.png')
+                'date' => '05-07-2024',
+                'src' => Storage::url('/home_slider/slider-1.jpeg')
             ],
             [
-                'title' => 'Workshop PHP',
-                'date' => '15-03-2024',
-                'src' => 'https://media.printables.com/media/prints/f3353adc-083b-4e3a-9b87-752574fc9f0f/images/9693228_4f10ea7a-9925-474a-8110-02e7d5028e3a_c9858f90-6660-45f0-8de8-e6da08b80e95/thumbs/inside/1280x960/jpg/20250506_134530.webp'
-            ]
+                'title' => 'Studiereis Gent',
+                'date' => '05-07-2024',
+                'src' => Storage::url('/home_slider/slider-2.jpeg')
+            ],
+            [
+                'title' => 'Studiereis Gent',
+                'date' => '06-07-2024',
+                'src' => Storage::url('/home_slider/slider-3.jpeg')
+            ],
+            [
+                'title' => 'Kerstborrel',
+                'date' => '???', //TODO: set correct date
+                'src' => Storage::url('/home_slider/slider-4.jpeg')
+            ],
+            [
+                'title' => 'Pubquiz met formorrow',
+                'date' => '12-01-2026',
+                'src' => Storage::url('/home_slider/slider-5.jpeg')
+            ],
         ];
 
         $announcements = Announcement::where('isVisible', true)
