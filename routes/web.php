@@ -105,7 +105,7 @@ Route::prefix('/email')->group(function () {
 
     Route::post('/verification-notification', function (Request $request) {
         $request->user()->sendEmailVerificationNotification();
-        return back()->with('message', 'Een nieuwe verificatielink is gestuurd!');
+        return back()->with('message', 'Er is een nieuwe verificatielink is gestuurd!');
     })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 });
 
