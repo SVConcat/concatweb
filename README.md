@@ -40,8 +40,8 @@ Key points for developers:
   users.
 
 
-# Test plan
-## Inhoudsopgave
+## Test plan
+### Inhoudsopgave
 
 - [CRUD functionaliteiten](#crud-functionaliteiten)
   - [Aanmaken](#aanmaken)
