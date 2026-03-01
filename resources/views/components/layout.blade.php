@@ -28,7 +28,7 @@
                 <x-nav-link href="{{ route('community-nights.index') }}">Community Avonden</x-nav-link>
                 <x-nav-link href="{{ route('gallery.index') }}"><i class="text-2xl fa-solid fa-image"></i></x-nav-link>
                 <x-nav-link href="{{ route('sponsors.index') }}"><i class="text-2xl fa-solid fa-handshake"></i></x-nav-link>
-                <x-nav-link href="{{ route('newsletters.index') }}"><i class="text-2xl fa-solid fa-envelope"></i></x-nav-link>
+{{--                <x-nav-link href="{{ route('newsletter.index') }}"><i class="text-2xl fa-solid fa-envelope"></i></x-nav-link>--}}
                 <x-nav-link href="{{ route('assignments.index') }}"><i class="text-2xl fa-solid fa-briefcase"></i></x-nav-link>
                 <x-nav-link href="{{ route('about-us.index') }}"><i class="text-2xl fa-solid fa-users"></i></x-nav-link>
                 <x-nav-link href="{{ route('account.show') }}"><i class="text-2xl fa-solid fa-user"></i></x-nav-link>
@@ -88,7 +88,7 @@
             <x-nav-link href="{{ route('community-nights.index') }}">Community Avonden</x-nav-link>
             <x-nav-link href="{{ route('gallery.index') }}">Galerij</x-nav-link>
             <x-nav-link href="{{ route('sponsors.index') }}">Sponsoren</x-nav-link>
-            <x-nav-link href="{{ route('newsletters.index') }}">Nieuwsbrief</x-nav-link>
+{{--            <x-nav-link href="{{ route('newsletter.index') }}">Nieuwsbrief</x-nav-link>--}}
             <x-nav-link href="{{ route('assignments.index') }}">Opdrachten</x-nav-link>
             <x-nav-link href="{{ route('about-us.index') }}">Over ons</x-nav-link>
             <x-nav-link href="{{ route('account.show') }}">Account</x-nav-link>
