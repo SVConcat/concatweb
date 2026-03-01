@@ -33,7 +33,7 @@ class HomeController extends Controller
             ],
             [
                 'title' => 'Kerstborrel',
-                'date' => '???', //TODO: set correct date
+                'date' => '22-11-2022',
                 'src' => Storage::url('/home_slider/slider-4.jpeg')
             ],
             [
