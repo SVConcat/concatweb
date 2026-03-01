@@ -53,7 +53,7 @@
 
                         <div class="p-5">
                             @if(isset($sponsor->image_path))
-                                <a href="{{ route('sponsors.show', $sponsor) }}" aria-label="Details bekijken van sponsor {{ $sponsor->name }}">
+                                <a href="{{ route('sponsors.edit', $sponsor) }}" aria-label="Details bekijken van sponsor {{ $sponsor->name }}">
                                     <h5 class="text-2xl font-bold tracking-tight text-gray-900 mb-4">{{ $sponsor->name }}</h5>
                                 </a>
                             @endif
