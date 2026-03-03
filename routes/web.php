@@ -16,10 +16,6 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/test', function () {
-    return "hallo";
-})->middleware(['auth', 'verified', 'role:admin']);
-
 //AboutUsController
 Route::prefix('/about-us')->group(function () {
     Route::get('/', [AboutUsController::class, 'index'])->name('about-us.index');
