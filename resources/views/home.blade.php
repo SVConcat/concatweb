@@ -45,7 +45,7 @@
                     <h1 class="text-2xl font-bold mb-2 text-left">Eerstvolgend evenement</h1>
                     <hr class="border-b-4 border-purple-500 mb-4">
 
-
+                    @if($latestEvent != null)
                     <div class="grid gap-8 lg:gap-6 flex-grow">
                         <div
                             class="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden flex flex-col h-full">
@@ -146,6 +146,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                 </div>
 
 
@@ -153,6 +154,7 @@
                 <div class="w-full lg:max-w-6/12 flex flex-col h-full">
                     <h1 class="text-2xl font-bold mb-2 text-left">Eerstvolgende community-avond</h1>
                     <hr class="border-b-4 border-purple-500 mb-4">
+                    @if($communityNight != null)
                     <div class="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden">
                         <a href="{{ route('community-nights.show', $communityNight) }}">
                             {{-- Temporarily disabled, breaks at times for unknown reasons --}}
@@ -204,6 +206,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
 
