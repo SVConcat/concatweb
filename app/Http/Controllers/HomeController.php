@@ -19,27 +19,27 @@ class HomeController extends Controller
             [
                 'title' => 'Studiereis Gent',
                 'date' => '05-07-2024',
-                'src' => Storage::url('/home_slider/slider-1.jpeg')
+                'src' => Storage::url('home_slider/slider-1.jpeg')
             ],
             [
                 'title' => 'Studiereis Gent',
                 'date' => '05-07-2024',
-                'src' => Storage::url('/home_slider/slider-2.jpeg')
+                'src' => Storage::url('home_slider/slider-2.jpeg')
             ],
             [
                 'title' => 'Studiereis Gent',
                 'date' => '06-07-2024',
-                'src' => Storage::url('/home_slider/slider-3.jpeg')
+                'src' => Storage::url('home_slider/slider-3.jpeg')
             ],
             [
                 'title' => 'Kerstborrel',
                 'date' => '22-11-2022',
-                'src' => Storage::url('/home_slider/slider-4.jpeg')
+                'src' => Storage::url('home_slider/slider-4.jpeg')
             ],
             [
                 'title' => 'Pubquiz met formorrow',
                 'date' => '12-01-2026',
-                'src' => Storage::url('/home_slider/slider-5.jpeg')
+                'src' => Storage::url('home_slider/slider-5.jpeg')
             ],
         ];
 
@@ -52,12 +52,18 @@ class HomeController extends Controller
         $communityNight = CommunityNight::latestCommunityNight();
         $latestEvent = Event::latestEvent();
 
+        $registeredCount = 0;
+        $availableSpots = 0;
+        if($latestEvent != null){
+            $registeredCount = $latestEvent->registrations()->count();
+            $availableSpots = $latestEvent->aantal_beschikbare_plekken;
+        }
         return view('home', [
             'photos' => $photos,
             'groupedAnnouncements' => $groupedAnnouncements,
             'latestEvent' => $latestEvent,
-            'registeredCount' => $latestEvent->registrations()->count(),
-            'availableSpots' => $latestEvent->aantal_beschikbare_plekken,
+            'registeredCount' => $registeredCount,
+            'availableSpots' => $availableSpots,
             'communityNight' => $communityNight
         ]);
     }
