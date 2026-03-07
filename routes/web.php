@@ -1,154 +1,175 @@
 <?php
 
+use App\Http\Controllers\AboutUsController;
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\CommunityNightController;
-use App\Http\Controllers\SponsorController;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\RoosterController;
-use App\Http\Controllers\NewsletterController;
-use App\Http\Controllers\AboutUsController;
-use App\Http\Controllers\AccountController;
-
+use App\Http\Controllers\SponsorController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
-// routes/web.php
+//AboutUsController
+Route::prefix('/about-us')->group(function () {
+    Route::get('/', [AboutUsController::class, 'index'])->name('about-us.index');
 
-// Community Nights
-Route::resource('community-nights', CommunityNightController::class);
+    Route::prefix('/board-members')->middleware(['auth', 'verified', 'role:admin'])->group(function () {
+        Route::get('/{boardMember}/edit', [AboutUsController::class, 'edit_board_member'])->name('board-members.edit');
+        Route::put('/{boardMember}', [AboutUsController::class, 'update_board_member'])->name('board-members.update');
+    });
 
-// Sponsors
-Route::resource('sponsors', SponsorController::class);
-Route::get('/sponsors/{sponsor}/edit-hidden', [SponsorController::class, 'editHidden'])->name('sponsors.edit-hidden');
-Route::post('/sponsors/{sponsor}/force-delete', [SponsorController::class, 'forceDelete'])->name('sponsors.force-delete');
-
-Route::get('/', [HomeController::class, 'index'])->name('home');
-
-Route::post('/registration', [RegistrationController::class, 'store'])->name('registration');
-
-Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
-Route::post('/events/create', [EventController::class, 'store'])->name('events.store');
-// routes/web.php
-Route::get('/events/{event}/download-ics', [EventController::class, 'downloadIcs'])->name('events.ics');
-Route::get('/events/download-ics', [EventController::class, 'DownloadAllICS'])->name('events.download-ics');
-
-
-Route::get('/events/index', [EventController::class, 'index'])->name('events.index');
-Route::get('/community-nights/create', [CommunityNightController::class, 'create']);
-
-Route::get('/community-nights/{id}/edit', [CommunityNightController::class, 'edit'])->name('community-nights.edit');
-
-Route::put('/community-nights/{communityNight}/update', [CommunityNightController::class, 'update'])->name('community-nights.update');
-
-
-// Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show'); // hier moet het verified gedeelte
-
-Route::get('/events/{event}', [EventController::class, 'show'])
-     ->middleware(['auth', 'verified'])
-     ->name('events.show');
-
-
-//galerij
-Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
-Route::middleware(['auth'])->group(function () {
-    Route::get('/gallery/create', [GalleryController::class, 'create'])->name('gallery.create');
-    Route::post('/gallery', [GalleryController::class, 'store'])->name('gallery.store');
-    Route::get('/gallery/{gallery}/edit', [GalleryController::class, 'edit'])->name('gallery.edit');
-    Route::put('/gallery/{gallery}', [GalleryController::class, 'update'])->name('gallery.update');
-    Route::delete('/gallery/{photo}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
+    Route::prefix('/previous-boards')->middleware(['auth', 'verified', 'role:admin'])->group(function () {
+        Route::get('/{previousBoard}/edit', [AboutUsController::class, 'edit_previous_board'])->name('previous-boards.edit');
+        Route::put('/{previousBoard}', [AboutUsController::class, 'update_previous_board'])->name('previous-boards.update');
+    });
 });
 
-Route::get('/register', [AuthController::class, 'showRegister'])->name('show.register');
-Route::get('/login', [AuthController::class, 'showLogin'])->name('show.login');
-//Registreren
-Route::post('/register', [AuthController::class, 'Register'])->name('register');
-Route::post('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+//AccountController
+Route::prefix('/account')->middleware(['auth', 'verified', 'role:student,admin'])->group(function () {
+    Route::get('/', [AccountController::class, 'show'])->name('account.show');
+    Route::get('/edit', [AccountController::class, 'edit'])->name('account.edit');
+    Route::put('/update', [AccountController::class, 'update'])->name('account.update');
+    Route::post('{user}/update-user-role', [AccountController::class, 'updateUserRole'])->middleware(['role:admin'])->name('account.updateUserRole');
+});
 
+//CommunityNightController
+Route::prefix('/community-nights')->group(function () {
+    Route::get('/', [CommunityNightController::class, 'index'])->name('community-nights.index');
+    Route::get('/{communityNight}', [CommunityNightController::class, 'show'])->name('community-nights.show');
 
+    Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
+        Route::get('/create', [CommunityNightController::class, 'create'])->name('community-nights.create');
+        Route::post('/store', [CommunityNightController::class, 'store'])->name('community-nights.store');
+        Route::post('/{communityNight}/edit', [CommunityNightController::class, 'store'])->name('community-nights.edit');
+        Route::put('/{communityNight}', [CommunityNightController::class, 'update'])->name('community-nights.update');
+        Route::delete('/{communityNight}', [CommunityNightController::class, 'destroy'])->name('community-nights.destroy');
+    });
+});
 
-Route::get('/email/verify', function () {
+//AnnouncementController
+Route::prefix('/announcements')->group(function () {
+    Route::get('/', [AnnouncementController::class, 'index'])->name('announcements.index');
+
+    Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
+        Route::get('/create', [AnnouncementController::class, 'create'])->name('announcements.create');
+        Route::post('/', [AnnouncementController::class, 'store'])->name('announcements.store');
+        Route::get('/{announcement}/edit', [AnnouncementController::class, 'edit'])->name('announcements.edit');
+        Route::put('/{announcement}', [AnnouncementController::class, 'update'])->name('announcements.update');
+        Route::delete('/{announcement}', [AnnouncementController::class, 'destroy'])->name('announcements.destroy');
+    });
+});
+
+//AssignmentController
+Route::prefix('/assignments')->group(function () {
+    Route::get('/', [AssignmentController::class, 'index'])->name('assignments.index');
+
+    Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
+        Route::get('/create', [AssignmentController::class, 'create'])->name('assignments.create');
+        Route::post('/', [AssignmentController::class, 'store'])->name('assignments.store');
+        Route::get('/{assignment}/edit', [AssignmentController::class, 'edit'])->name('assignments.edit');
+        Route::put('/{assignment}', [AssignmentController::class, 'update'])->name('assignments.update');
+        Route::delete('/{assignment}', [AssignmentController::class, 'destroy'])->name('assignments.destroy');
+    });
+});
+
+//AuthController
+Route::prefix('/auth')->group(function () {
+    Route::get('/register', [AuthController::class, 'showRegister'])->name('show.register');
+    Route::post('/register', [AuthController::class, 'Register'])->name('register');
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('show.login');
+    Route::post('/login', [AuthController::class, 'login'])->middleware(['throttle:6,1'])->name('login');
+    Route::post('/logout', [AuthController::class, 'logout'])->middleware(['auth'])->name('logout');
+});
+
+//EventController
+Route::prefix('/email')->group(function () {
+    Route::get('/verify', function () {
         return view('auth.verify');
-    })->middleware('auth')->name('verification.notice');
+    })->middleware(['auth', 'throttle:6,1'])->name('verification.notice');
 
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    Route::get('/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
         $request->fulfill();
         return redirect('/');
     })->middleware(['auth', 'signed'])->name('verification.verify');
 
-Route::post('/email/verification-notification', function (Request $request) {
+    Route::post('/verification-notification', function (Request $request) {
         $request->user()->sendEmailVerificationNotification();
-        return back()->with('message', 'Een nieuwe verificatielink is gestuurd!');
+        return back()->with('message', 'Er is een nieuwe verificatielink is gestuurd!');
     })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
-
-
-// announcements
-Route::get('/announcements', [AnnouncementController::class, 'index'])->name('announcements.index');
-
-//newsletters
-Route::get('/newsletters', [NewsletterController::class, 'index'])->name('newsletters.index');
-Route::middleware(['auth'])->group(function () {
-    Route::get('/newsletters/create', [NewsletterController::class, 'create'])->name('newsletters.create');
-    Route::post('/newsletters', [NewsletterController::class, 'store'])->name('newsletters.store');
-    Route::get('newsletters/{newsletter}/edit', [NewsletterController::class, 'edit'])->name('newsletters.edit');
-    Route::put('/newsletters/{newsletter}', [NewsletterController::class, 'update'])->name('newsletters.update');
 });
 
-// account
-Route::middleware('auth')->group(function () {
-    Route::get('/account', [AccountController::class, 'show'])->name('account.show');
-    Route::get('/account/edit', [AccountController::class, 'edit'])->name('account.edit');
-    Route::post('/account/update', [AccountController::class, 'update'])->name('account.update');
+//EventController
+Route::prefix('/events')->group(function () {
+    Route::get('/', [EventController::class, 'index'])->name('events.index');
+    Route::get('/{event}', [EventController::class, 'show'])->name('events.show');
+    Route::get('/download-all-ics', [EventController::class, 'DownloadAllICS'])->name('events.download-ics');
+    Route::get('/{event}/download-ics', [EventController::class, 'downloadIcs'])->name('events.ics');
 
-    // accounts beheren (alleen bereikbaar voor admin, via controller check)
-    Route::get('/account/users-management', [AccountController::class, 'usersManagement'])->name('account.usersManagement');
-    Route::post('/account/users/{user}/update-role', [AccountController::class, 'updateUserRole'])->name('account.updateUserRole');
+    Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
+        Route::get('/create', [EventController::class, 'create'])->name('events.create');
+        Route::post('/store', [EventController::class, 'store'])->name('events.store');
+        Route::get('/{event}/edit', [EventController::class, 'edit'])->name('events.edit');
+        Route::put('/{event}', [EventController::class, 'update'])->name('events.update');
+        Route::delete('/{event}', [EventController::class, 'destroy'])->name('events.destroy');
+    });
 });
 
+//GalleryController
+Route::prefix('/gallery')->group(function () {
+    Route::get('/', [GalleryController::class, 'index'])->name('gallery.index');
 
-// assignments
-Route::resource('/assignments', AssignmentController::class);
+    Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
+        Route::get('/create', [GalleryController::class, 'create'])->name('gallery.create');
+        Route::post('/', [GalleryController::class, 'store'])->name('gallery.store');
+        Route::get('/{gallery}/edit', [GalleryController::class, 'edit'])->name('gallery.edit');
+        Route::put('/{gallery}', [GalleryController::class, 'update'])->name('gallery.update');
+        Route::delete('/{gallery}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
+    });
+});
 
-//about us
-Route::get('/about-us', [AboutUsController::class, 'index'])->name('about-us.index');
+//HomeController
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Board Members
-Route::get('/board-members/{boardMember}/edit', [AboutUsController::class, 'edit_board_member'])->name('board-members.edit');
-Route::put('/board-members/{boardMember}', [AboutUsController::class, 'update_board_member'])->name('board-members.update');
+//NewsletterController
+//TODO: Commented out because of request from student association
+//Route::prefix('/newsletters')->group(function () {
+//    Route::get('/', [NewsletterController::class, 'index'])->name('newsletter.index');
+//    Route::get('/create', [NewsletterController::class, 'create'])->name('newsletter.create');
+//    Route::post('/', [NewsletterController::class, 'store'])->name('newsletter.store');
+//    Route::get('/{newsletter}/edit', [NewsletterController::class, 'edit'])->name('newsletter.edit');
+//    Route::put('/{newsletter}', [NewsletterController::class, 'update'])->name('newsletter.update');
+//});
 
-// PreviousBoard
-Route::get('/previous-boards/{previousBoard}/edit', [AboutUsController::class, 'edit_previous_board'])->name('previous-boards.edit');
-Route::put('/previous-boards/{previousBoard}', [AboutUsController::class, 'update_previous_board'])->name('previous-boards.update');
+//RegistrationController
+Route::prefix('/registrations')->middleware(['auth', 'verified', 'throttle:6,1', 'role:admin,student'])->group(function () {
+    Route::post('/', [RegistrationController::class, 'store'])->name('registrations.store');
+});
 
-//PROBLEMEN MET AUTHENTICATIE KIJK ERNAAR!!!
-Route::middleware('auth')->group(function () {
-    Route::group([
-        'middleware' => function ($request, $next) {
-            if (!auth()->user()->isAdmin()) {
-                abort(403, 'Access denied');
-            }
-            return $next($request);
-        }
-    ], function () {
-        Route::get('/announcements/create', [AnnouncementController::class, 'create'])->name('announcements.create');
-        Route::post('/announcements', [AnnouncementController::class, 'store'])->name('announcements.store');
-        Route::get('/announcements/{announcement}/edit', [AnnouncementController::class, 'edit'])->name('announcements.edit');
-        Route::put('/announcements/{announcement}', [AnnouncementController::class, 'update'])->name('announcements.update');
-        Route::delete('/announcements/{announcement}', [AnnouncementController::class, 'destroy'])->name('announcements.destroy');
+//RoosterController
+Route::prefix('/rosters')->middleware(['auth', 'verified', 'role:admin'])->group(function () {
+    Route::get('/', [RoosterController::class, 'index'])->name('roosters.index');
+    Route::post('/', [RoosterController::class, 'store'])->name('roosters.store');
+    Route::delete('/{rooster}', [RoosterController::class, 'destroy'])->name('roosters.destroy');
+});
 
-        Route::get('/roosters', [RoosterController::class, 'index'])->name('roosters.index');
-        Route::post('/roosters', [RoosterController::class, 'store']);
-        Route::delete('/roosters/{rooster}', [RoosterController::class, 'destroy'])->name('roosters.destroy');
-        Route::get('/events/{event}/edit', [EventController::class, 'edit'])->name('events.edit');
-        Route::put('/events/{event}', [EventController::class, 'update'])->name('events.update');
-        Route::delete('/events/{event}', [EventController::class, 'destroy'])->name('events.destroy');
+//SponsorController
+Route::prefix('/sponsors')->group(function () {
+    Route::get('/', [SponsorController::class, 'index'])->name('sponsors.index');
 
+    Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
+        Route::get('/create', [SponsorController::class, 'create'])->name('sponsors.create');
+        Route::post('/', [SponsorController::class, 'store'])->name('sponsors.store');
+        Route::get('/{sponsor}/edit', [SponsorController::class, 'edit'])->name('sponsors.edit');
+        Route::put('/{sponsor}', [SponsorController::class, 'update'])->name('sponsors.update');
+        Route::post('/{sponsor}', [SponsorController::class, 'destroy'])->name('sponsors.destroy');
+        Route::get('/{sponsor}/restore', [SponsorController::class, 'restore'])->name('sponsors.restore');
+        Route::delete('/{sponsor}/force-delete', [SponsorController::class, 'forceDelete'])->name('sponsors.force-delete');
     });
 });

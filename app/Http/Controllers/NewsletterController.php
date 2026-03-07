@@ -29,7 +29,7 @@ class NewsletterController extends Controller
                 ->get();
         }
 
-        return view('newsletters.index', compact('published', 'upcoming'));
+        return view('newsletter.index', compact('published', 'upcoming'));
     }
 
     public function create()
@@ -80,7 +80,7 @@ class NewsletterController extends Controller
         ]);
 
         return redirect()
-            ->route('newsletters.index')
+            ->route('newsletter.index')
             ->with('success', 'Nieuwsbrief succesvol aangemaakt en PDF gegenereerd.');
     }
 
@@ -134,7 +134,7 @@ class NewsletterController extends Controller
         ]);
 
         return redirect()
-            ->route('newsletters.index')
+            ->route('newsletter.index')
             ->with('success', 'Nieuwsbrief succesvol bijgewerkt.');
     }
 }

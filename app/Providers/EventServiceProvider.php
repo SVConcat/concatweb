@@ -2,13 +2,15 @@
 
 namespace App\Providers;
 
+use App\Listeners\Discord\Events\NewEventAdded;
+use App\Listeners\Discord\Events\NotifyDiscordEventChannel;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
 {
     protected $listen = [
-        \App\Listeners\Discord\Events\NewEventAdded::class => [
-            \App\Listeners\Discord\Events\NotifyDiscordEventChannel::class,
+        NewEventAdded::class => [
+            NotifyDiscordEventChannel::class,
         ],
         'App\Listeners\Discord\Announcements\NewAnnouncementAdded' => [
             'App\Listeners\Discord\Announcements\NotifyDiscordAnnouncementChannel',
@@ -23,7 +25,7 @@ class EventServiceProvider extends ServiceProvider
         //
     }
 
-    public function shouldDiscoverEvents()
+    public function shouldDiscoverEvents(): false
     {
         return false;
     }

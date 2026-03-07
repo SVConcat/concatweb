@@ -72,10 +72,10 @@ class GalleryController extends Controller
             ->with('success', 'Foto bijgewerkt');
     }
 
-    public function destroy(Gallery $photo)
+    public function destroy(Gallery $gallery)
     {
-        $photo->src && Storage::delete($photo->src);
-        $photo->delete();
+        $gallery->src && Storage::delete($gallery->src);
+        $gallery->delete();
 
         return redirect()
             ->route('gallery.index')
