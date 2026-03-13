@@ -31,11 +31,11 @@
         </div>
 
         <div class="text-center mt-2">
-          <a href="/register" class="text-sm text-purple-600 hover:underline hover:text-purple-800 font-medium">
+          <a href="{{ route('show.register') }}" class="text-sm text-purple-600 hover:underline hover:text-purple-800 font-medium">
             Nog geen account? Registreer hier
           </a>
       </div>
-        
+
         <input type="submit" value="Login" class="w-full bg-red-500 text-white p-2 rounded-lg hover:bg-red-600 transition font-semibold cursor-pointer mt-4">
     </form>
     </div>
