@@ -42,7 +42,6 @@ Route::prefix('/account')->middleware(['auth', 'verified', 'role:student,admin']
 //CommunityNightController
 Route::prefix('/community-nights')->group(function () {
     Route::get('/', [CommunityNightController::class, 'index'])->name('community-nights.index');
-    Route::get('/{communityNight}', [CommunityNightController::class, 'show'])->name('community-nights.show');
 
     Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
         Route::get('/create', [CommunityNightController::class, 'create'])->name('community-nights.create');
@@ -51,6 +50,8 @@ Route::prefix('/community-nights')->group(function () {
         Route::put('/{communityNight}', [CommunityNightController::class, 'update'])->name('community-nights.update');
         Route::delete('/{communityNight}', [CommunityNightController::class, 'destroy'])->name('community-nights.destroy');
     });
+
+    Route::get('/{communityNight}', [CommunityNightController::class, 'show'])->name('community-nights.show');
 });
 
 //AnnouncementController
