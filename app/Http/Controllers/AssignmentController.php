@@ -17,17 +17,8 @@ class AssignmentController extends Controller
         return view('assignments.index', compact('assignments'));
     }
 
-    public function create()
-    {
-        $this->authorize('create', Assignment::class);
-
-        return view('assignments.create');
-    }
-
     public function store(AssignmentRequest $request)
     {
-        $this->authorize('create', Assignment::class);
-
         Assignment::create($request->validated());
 
         return redirect()
@@ -35,17 +26,18 @@ class AssignmentController extends Controller
             ->with('success', 'Opdracht succesvol aangemaakt.');
     }
 
+    public function create()
+    {
+        return view('assignments.create');
+    }
+
     public function edit(Assignment $assignment)
     {
-        $this->authorize('update', $assignment);
-
         return view('assignments.edit', compact('assignment'));
     }
 
     public function update(AssignmentRequest $request, Assignment $assignment)
     {
-        $this->authorize('update', $assignment);
-
         $validated = $request->validated();
         $assignment->update($validated);
 
@@ -56,8 +48,6 @@ class AssignmentController extends Controller
 
     public function destroy(Assignment $assignment)
     {
-        $this->authorize('delete', $assignment);
-
         $assignment->delete();
 
         return redirect()

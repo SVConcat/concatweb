@@ -25,11 +25,6 @@ class CommunityNightController extends Controller
         return view('community-nights.detail', compact('communityNight'));
     }
 
-    public function create()
-    {
-        return view('community-nights.create');
-    }
-
     public function store(CommunityNightRequest $request)
     {
         $validated = $request->validated();
@@ -56,6 +51,11 @@ class CommunityNightController extends Controller
         return redirect()
             ->route('community-nights.index')
             ->with('success', 'Community avond succesvol aangemaakt!');
+    }
+
+    public function create()
+    {
+        return view('community-nights.create');
     }
 
     public function edit(CommunityNight $communityNight)

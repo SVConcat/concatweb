@@ -7,9 +7,7 @@ use App\Http\Requests\BoardMemberUpdateRequest;
 use App\Http\Requests\PreviousBoardUpdateRequest;
 use App\Models\BoardMember;
 use App\Models\PreviousBoard;
-use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Support\Facades\Storage;
 
 class AboutUsController extends Controller
 {
