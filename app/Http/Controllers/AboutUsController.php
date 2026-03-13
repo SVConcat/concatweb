@@ -6,9 +6,7 @@ use App\Http\Requests\BoardMemberUpdateRequest;
 use App\Http\Requests\PreviousBoardUpdateRequest;
 use App\Models\BoardMember;
 use App\Models\PreviousBoard;
-use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Support\Facades\Storage;
 
 class AboutUsController extends Controller
 {
@@ -24,15 +22,11 @@ class AboutUsController extends Controller
 
     public function edit_board_member(BoardMember $boardMember)
     {
-        $this->authorize('editBoardMember', $boardMember);
-
         return view('about-us.board_member_edit', compact('boardMember'));
     }
 
     public function update_board_member(BoardMemberUpdateRequest $request, BoardMember $boardMember)
     {
-        $this->authorize('updateBoardMember', $boardMember);
-
         $validated = $request->validated();
         $request->hasFile('photo') && $validated['photo'] = $boardMember->replaceFile($request->file('photo'), 'board-members', 'public', 'photo');
         $boardMember->update($validated);
@@ -44,15 +38,11 @@ class AboutUsController extends Controller
 
     public function edit_previous_board(PreviousBoard $previousBoard)
     {
-        $this->authorize('editPreviousBoard', $previousBoard);
-
         return view('about-us.previous_board_edit', compact('previousBoard'));
     }
 
     public function update_previous_board(PreviousBoardUpdateRequest $request, PreviousBoard $previousBoard)
     {
-        $this->authorize('updatePreviousBoard', $previousBoard);
-
         $validated = $request->validated();
         $request->hasFile('photo') && $validated['photo'] = $previousBoard->replaceFile($request->file('photo'), 'previous-boards', 'public', 'photo');
         $previousBoard->update($validated);

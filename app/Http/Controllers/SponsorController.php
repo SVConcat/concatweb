@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SponsorRequest;
-use App\Models\CommunityNight;
 use App\Models\Sponsor;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Storage;
@@ -23,16 +22,8 @@ class SponsorController extends Controller
         ]);
     }
 
-    public function create()
-    {
-        $this->authorize('create', Sponsor::class);
-        return view('sponsors.create');
-    }
-
     public function store(SponsorRequest $request)
     {
-        $this->authorize('create', Sponsor::class);
-
         $validated = $request->validated();
         $request->hasFile('logo') && $validated['logo'] = $request->file('logo')->store('sponsor_logos', 'public');
         $sponsor = Sponsor::create($validated);
@@ -41,10 +32,13 @@ class SponsorController extends Controller
         return redirect()->route('sponsors.index');
     }
 
+    public function create()
+    {
+        return view('sponsors.create');
+    }
+
     public function edit(Sponsor $sponsor)
     {
-        $this->authorize('update', $sponsor);
-
         return view('sponsors.edit', compact('sponsor'));
     }
 
@@ -52,16 +46,12 @@ class SponsorController extends Controller
     {
         $sponsor = Sponsor::withTrashed()->findOrFail($id);
 
-        $this->authorize('update', $sponsor);
-
         return view('sponsors.edit', compact('sponsor'));
     }
 
     public function update(SponsorRequest $request, $id)
     {
         $sponsor = Sponsor::withTrashed()->findOrFail($id);
-
-        $this->authorize('update', $sponsor);
 
         $validated = $request->validated();
         $request->hasFile('logo') && $validated['logo'] = $sponsor->replaceFile($request->file('logo'), 'sponsor_logos', 'public', 'logo');
@@ -73,10 +63,17 @@ class SponsorController extends Controller
         return redirect()->route('sponsors.index');
     }
 
+    public function restore($id)
+    {
+        Sponsor::onlyTrashed()->findOrFail($id)->restore();
+
+        return redirect()
+            ->route('sponsors.index')
+            ->with('success', 'Sponsor hersteld.');
+    }
+
     public function destroy(Sponsor $sponsor)
     {
-        $this->authorize('delete', $sponsor);
-
         $sponsor->delete();
 
         return redirect()
@@ -86,23 +83,11 @@ class SponsorController extends Controller
     public function forceDelete($id)
     {
         $sponsor = Sponsor::onlyTrashed()->findOrFail($id);
-
-        $this->authorize('forceDelete', $sponsor);
-
         $sponsor->image_path && Storage::disk('public')->delete($sponsor->image_path);
         $sponsor->forceDelete();
 
         return redirect()
             ->route('sponsors.index')
             ->with('success', 'Sponsor definitief verwijderd.');
-    }
-
-    public function restore($id)
-    {
-        Sponsor::onlyTrashed()->findOrFail($id)->restore();
-
-        return redirect()
-            ->route('sponsors.index')
-            ->with('success', 'Sponsor hersteld.');
     }
 }
