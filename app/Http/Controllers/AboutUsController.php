@@ -63,12 +63,6 @@ class AboutUsController extends Controller
     {
         $validated = $request->validated();
         $request->hasFile('photo') && $validated['photo'] = $request->file('photo')->store('about-us/personal', 'public');
-        $communityNight = BoardMember::create($validated);
-        $imageUrl = null;
-
-        if ($communityNight->image) {
-            $imageUrl = Storage::url($communityNight->image);
-        }
 
         return redirect()
             ->route('about-us.index')
