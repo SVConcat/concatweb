@@ -27,15 +27,11 @@ class CommunityNightController extends Controller
 
     public function create()
     {
-        $this->authorize('create', CommunityNight::class);
-
         return view('community-nights.create');
     }
 
     public function store(CommunityNightRequest $request)
     {
-        $this->authorize('create', CommunityNight::class);
-
         $validated = $request->validated();
         $request->hasFile('image') && $validated['image'] = $request->file('image')->store('community-nights', 'public');
         $communityNight = CommunityNight::create($validated);
@@ -64,15 +60,11 @@ class CommunityNightController extends Controller
 
     public function edit(CommunityNight $communityNight)
     {
-        $this->authorize('update', $communityNight);
-
         return view('community-nights.edit', compact('communityNight'));
     }
 
     public function update(CommunityNightRequest $request, CommunityNight $communityNight)
     {
-        $this->authorize('update', $communityNight);
-
         $validated = $request->validated();
         $request->hasFile('image') && $validated['image'] = $communityNight->replaceFile($request->file('image'), 'community-nights', 'public', 'image');
         $communityNight->update($validated);
@@ -84,8 +76,6 @@ class CommunityNightController extends Controller
 
     public function destroy(CommunityNight $communityNight)
     {
-        $this->authorize('destroy', $communityNight);
-
         $communityNight->image && Storage::delete($communityNight->image);
         $communityNight->delete();
 
