@@ -33,6 +33,7 @@ Route::prefix('/about-us')->group(function () {
         Route::post('/store', [AboutUsController::class, 'store_previous_board'])->name('previous-boards.store');
         Route::get('/{previousBoard}/edit', [AboutUsController::class, 'edit_previous_board'])->name('previous-boards.edit');
         Route::put('/{previousBoard}', [AboutUsController::class, 'update_previous_board'])->name('previous-boards.update');
+        Route::delete('/{previousBoard}', [AboutUsController::class, 'destroy_previous_board'])->name('previous-boards.destroy');
     });
 });
 

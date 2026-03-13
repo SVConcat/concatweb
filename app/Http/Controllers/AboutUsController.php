@@ -94,6 +94,16 @@ class AboutUsController extends Controller
 
         return redirect()
             ->route('about-us.index')
-            ->with('success', 'Voorgaand bestuur succesvol aangemaakt!');
+            ->with('success', 'Vorig bestuur succesvol aangemaakt!');
+    }
+
+    public function destroy_previous_board(PreviousBoard $previousBoard)
+    {
+        $previousBoard->removeFile('public', 'photo');
+        $previousBoard->delete();
+
+        return redirect()
+            ->route('about-us.index')
+            ->with('success', 'Vorig bestuur verwijderd.');
     }
 }
