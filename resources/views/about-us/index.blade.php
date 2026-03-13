@@ -38,7 +38,7 @@
                 <div class="flex justify-end my-4" >
                     <a href="{{ route('board-members.create') }}"
                        class="inline-flex items-center bg-green-500 text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-green-600 transition"
-                       aria-label="Nieuwe sponsor toevoegen"><i class="fa-solid fa-plus mr-2" aria-hidden="true"></i>Bestuurslid toevoegen</a>
+                       aria-label="Bestuurslid toevoegen"><i class="fa-solid fa-plus mr-2" aria-hidden="true"></i>Bestuurslid toevoegen</a>
                 </div>
             @endif
         @endauth
@@ -95,6 +95,16 @@
         <h2 class="text-xl font-bold border-b-4 border-purple-500 inline-block mt-10 pb-1 text-center w-full mb-8">
             Vorige Besturen
         </h2>
+
+        @auth
+            @if(auth()->user()->isAdmin())
+                <div class="flex justify-end my-4" >
+                    <a href="{{ route('previous-boards.create') }}"
+                       class="inline-flex items-center bg-green-500 text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-green-600 transition"
+                       aria-label="Vorig bestuur toevoegen"><i class="fa-solid fa-plus mr-2" aria-hidden="true"></i>Vorig bestuur toevoegen</a>
+                </div>
+            @endif
+        @endauth
 
         {{-- Horizontale tijdlijn --}}
         <div class="relative" role="region" aria-labelledby="tijdlijn-title">

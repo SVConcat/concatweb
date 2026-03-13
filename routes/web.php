@@ -29,6 +29,8 @@ Route::prefix('/about-us')->group(function () {
     });
 
     Route::prefix('/previous-boards')->middleware(['auth', 'verified', 'role:admin'])->group(function () {
+        Route::get('/create', [AboutUsController::class, 'create_previous_board'])->name('previous-boards.create');
+        Route::post('/store', [AboutUsController::class, 'store_previous_board'])->name('previous-boards.store');
         Route::get('/{previousBoard}/edit', [AboutUsController::class, 'edit_previous_board'])->name('previous-boards.edit');
         Route::put('/{previousBoard}', [AboutUsController::class, 'update_previous_board'])->name('previous-boards.update');
     });

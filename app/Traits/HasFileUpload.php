@@ -18,4 +18,13 @@ trait HasFileUpload
 
         return $path;
     }
+
+    public function removeFile(string $disk, string $column): bool
+    {
+        $deleteable = !empty($this->{$column});
+        if ($deleteable) {
+            Storage::disk($disk)->delete($this->{$column});
+        }
+        return $deleteable;
+    }
 }
