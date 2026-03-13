@@ -66,11 +66,24 @@
 
                    @auth
                         @if(auth()->user()->role === 'admin')
-                            <a href="{{ route('board-members.edit', $member->id) }}"
-                            class="bg-[#3129FF] rounded-lg text-white py-1 px-2 hover:bg-[#E39FF6] transition text-sm inline-flex items-center max-w-[90px] truncate"
-                            aria-label="Bewerk Knop">
-                            <i class="fa-solid fa-pencil mr-1"></i>Bewerken
-                            </a>
+                            <div class="flex justify-between mb-4 gap-2 pt-2 pr-2">
+                                <a href="{{ route('board-members.edit', $member->id) }}"
+                                   class="bg-[#3129FF] rounded-lg text-white py-1.5 px-3 hover:bg-[#E39FF6] transition text-sm">
+                                    <i class="fa-solid fa-pencil mr-1" aria-hidden="true"></i>
+                                    Bewerken
+                                </a>
+                                <form action="{{ route('board-members.destroy', $member->id) }}"
+                                      method="POST" class="inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                            onclick="return confirm('Weet je zeker dat je dit bestuurslid wilt verwijderen?');"
+                                            class="bg-red-500 text-white py-1.5 px-3 rounded-lg hover:bg-red-600 transition text-sm">
+                                        <i class="fa-solid fa-trash mr-1" aria-hidden="true"></i>
+                                        Verwijderen
+                                    </button>
+                                </form>
+                            </div>
                         @endif
                     @endauth
 

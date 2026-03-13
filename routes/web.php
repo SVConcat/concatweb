@@ -25,6 +25,7 @@ Route::prefix('/about-us')->group(function () {
         Route::post('/store', [AboutUsController::class, 'store_board_member'])->name('board-members.store');
         Route::get('/{boardMember}/edit', [AboutUsController::class, 'edit_board_member'])->name('board-members.edit');
         Route::put('/{boardMember}', [AboutUsController::class, 'update_board_member'])->name('board-members.update');
+        Route::delete('/{boardMember}', [AboutUsController::class, 'destroy_board_member'])->name('board-members.destroy');
     });
 
     Route::prefix('/previous-boards')->middleware(['auth', 'verified', 'role:admin'])->group(function () {

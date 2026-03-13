@@ -8,6 +8,7 @@ use App\Http\Requests\PreviousBoardUpdateRequest;
 use App\Models\BoardMember;
 use App\Models\PreviousBoard;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Storage;
 
 class AboutUsController extends Controller
 {
@@ -60,7 +61,6 @@ class AboutUsController extends Controller
 
     public function store_board_member(BoardMemberRequest $request)
     {
-        //TODO: implement;
         $validated = $request->validated();
         $request->hasFile('photo') && $validated['photo'] = $request->file('photo')->store('about-us/personal', 'public');
         $communityNight = BoardMember::create($validated);
@@ -73,5 +73,14 @@ class AboutUsController extends Controller
         return redirect()
             ->route('about-us.index')
             ->with('success', 'Bestuurslid succesvol aangemaakt!');
+    }
+
+    public function destroy_board_member(BoardMember $boardMember)
+    {
+        $boardMember->delete();
+
+        return redirect()
+            ->route('about-us.index')
+            ->with('success', 'Bestuurslid verwijderd.');
     }
 }
