@@ -30,44 +30,53 @@
         </section>
 
         {{-- Titel Huidig Bestuur --}}
-        <h2 class="text-2xl font-bold border-b-4 border-purple-500 inline-block pb-1 text-center w-full mb-8">
+        <h2 class="text-2xl font-bold border-b-4 border-purple-500 inline-block pb-1 text-center w-full mb-1">
             Huidig Bestuur
         </h2>
+        @auth
+            @if(auth()->user()->isAdmin())
+                <div class="flex justify-end my-4" >
+                    <a href="{{ route('board-members.create') }}"
+                       class="inline-flex items-center bg-green-500 text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-green-600 transition"
+                       aria-label="Nieuwe sponsor toevoegen"><i class="fa-solid fa-plus mr-2" aria-hidden="true"></i>Bestuurslid toevoegen</a>
+                </div>
+            @endif
+        @endauth
 
         {{-- Bestuursleden cards --}}
-<div class="grid sm:grid-cols-2 gap-8" role="list">
-    @foreach ($currentBoard as $member)
-        <div role="listitem" class="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden p-5 flex flex-col space-y-4 min-h-[400px]" tabindex="0">
-            {{-- Header met naam, rol en foto naast elkaar --}}
-            <div class="flex justify-between items-start space-x-4">
-                <div class="flex-1">
-                    <h3 class="text-xl font-bold text-gray-800">{{ $member['name'] }}</h3>
-                    <p class="text-purple-700 font-semibold">{{ $member['role'] }}</p>
+        <div class="grid sm:grid-cols-2 gap-8" role="list">
+            @foreach ($currentBoard as $member)
+                <div role="listitem" class="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden p-5 flex flex-col space-y-4 min-h-[400px]" tabindex="0">
+                    {{-- Header met naam, rol en foto naast elkaar --}}
+                    <div class="flex justify-between items-start space-x-4">
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-gray-800">{{ $member['name'] }}</h3>
+                            <p class="text-purple-700 font-semibold">{{ $member['role'] }}</p>
+                        </div>
+                        <img
+                            src="{{ Storage::url($member['photo']) }}"
+                            alt="Foto van {{ $member['name'] }}"
+                            class="w-64 h-64 object-cover rounded-lg shadow"
+                        >
+                    </div>
+                    {{-- Volledige bio --}}
+                    <p class="text-gray-700 whitespace-pre-line flex-grow">
+                        {{ $member['bio'] }}
+                    </p>
+
+                   @auth
+                        @if(auth()->user()->role === 'admin')
+                            <a href="{{ route('board-members.edit', $member->id) }}"
+                            class="bg-[#3129FF] rounded-lg text-white py-1 px-2 hover:bg-[#E39FF6] transition text-sm inline-flex items-center max-w-[90px] truncate"
+                            aria-label="Bewerk Knop">
+                            <i class="fa-solid fa-pencil mr-1"></i>Bewerken
+                            </a>
+                        @endif
+                    @endauth
+
                 </div>
-                <img
-                    src="{{ Storage::url($member['photo']) }}"
-                    alt="Foto van {{ $member['name'] }}"
-                    class="w-64 h-64 object-cover rounded-lg shadow"
-                >
-            </div>
-            {{-- Volledige bio --}}
-            <p class="text-gray-700 whitespace-pre-line flex-grow">
-                {{ $member['bio'] }}
-            </p>
-
-           @auth
-                @if(auth()->user()->role === 'admin')
-                    <a href="{{ route('board-members.edit', $member->id) }}"
-                    class="bg-[#3129FF] rounded-lg text-white py-1 px-2 hover:bg-[#E39FF6] transition text-sm inline-flex items-center max-w-[90px] truncate"
-                    aria-label="Bewerk Knop">
-                    <i class="fa-solid fa-pencil mr-1"></i>Bewerken
-                    </a>
-                @endif
-            @endauth
-
+            @endforeach
         </div>
-    @endforeach
-</div>
 
         {{-- Titel Vorige Besturen --}}
         <h2 class="text-xl font-bold border-b-4 border-purple-500 inline-block mt-10 pb-1 text-center w-full mb-8">

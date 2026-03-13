@@ -21,6 +21,8 @@ Route::prefix('/about-us')->group(function () {
     Route::get('/', [AboutUsController::class, 'index'])->name('about-us.index');
 
     Route::prefix('/board-members')->middleware(['auth', 'verified', 'role:admin'])->group(function () {
+        Route::get('/create', [AboutUsController::class, 'create_board_member'])->name('board-members.create');
+        Route::post('/store', [AboutUsController::class, 'store_board_member'])->name('board-members.store');
         Route::get('/{boardMember}/edit', [AboutUsController::class, 'edit_board_member'])->name('board-members.edit');
         Route::put('/{boardMember}', [AboutUsController::class, 'update_board_member'])->name('board-members.update');
     });
@@ -46,7 +48,7 @@ Route::prefix('/community-nights')->group(function () {
     Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
         Route::get('/create', [CommunityNightController::class, 'create'])->name('community-nights.create');
         Route::post('/store', [CommunityNightController::class, 'store'])->name('community-nights.store');
-        Route::post('/{communityNight}/edit', [CommunityNightController::class, 'store'])->name('community-nights.edit');
+        Route::get('/{communityNight}/edit', [CommunityNightController::class, 'edit'])->name('community-nights.edit');
         Route::put('/{communityNight}', [CommunityNightController::class, 'update'])->name('community-nights.update');
         Route::delete('/{communityNight}', [CommunityNightController::class, 'destroy'])->name('community-nights.destroy');
     });
