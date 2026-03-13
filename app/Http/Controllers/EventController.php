@@ -163,7 +163,7 @@ class EventController extends Controller
 
     public function destroy(Event $event)
     {
-        $event->afbeelding && Storage::delete($event->afbeelding);
+        $event->removeFile('public', 'afbeelding');
         $event->delete();
 
         return redirect()

@@ -76,7 +76,7 @@ class CommunityNightController extends Controller
 
     public function destroy(CommunityNight $communityNight)
     {
-        $communityNight->image && Storage::delete($communityNight->image);
+        $communityNight->removeFile('public', 'image');
         $communityNight->delete();
 
         return redirect()
