@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BoardMemberRequest;
 use App\Http\Requests\BoardMemberUpdateRequest;
+use App\Http\Requests\PreviousBoardRequest;
 use App\Http\Requests\PreviousBoardUpdateRequest;
 use App\Models\BoardMember;
 use App\Models\PreviousBoard;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Storage;
 
 class AboutUsController extends Controller
 {
@@ -50,5 +53,57 @@ class AboutUsController extends Controller
         return redirect()
             ->route('about-us.index')
             ->with('success', 'Vorig bestuur succesvol bijgewerkt!');
+    }
+
+    public function create_board_member()
+    {
+        return view('about-us.board_member_create');
+    }
+
+    public function store_board_member(BoardMemberRequest $request)
+    {
+        $validated = $request->validated();
+        $request->hasFile('photo') && $validated['photo'] = $request->file('photo')->store('about-us/personal', 'public');
+        BoardMember::create($validated);
+
+        return redirect()
+            ->route('about-us.index')
+            ->with('success', 'Bestuurslid succesvol aangemaakt!');
+    }
+
+    public function destroy_board_member(BoardMember $boardMember)
+    {
+        $boardMember->removeFile('public', 'photo');
+        $boardMember->delete();
+
+        return redirect()
+            ->route('about-us.index')
+            ->with('success', 'Bestuurslid verwijderd.');
+    }
+
+    public function create_previous_board()
+    {
+        return view('about-us.previous_board_create');
+    }
+
+    public function store_previous_board(PreviousBoardRequest $request)
+    {
+        $validated = $request->validated();
+        $request->hasFile('photo') && $validated['photo'] = $request->file('photo')->store('previous-boards', 'public');
+        PreviousBoard::create($validated);
+
+        return redirect()
+            ->route('about-us.index')
+            ->with('success', 'Vorig bestuur succesvol aangemaakt!');
+    }
+
+    public function destroy_previous_board(PreviousBoard $previousBoard)
+    {
+        $previousBoard->removeFile('public', 'photo');
+        $previousBoard->delete();
+
+        return redirect()
+            ->route('about-us.index')
+            ->with('success', 'Vorig bestuur verwijderd.');
     }
 }

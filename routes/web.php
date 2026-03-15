@@ -21,13 +21,19 @@ Route::prefix('/about-us')->group(function () {
     Route::get('/', [AboutUsController::class, 'index'])->name('about-us.index');
 
     Route::prefix('/board-members')->middleware(['auth', 'verified', 'role:admin'])->group(function () {
+        Route::get('/create', [AboutUsController::class, 'create_board_member'])->name('board-members.create');
+        Route::post('/store', [AboutUsController::class, 'store_board_member'])->name('board-members.store');
         Route::get('/{boardMember}/edit', [AboutUsController::class, 'edit_board_member'])->name('board-members.edit');
         Route::put('/{boardMember}', [AboutUsController::class, 'update_board_member'])->name('board-members.update');
+        Route::delete('/{boardMember}', [AboutUsController::class, 'destroy_board_member'])->name('board-members.destroy');
     });
 
     Route::prefix('/previous-boards')->middleware(['auth', 'verified', 'role:admin'])->group(function () {
+        Route::get('/create', [AboutUsController::class, 'create_previous_board'])->name('previous-boards.create');
+        Route::post('/store', [AboutUsController::class, 'store_previous_board'])->name('previous-boards.store');
         Route::get('/{previousBoard}/edit', [AboutUsController::class, 'edit_previous_board'])->name('previous-boards.edit');
         Route::put('/{previousBoard}', [AboutUsController::class, 'update_previous_board'])->name('previous-boards.update');
+        Route::delete('/{previousBoard}', [AboutUsController::class, 'destroy_previous_board'])->name('previous-boards.destroy');
     });
 });
 
@@ -37,6 +43,21 @@ Route::prefix('/account')->middleware(['auth', 'verified', 'role:student,admin']
     Route::get('/edit', [AccountController::class, 'edit'])->name('account.edit');
     Route::put('/update', [AccountController::class, 'update'])->name('account.update');
     Route::post('{user}/update-user-role', [AccountController::class, 'updateUserRole'])->middleware(['role:admin'])->name('account.updateUserRole');
+});
+
+//CommunityNightController
+Route::prefix('/community-nights')->group(function () {
+    Route::get('/', [CommunityNightController::class, 'index'])->name('community-nights.index');
+
+    Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
+        Route::get('/create', [CommunityNightController::class, 'create'])->name('community-nights.create');
+        Route::post('/store', [CommunityNightController::class, 'store'])->name('community-nights.store');
+        Route::get('/{communityNight}/edit', [CommunityNightController::class, 'edit'])->name('community-nights.edit');
+        Route::put('/{communityNight}', [CommunityNightController::class, 'update'])->name('community-nights.update');
+        Route::delete('/{communityNight}', [CommunityNightController::class, 'destroy'])->name('community-nights.destroy');
+    });
+
+    Route::get('/{communityNight}', [CommunityNightController::class, 'show'])->name('community-nights.show');
 });
 
 //AnnouncementController
@@ -72,20 +93,6 @@ Route::prefix('/auth')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('show.login');
     Route::post('/login', [AuthController::class, 'login'])->middleware(['throttle:6,1'])->name('login');
     Route::post('/logout', [AuthController::class, 'logout'])->middleware(['auth'])->name('logout');
-});
-
-//CommunityNightController
-Route::prefix('/community-nights')->group(function () {
-    Route::get('/', [CommunityNightController::class, 'index'])->name('community-nights.index');
-    Route::get('/{communityNight}', [CommunityNightController::class, 'show'])->name('community-nights.show');
-
-    Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
-        Route::get('/create', [CommunityNightController::class, 'create'])->name('community-nights.create');
-        Route::post('/store', [CommunityNightController::class, 'store'])->name('community-nights.store');
-        Route::get('/{communityNight}/edit', [CommunityNightController::class, 'edit'])->name('community-nights.edit');
-        Route::put('/{communityNight}', [CommunityNightController::class, 'update'])->name('community-nights.update');
-        Route::delete('/{communityNight}', [CommunityNightController::class, 'destroy'])->name('community-nights.destroy');
-    });
 });
 
 //EventController
