@@ -95,7 +95,7 @@
 
                                 <div class="flex flex-col justify-between max-h-40 mt-auto">
                                     <div class="mb-4 grow text-gray-700 relative overflow-hidden">
-                                        <p class="mb-3 font-normal text-gray-700 ">{{ $communityNight->description }}</p>
+                                        <p class="mb-3 break-words font-normal text-gray-700 ">{{ $communityNight->description }}</p>
                                         <div
                                             class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-b from-transparent to-white"></div>
                                     </div>
