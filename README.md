@@ -85,46 +85,100 @@ Key points for developers:
 
 Voor deze functionaliteiten worden de volgende punten getest. Om te valideren of wijzigingen doorgevoerd zijn, wordt de website vanaf de gebruikerspagina bezocht en wordt er gekeken of de aanpassing zichtbaar is.
 
-### Aanmaken
+tijdens het aanmaken of aanpassen van een item moeten de volgende dingen getest worden:
 
-### Bezoeken
+- validatie voor lege waarden
+- lower en upper bound testen voor numerieke waarden en datums
+- maximum lengte testen voor text velden
 
-### Bewerken
-
-### Verwijderen
+de volgende CRUD functionaliteiten worden getest:
 
 - Event
-- community avonden 
-- sponsoren
-- bestuursleden
-- announcements
-- galerij
-- account (Admin/Gebruiker)
+  - [ ] Maak een event aan
+  - [x] Pas een event aan
+  - [ ] Bekijk een event
+  - [x] Verwijder een event
+- Community avonden 
+  - [x] maak een community avond aan
+  - [x] pas een community avond aan
+  - [x] bekijk een community avond
+  - [x] verwijder een community avond
+- Sponsoren
+  - [ ] Maak een sponsor aan
+  - [ ] Pas een sponsor aan
+  - [ ] Bekijk de sponsoren
+  - [ ] Verwijder een sponsor 
+- Bestuursleden
+  - [ ] Maak een event aan
+  - [ ] Pas een event aan
+  - [ ] Bekijk een event
+  - [ ] Verwijder een event
+- Announcements
+  - [x] Maak een announcement aan
+  - [x] Pas een announcement aan
+  - [x] Bekijk een announcement
+  - [x] Verwijder een announcement
+- Galerij
+  - [ ] upload een foto naar de galerij
+  - [ ] Pas een foto aan
+  - [ ] bekijk de galerij
+  - [ ] verwijder een foto
+- Account (Admin/Gebruiker)
+  - [ ] account maken
+  - [ ] profiel pagina bezoeken
+  - [ ] eigen account wijzigen
 
 # Andere functionaliteiten
 
-- **Beheerder:** beheren van beheerders
-  - geef de beheerder rol aan een andere gebruiker.
-  - haal de beheerder rol van een andere beheerder weg.
-  - check of de wijzigingen door zijn gekomen door als die andere gebruiker/beheerder in te loggen.
-- **Beheerder:** inzien van avans agenda’s
-  - het rooster van een klas via een avans kalender toevoegen aan het overzicht.
-  - het rooster van een klas via een avans kalender verwijderen uit het overzicht.
-  - kijk of de evenementen juist ingeladen worden volgens het daadwerkelijke rooster van die klas.
-- **Bezoeker:** inschrijven voor evenement
-  - inschrijven voor een evenement als student en kijken of dat zichtbaar is.
-- **Bezoeker:** ics bestanden downloaden
-  - navigeer naar de … en download de agenda.
-  - bekijk of deze up-to-date is met de huidige planning.
-- **Bezoeker:** pdf’s downloaden
-  - download een nieuwsbrief PDF.
-- **Discord gebruiker:** discord integratie
-  - aanmaken van een evenement en melding en kijken of die in discord verschijnen.
-- **Bezoeker:** account aanmaken
-  - account aanmaak proces volgen en testen of je daarna in kan loggen.
-- **Bezoeker:** herinnering over events (**n.v.t. voor nu**)
-- **Beheerder:** afbeelding uploaden
-  - upload een afbeelding van 2mb.
-  - maak een foto met je telefoon en upload deze vanaf je telefoon naar de galerij.
-- **Bezoeker:** carrousel afbeelding check
-  - zijn de gewenste afbeeldingen weergegeven op de web page.
+- [ ] **Beheerder:** inzien van avans agenda’s  
+  Test data: 1 beheerder account (A) + Haal rooster URL’s op met namen “OB101“ en “OB102“ (mits deze lokalen nog bestaat) via rooster.avans.one
+  - Log in op een beheerder account en voer per URL het rooster in van “OB101” en “OB102“ bij het toevoegen van een rooster (**exacte navigatiepad benoemen**)
+  - Navigeer naar het rooster overzicht en check of dezelfde rooster items zichtbaar zijn, zoals  op “rooster.avans.one” (**exacte navigatiepad benoemen**)
+  - Verwijder het rooster van “OB102“
+  - Controleer of deze nog zichtbaar is op het rooster overzicht
+
+- [ ] **Bezoeker:** inschrijven voor evenement
+  Testdata: Evenement (A), standaard account (A)
+  - Login met account (A)
+  - Navigeer naar evenement (A)
+  - Schrijf account (A) in voor evenement (A)
+  - Controleer of de inschrijving is doorgekomen (**op basis van welke visual cue?**)
+
+- [ ] **Bezoeker:** .ics bestand downloaden  
+  Test data: Evenement (A)
+  - Navigeer naar de … en download de agenda (**exacte navigatiepad benoemen**)
+  - Bekijk of evenement (A) zichtbaar is op de aangegeven datum
+
+- [ ] **Discord gebruiker:** discord integratie  
+  Test data: Beheerder account (A), Test discord server (A)
+  - Log in met account (A)
+  - Maak een communityavond aan
+  - Maak een evenement aan
+  - Maak een announcement aan
+  - Controleer op de discord server of de bovenstaande entiteiten zijn binnengekomen in de bestemde kanalen
+
+- [ ] **Bezoeker:** Account aanmaken
+  - Maak een account aan
+  - Log uit het account
+  - Log opnieuw in
+
+- [ ] **Beheerder:** afbeelding uploaden
+  Testdata: Afbeelding van >2mb
+  - Log in als beheerder
+  - Upload een afbeelding van >2mb bij de galerij
+  - Log in als beheerder op de telefoon
+  - Maak een foto met de telefoon en upload deze naar de galerij
+
+- [ ] **Bezoeker:** Carrousel afbeelding check
+  Testdata: De gewenste afbeeldingen
+  - Controleer of de gewenste afbeeldingen staan weergegeven op de hoofdpagina
+
+- [ ] **Beheerder:** beheren van beheerder rollen  
+  Test data: 1 beheerder account (A), 1 gebruikersaccount (B)
+  - Log in met account (A) en wijs de beheerder rol toe aan account (B)
+  - Log in met account (B) en ontneem de beheerder rol van beheerder account (A)
+  - Log in met account (A) en check of de CRUD functionaliteiten nog zichtbaar zijn
+
+- [ ] **Bezoeker:** herinnering over events __(n.v.t. voor nu)__
+
+- [ ] **Bezoeker:** nieuwsbrief pdf downloaden __(n.v.t. voor nu)__
