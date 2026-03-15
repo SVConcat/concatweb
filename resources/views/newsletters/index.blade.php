@@ -3,7 +3,7 @@
         <h1 class="text-2xl sm:text-3xl font-bold mb-4">Nieuwsbrieven</h1>
 
         @auth
-            @if(auth()->user()->role === 'admin')
+            @if(auth()->user()->isAdmin())
                 <div class="mb-6">
                     <a href="{{ route('newsletters.create') }}" dusk="nieuwsbrief-toevoegen"
                         class="inline-flex items-center bg-green-500 text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-green-600 transition"

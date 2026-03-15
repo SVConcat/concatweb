@@ -14,7 +14,7 @@
         </h1>
 
         @auth
-            @if(auth()->user()->role === 'admin')
+            @if(auth()->user()->isAdmin())
                 <div class="flex justify-end my-4">
                     <a href="{{ route('community-nights.create') }}"
                        class="inline-flex items-center bg-green-500 text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-green-600 transition"
@@ -48,7 +48,7 @@
                             </a>
 
                             @auth
-                                @if(auth()->user()->role === 'admin')
+                                @if(auth()->user()->isAdmin())
                                     <div class="flex justify-end mb-4 gap-2 pt-2 pr-2">
                                         <a href="{{ route('community-nights.edit', $communityNight->id) }}"
                                            class="bg-[#3129FF] rounded-lg text-white py-1.5 px-3 hover:bg-[#E39FF6] transition text-sm">
