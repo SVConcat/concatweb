@@ -74,7 +74,7 @@ class GalleryController extends Controller
 
     public function destroy(Gallery $gallery)
     {
-        $gallery->src && Storage::delete($gallery->src);
+        $gallery->removeFile('public', 'src');
         $gallery->delete();
 
         return redirect()

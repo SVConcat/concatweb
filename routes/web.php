@@ -115,7 +115,6 @@ Route::prefix('/email')->group(function () {
 //EventController
 Route::prefix('/events')->group(function () {
     Route::get('/', [EventController::class, 'index'])->name('events.index');
-    Route::get('/{event}', [EventController::class, 'show'])->name('events.show');
     Route::get('/download-all-ics', [EventController::class, 'DownloadAllICS'])->name('events.download-ics');
     Route::get('/{event}/download-ics', [EventController::class, 'downloadIcs'])->name('events.ics');
 
@@ -126,6 +125,8 @@ Route::prefix('/events')->group(function () {
         Route::put('/{event}', [EventController::class, 'update'])->name('events.update');
         Route::delete('/{event}', [EventController::class, 'destroy'])->name('events.destroy');
     });
+
+    Route::get('/{event}', [EventController::class, 'show'])->name('events.show');
 });
 
 //GalleryController
