@@ -163,9 +163,11 @@ de volgende CRUD functionaliteiten worden getest:
   - Controleer op de discord server of de bovenstaande entiteiten zijn binnengekomen in de bestemde kanalen
 
 - [ ] **Bezoeker:** Account aanmaken
-  - Maak een account aan
-  - Log uit het account
-  - Log opnieuw in
+- Bezoeker: Account aanmaken
+- Maak een account aan
+- Bekijk de inbox van het gebruikte e-mailadres en verifiëer het account
+- Log uit het account
+- Log opnieuw in
 
 - [ ] **Beheerder:** afbeelding uploaden
   Testdata: Afbeelding van >2mb
