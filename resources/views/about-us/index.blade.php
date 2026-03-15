@@ -182,24 +182,4 @@
             </p>
         </div>
     </div>
-
-    {{-- Scripts --}}
-    <script>
-        function toggleBio(index, button) {
-            const bioShort = document.querySelector(`#bio-${index} .bio-short`);
-            const bioFull = document.querySelector(`#bio-${index} .bio-full`);
-
-            const isHidden = bioFull.classList.contains('hidden');
-
-            bioFull.classList.toggle('hidden', !isHidden);
-            bioShort.classList.toggle('hidden', isHidden);
-            button.textContent = isHidden ? 'Lees minder' : 'Lees meer';
-            button.setAttribute('aria-expanded', isHidden.toString());
-        }
-
-        function scrollTimeline(offset) {
-            const timeline = document.getElementById('timeline');
-            timeline.scrollBy({ left: offset, behavior: 'smooth' });
-        }
-    </script>
 </x-layout>
