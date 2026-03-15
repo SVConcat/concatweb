@@ -113,6 +113,11 @@ de volgende CRUD functionaliteiten worden getest:
   - [ ] Pas een event aan
   - [ ] Bekijk een event
   - [ ] Verwijder een event
+- Opdrachten
+  - [x] Maak een opdracht aan
+  - [x] Pas een opdracht aan
+  - [x] Bekijk een opdracht
+  - [x] Verwijder een opdracht
 - Announcements
   - [x] Maak een announcement aan
   - [x] Pas een announcement aan
