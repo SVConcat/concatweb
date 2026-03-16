@@ -55,7 +55,7 @@
         </form>
 
         {{-- Gebruikersbeheer --}}
-        @if($user->role === 'admin')
+        @if(auth()->user()->isAdmin())
             <div class="bg-white p-6 rounded-xl shadow-lg" aria-labelledby="user-management">
                 <h2 id="user-management" class="text-xl font-bold text-purple-800 border-b-4 border-purple-500 inline-block pb-1 mb-4">
                     Gebruikersbeheer

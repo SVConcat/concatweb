@@ -132,7 +132,7 @@
                     <!-- Conditionele Inschrijfknop (alleen op verificatie) -->
 
                     @if (Auth::check() && !Auth::user()->hasVerifiedEmail())
-                        <a href="{{ route('verification.notice') }}" 
+                        <a href="{{ route('verification.notice') }}"
                         title="Je moet je e-mailadres verifiëren om je te kunnen inschrijven."
                         class="block text-center bg-yellow-500 text-white py-3 px-6 rounded-lg hover:bg-yellow-600 w-full mb-6">
                             Verifieer je e-mail om in te schrijven
@@ -164,7 +164,7 @@
                 <i class="fas fa-times" aria-hidden="true"></i>
             </button>
             <h3 id="modalTitle" class="text-xl font-bold mb-6 text-gray-800">Inschrijven</h3>
-            <form action="{{ route('registration') }}" method="POST">
+            <form action="{{ route('registrations.store') }}" method="POST">
                 @csrf
                 <input type="hidden" name="event_id" value="{{ $event->id }}">
 

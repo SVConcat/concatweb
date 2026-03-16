@@ -65,7 +65,7 @@
                     </p>
 
                    @auth
-                        @if(auth()->user()->role === 'admin')
+                        @if(auth()->user()->isAdmin())
                             <div class="flex justify-between mb-4 gap-2 pt-2 pr-2">
                                 <a href="{{ route('board-members.edit', $member->id) }}"
                                    class="bg-[#3129FF] rounded-lg text-white py-1.5 px-3 hover:bg-[#E39FF6] transition text-sm">
@@ -133,7 +133,7 @@
                             </h4>
 
                             @auth
-                                @if(auth()->user()->role === 'admin')
+                                @if(auth()->user()->isAdmin())
                                     <div class="flex justify-between mb-1 gap-2 pt-2 pr-2">
                                         <a href="{{ route('previous-boards.edit', $board->id) }}"
                                            class="bg-[#3129FF] rounded-lg text-white py-1.5 px-3 hover:bg-[#E39FF6] transition text-sm">

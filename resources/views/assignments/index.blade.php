@@ -14,7 +14,7 @@
         </h1>
 
         @auth
-            @if(auth()->user()->role === 'admin')
+            @if(auth()->user()->isAdmin())
                 <div class="flex justify-end mb-4">
                     <a href="{{ route('assignments.create') }}"
                        class="inline-flex items-center bg-green-500 text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-green-600 transition"

@@ -48,6 +48,7 @@ Route::prefix('/account')->middleware(['auth', 'verified', 'role:student,admin']
 //CommunityNightController
 Route::prefix('/community-nights')->group(function () {
     Route::get('/', [CommunityNightController::class, 'index'])->name('community-nights.index');
+    Route::get('/{communityNight}', [CommunityNightController::class, 'show'])->where('communityNight', '[0-9]+')->name('community-nights.show');
 
     Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
         Route::get('/create', [CommunityNightController::class, 'create'])->name('community-nights.create');
@@ -56,8 +57,6 @@ Route::prefix('/community-nights')->group(function () {
         Route::put('/{communityNight}', [CommunityNightController::class, 'update'])->name('community-nights.update');
         Route::delete('/{communityNight}', [CommunityNightController::class, 'destroy'])->name('community-nights.destroy');
     });
-
-    Route::get('/{communityNight}', [CommunityNightController::class, 'show'])->name('community-nights.show');
 });
 
 //AnnouncementController
@@ -115,6 +114,7 @@ Route::prefix('/email')->group(function () {
 //EventController
 Route::prefix('/events')->group(function () {
     Route::get('/', [EventController::class, 'index'])->name('events.index');
+    Route::get('/{event}', [EventController::class, 'show'])->where('event', '[0-9]+')->name('events.show');
     Route::get('/download-all-ics', [EventController::class, 'DownloadAllICS'])->name('events.download-ics');
     Route::get('/{event}/download-ics', [EventController::class, 'downloadIcs'])->name('events.ics');
 
@@ -125,8 +125,6 @@ Route::prefix('/events')->group(function () {
         Route::put('/{event}', [EventController::class, 'update'])->name('events.update');
         Route::delete('/{event}', [EventController::class, 'destroy'])->name('events.destroy');
     });
-
-    Route::get('/{event}', [EventController::class, 'show'])->name('events.show');
 });
 
 //GalleryController

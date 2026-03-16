@@ -14,7 +14,7 @@
         </h1>
 
         @auth
-            @if(auth()->user()->role === 'admin')
+            @if(auth()->user()->isAdmin())
                 <div class="flex justify-end my-4">
                     <a href="{{ route('community-nights.create') }}"
                        class="inline-flex items-center bg-green-500 text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-green-600 transition"
@@ -48,7 +48,7 @@
                             </a>
 
                             @auth
-                                @if(auth()->user()->role === 'admin')
+                                @if(auth()->user()->isAdmin())
                                     <div class="flex justify-end mb-4 gap-2 pt-2 pr-2">
                                         <a href="{{ route('community-nights.edit', $communityNight->id) }}"
                                            class="bg-[#3129FF] rounded-lg text-white py-1.5 px-3 hover:bg-[#E39FF6] transition text-sm">
@@ -95,7 +95,7 @@
 
                                 <div class="flex flex-col justify-between max-h-40 mt-auto">
                                     <div class="mb-4 grow text-gray-700 relative overflow-hidden">
-                                        <p class="mb-3 font-normal text-gray-700 ">{{ $communityNight->description }}</p>
+                                        <p class="mb-3 break-words font-normal text-gray-700 ">{{ $communityNight->description }}</p>
                                         <div
                                             class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-b from-transparent to-white"></div>
                                     </div>
